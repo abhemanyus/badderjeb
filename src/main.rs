@@ -1,7 +1,10 @@
+use std::error::Error;
 use std::process::exit;
 
-use krpc_client::services::space_center::SpaceCenter;
+use krpc_client::services::space_center::{SpaceCenter, Vessel};
+use krpc_client::stream::Stream;
 use krpc_client::Client;
+use tokio::join;
 use tokio::signal::ctrl_c;
 
 #[tokio::main]
@@ -26,64 +29,160 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     control.set_lights(true).await?;
     control.set_throttle(1.0).await?;
 
+    let mut state = State::Launch;
+    let mut attitude = Attitude::new(&ship).await?;
+
     let auto_pilot = ship.get_auto_pilot().await?;
-    auto_pilot.target_pitch_and_heading(90.0, 90.0).await?;
-    auto_pilot.engage().await?;
+    let pitch_ctrl = Interpolate::new((100.0, 32000.0), (90.0, 0.0));
+    let aoa_ctrl = Interpolate::new((1000.0, 18000.0), (5.0, 25.0));
 
-    control.activate_next_stage().await?;
-
-    let flight = ship.flight(None).await?;
-
-    let alt = flight.get_surface_altitude_stream().await?;
+    let mut prev_state = state;
 
     loop {
-        alt.wait().await;
-        if alt.get().await? > 100.0 {
-            break;
+        attitude.update().await?;
+        if state != prev_state {
+            println!("{prev_state:?}->{state:?}");
+            prev_state = state;
+        }
+        state = match state {
+            State::Launch => {
+                auto_pilot.target_pitch_and_heading(90.0, 90.0).await?;
+                auto_pilot.engage().await?;
+                control.activate_next_stage().await?;
+                State::Ascent
+            }
+            State::Ascent => {
+                if attitude.alt < 1000.0 {
+                    State::Ascent
+                } else {
+                    State::Turn
+                }
+            }
+            State::Turn => {
+                let tgt_pitch = pitch_ctrl.inter(attitude.alt);
+                let pitch = if attitude.alt < 24000.0 {
+                    tgt_pitch.max(attitude.pitch - attitude.aoa - aoa_ctrl.inter(attitude.alt))
+                } else {
+                    tgt_pitch
+                };
+                auto_pilot.set_target_pitch(pitch).await?;
+
+                if attitude.apop > 80000.0 {
+                    State::Coast
+                } else {
+                    State::Turn
+                }
+            }
+            State::Coast => {
+                control.set_throttle(0.0).await?;
+                if attitude.alt > 70000.0 {
+                    State::Circ
+                } else {
+                    State::Coast
+                }
+            }
+            State::Circ => {
+                if attitude.pitch.abs() > 0.1 {
+                    auto_pilot.set_target_pitch(0.0).await?;
+                }
+                if attitude.perip > 80000.0 {
+                    State::Orbit
+                } else if attitude.eta_apop < 10.0 {
+                    control.set_throttle(1.0).await?;
+                    State::Circ
+                } else {
+                    control.set_throttle(0.0).await?;
+                    State::Circ
+                }
+            }
+            State::Orbit => {
+                control.set_throttle(0.0).await?;
+                auto_pilot.disengage().await?;
+                return Ok(());
+            }
         }
     }
+}
 
-    let pitch_ctrl = Interpolate::new((100.0, 32000.0), (90.0, 0.0));
-    let aoa = flight.get_angle_of_attack_stream().await?;
-    let pitch = flight.get_pitch_stream().await?;
+#[derive(Debug, Copy, Clone, PartialEq)]
+pub enum State {
+    Launch,
+    Ascent,
+    Turn,
+    Coast,
+    Circ,
+    Orbit,
+}
 
-    let stage_5_resources = ship.resources_in_decouple_stage(4, false).await?;
-    let solid_fuel = stage_5_resources
-        .amount_stream("SolidFuel".to_string())
-        .await?;
+pub struct Attitude {
+    alt: f64,
+    aoa: f32,
+    pitch: f32,
+    apop: f64,
+    perip: f64,
+    eta_apop: f64,
+    alt_stream: Stream<f64>,
+    aoa_stream: Stream<f32>,
+    pitch_stream: Stream<f32>,
+    apop_stream: Stream<f64>,
+    eta_apop_stream: Stream<f64>,
+    perip_stream: Stream<f64>,
+}
 
-    let mut srbs_separated = false;
-
-    let stage_4_resources = ship.resources_in_decouple_stage(3, false).await?;
-    let oxidizer = stage_4_resources
-        .amount_stream("Oxidizer".to_string())
-        .await?;
-
-    let mut booster_separated = false;
-
-    loop {
-        aoa.wait().await;
-        let alt = alt.get().await?;
-        if !srbs_separated && solid_fuel.get().await? < 0.1 {
-            control.activate_next_stage().await?;
-            srbs_separated = true;
-        }
-        if !booster_separated && oxidizer.get().await? < 0.1 {
-            control.activate_next_stage().await?;
-            booster_separated = true;
-        }
-        let pitch = if alt < 24000.0 {
-            let true_pitch = pitch.get().await?;
-            let tgt_pitch = pitch_ctrl.inter(alt);
-            let max_aoa = 5.0;
-            let vel_pitch = true_pitch - aoa.get().await?;
-            let min_pitch = vel_pitch - max_aoa;
-            (tgt_pitch).max(min_pitch)
-        } else {
-            pitch_ctrl.inter(alt)
-        };
-        auto_pilot.target_pitch_and_heading(pitch, 90.0).await?;
-        println!("AoA: {:.2}", aoa.get().await?);
+impl Attitude {
+    pub async fn new(ship: &Vessel) -> Result<Self, Box<dyn Error>> {
+        let flight = ship.flight(None).await?;
+        Ok(Self {
+            alt: 0.0,
+            aoa: 0.0,
+            pitch: 0.0,
+            apop: 0.0,
+            eta_apop: 0.0,
+            perip: 0.0,
+            alt_stream: flight.get_surface_altitude_stream().await?,
+            aoa_stream: flight.get_angle_of_attack_stream().await?,
+            pitch_stream: flight.get_pitch_stream().await?,
+            apop_stream: ship
+                .get_orbit()
+                .await?
+                .get_apoapsis_altitude_stream()
+                .await?,
+            eta_apop_stream: ship
+                .get_orbit()
+                .await?
+                .get_time_to_apoapsis_stream()
+                .await?,
+            perip_stream: ship
+                .get_orbit()
+                .await?
+                .get_periapsis_altitude_stream()
+                .await?,
+        })
+    }
+    pub async fn update(&mut self) -> Result<(), Box<dyn Error>> {
+        join!(
+            self.alt_stream.wait(),
+            self.aoa_stream.wait(),
+            self.pitch_stream.wait(),
+            self.apop_stream.wait(),
+            self.eta_apop_stream.wait(),
+            self.perip_stream.wait()
+        );
+        let (alt, aoa, pitch, apop, eta_apop, perip) = join!(
+            self.alt_stream.get(),
+            self.aoa_stream.get(),
+            self.pitch_stream.get(),
+            self.apop_stream.get(),
+            self.eta_apop_stream.get(),
+            self.perip_stream.get()
+        );
+        self.alt = alt?;
+        self.aoa = aoa?;
+        self.pitch = pitch?;
+        self.apop = apop?;
+        self.eta_apop = eta_apop?;
+        self.perip = perip?;
+        Ok(())
     }
 }
 
