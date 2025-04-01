@@ -7,5 +7,9 @@ edition = "2021"
 path = "src/lib.rs"
 
 [dependencies]
-krpc-client = { git = "https://github.com/kladd/krpc-client", features = [ "tokio" ] }
+krpc-mars = { path = "../krpc-mars" }
 tokio = { version = "1.44.1", features = ["full"] }
+
+[build-dependencies]
+glob = "0.3"
+krpc-mars-terraformer = { path = "../krpc-mars-terraformer" }
