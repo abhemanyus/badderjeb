@@ -21,7 +21,7 @@ impl Interpolate {
 
 #[cfg(test)]
 mod test {
-    use crate::Interpolate;
+    use crate::interpolate::Interpolate;
 
     #[test]
     fn test_interpolate() {
