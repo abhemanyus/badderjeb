@@ -1,11 +1,10 @@
-use krpc_mars::krpc as krpc;
-use krpc_mars::protobuf as protobuf;
 use krpc_mars::client::CallHandle;
 use krpc_mars::codec::RPCEncodable;
 use krpc_mars::codec::RPCExtractable;
+use krpc_mars::krpc;
+use krpc_mars::protobuf;
 
 use std::fmt;
-
 
 #[derive(Copy, Clone)]
 pub struct Alarm {
@@ -19,13 +18,18 @@ impl fmt::Debug for Alarm {
 }
 
 impl RPCEncodable for Alarm {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Alarm {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Alarm { id })
     }
@@ -34,7 +38,7 @@ impl RPCExtractable for Alarm {
 #[allow(dead_code)]
 impl Alarm {
     /// <doc> <summary> Removes the alarm. </summary> </doc>
-    pub fn remove(&self, ) -> CallHandle<()> {
+    pub fn remove(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KerbalAlarmClock"));
         proc_call.set_procedure(String::from("Alarm_Remove"));
@@ -50,7 +54,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The action that the alarm triggers. </summary> </doc>
-    pub fn get_action(&self, ) -> CallHandle<super::kerbal_alarm_clock::AlarmAction> {
+    pub fn get_action(&self) -> CallHandle<super::kerbal_alarm_clock::AlarmAction> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KerbalAlarmClock"));
         proc_call.set_procedure(String::from("Alarm_get_Action"));
@@ -66,7 +70,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The unique identifier for the alarm. </summary> </doc>
-    pub fn get_id(&self, ) -> CallHandle<String> {
+    pub fn get_id(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KerbalAlarmClock"));
         proc_call.set_procedure(String::from("Alarm_get_ID"));
@@ -82,7 +86,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The number of seconds before the event that the alarm will fire. </summary> </doc>
-    pub fn get_margin(&self, ) -> CallHandle<f64> {
+    pub fn get_margin(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KerbalAlarmClock"));
         proc_call.set_procedure(String::from("Alarm_get_Margin"));
@@ -98,7 +102,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The short name of the alarm. </summary> </doc>
-    pub fn get_name(&self, ) -> CallHandle<String> {
+    pub fn get_name(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KerbalAlarmClock"));
         proc_call.set_procedure(String::from("Alarm_get_Name"));
@@ -114,7 +118,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The long description of the alarm. </summary> </doc>
-    pub fn get_notes(&self, ) -> CallHandle<String> {
+    pub fn get_notes(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KerbalAlarmClock"));
         proc_call.set_procedure(String::from("Alarm_get_Notes"));
@@ -130,7 +134,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The number of seconds until the alarm will fire. </summary> </doc>
-    pub fn get_remaining(&self, ) -> CallHandle<f64> {
+    pub fn get_remaining(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KerbalAlarmClock"));
         proc_call.set_procedure(String::from("Alarm_get_Remaining"));
@@ -146,7 +150,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the alarm will be repeated after it has fired. </summary> </doc>
-    pub fn get_repeat(&self, ) -> CallHandle<bool> {
+    pub fn get_repeat(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KerbalAlarmClock"));
         proc_call.set_procedure(String::from("Alarm_get_Repeat"));
@@ -162,7 +166,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The time delay to automatically create an alarm after it has fired. </summary> </doc>
-    pub fn get_repeat_period(&self, ) -> CallHandle<f64> {
+    pub fn get_repeat_period(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KerbalAlarmClock"));
         proc_call.set_procedure(String::from("Alarm_get_RepeatPeriod"));
@@ -178,7 +182,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The time at which the alarm will fire. </summary> </doc>
-    pub fn get_time(&self, ) -> CallHandle<f64> {
+    pub fn get_time(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KerbalAlarmClock"));
         proc_call.set_procedure(String::from("Alarm_get_Time"));
@@ -194,7 +198,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The type of the alarm. </summary> </doc>
-    pub fn get_type(&self, ) -> CallHandle<super::kerbal_alarm_clock::AlarmType> {
+    pub fn get_type(&self) -> CallHandle<super::kerbal_alarm_clock::AlarmType> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KerbalAlarmClock"));
         proc_call.set_procedure(String::from("Alarm_get_Type"));
@@ -210,7 +214,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The vessel that the alarm is attached to. </summary> </doc>
-    pub fn get_vessel(&self, ) -> CallHandle<super::space_center::Vessel> {
+    pub fn get_vessel(&self) -> CallHandle<super::space_center::Vessel> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KerbalAlarmClock"));
         proc_call.set_procedure(String::from("Alarm_get_Vessel"));
@@ -226,7 +230,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The celestial body the vessel is departing from. </summary> </doc>
-    pub fn get_xfer_origin_body(&self, ) -> CallHandle<super::space_center::CelestialBody> {
+    pub fn get_xfer_origin_body(&self) -> CallHandle<super::space_center::CelestialBody> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KerbalAlarmClock"));
         proc_call.set_procedure(String::from("Alarm_get_XferOriginBody"));
@@ -242,7 +246,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The celestial body the vessel is arriving at. </summary> </doc>
-    pub fn get_xfer_target_body(&self, ) -> CallHandle<super::space_center::CelestialBody> {
+    pub fn get_xfer_target_body(&self) -> CallHandle<super::space_center::CelestialBody> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KerbalAlarmClock"));
         proc_call.set_procedure(String::from("Alarm_get_XferTargetBody"));
@@ -426,7 +430,10 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The celestial body the vessel is departing from. </summary> </doc>
-    pub fn set_xfer_origin_body(&self, p_value: super::space_center::CelestialBody) -> CallHandle<()> {
+    pub fn set_xfer_origin_body(
+        &self,
+        p_value: super::space_center::CelestialBody,
+    ) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KerbalAlarmClock"));
         proc_call.set_procedure(String::from("Alarm_set_XferOriginBody"));
@@ -447,7 +454,10 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The celestial body the vessel is arriving at. </summary> </doc>
-    pub fn set_xfer_target_body(&self, p_value: super::space_center::CelestialBody) -> CallHandle<()> {
+    pub fn set_xfer_target_body(
+        &self,
+        p_value: super::space_center::CelestialBody,
+    ) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KerbalAlarmClock"));
         proc_call.set_procedure(String::from("Alarm_set_XferTargetBody"));
@@ -469,8 +479,6 @@ impl Alarm {
     }
 }
 
-
-
 #[derive(Debug, Copy, Clone)]
 pub enum AlarmAction {
     DoNothing = 0,
@@ -491,20 +499,28 @@ impl From<i32> for AlarmAction {
             3 => AlarmAction::KillWarpOnly,
             4 => AlarmAction::MessageOnly,
             5 => AlarmAction::PauseGame,
-            _ => panic!("Could not convert '{}' to a KerbalAlarmClock::AlarmAction", source),
+            _ => panic!(
+                "Could not convert '{}' to a KerbalAlarmClock::AlarmAction",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for AlarmAction {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for AlarmAction {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(AlarmAction::from(value))
     }
 }
@@ -553,25 +569,31 @@ impl From<i32> for AlarmType {
             15 => AlarmType::SOIChangeAuto,
             16 => AlarmType::Transfer,
             17 => AlarmType::TransferModelled,
-            _ => panic!("Could not convert '{}' to a KerbalAlarmClock::AlarmType", source),
+            _ => panic!(
+                "Could not convert '{}' to a KerbalAlarmClock::AlarmType",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for AlarmType {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for AlarmType {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(AlarmType::from(value))
     }
 }
-
-
 
 #[allow(dead_code)]
 /// <doc> <summary> Get the alarm with the given <paramref name="name" />, or <c>null</c> if no alarms have that name. If more than one alarm has the name, only returns one of them. </summary> <param name="name">Name of the alarm to search for.</param> </doc>
@@ -593,7 +615,9 @@ pub fn alarm_with_name(p_name: String) -> CallHandle<super::kerbal_alarm_clock::
 
 #[allow(dead_code)]
 /// <doc> <summary> Get a list of alarms of the specified <paramref name="type" />. </summary> <param name="type">Type of alarm to return.</param> </doc>
-pub fn alarms_with_type(p_type: super::kerbal_alarm_clock::AlarmType) -> CallHandle<Vec<super::kerbal_alarm_clock::Alarm>> {
+pub fn alarms_with_type(
+    p_type: super::kerbal_alarm_clock::AlarmType,
+) -> CallHandle<Vec<super::kerbal_alarm_clock::Alarm>> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("KerbalAlarmClock"));
     proc_call.set_procedure(String::from("AlarmsWithType"));
@@ -611,7 +635,11 @@ pub fn alarms_with_type(p_type: super::kerbal_alarm_clock::AlarmType) -> CallHan
 
 #[allow(dead_code)]
 /// <doc> <summary> Create a new alarm and return it. </summary> <param name="type">Type of the new alarm.</param> <param name="name">Name of the new alarm.</param> <param name="ut">Time at which the new alarm should trigger.</param> </doc>
-pub fn create_alarm(p_type: super::kerbal_alarm_clock::AlarmType, p_name: String, p_ut: f64) -> CallHandle<super::kerbal_alarm_clock::Alarm> {
+pub fn create_alarm(
+    p_type: super::kerbal_alarm_clock::AlarmType,
+    p_name: String,
+    p_ut: f64,
+) -> CallHandle<super::kerbal_alarm_clock::Alarm> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("KerbalAlarmClock"));
     proc_call.set_procedure(String::from("CreateAlarm"));
@@ -656,4 +684,3 @@ pub fn get_available() -> CallHandle<bool> {
 
     CallHandle::new(proc_call)
 }
-

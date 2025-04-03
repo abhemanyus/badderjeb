@@ -1,11 +1,10 @@
-use krpc_mars::krpc as krpc;
-use krpc_mars::protobuf as protobuf;
 use krpc_mars::client::CallHandle;
 use krpc_mars::codec::RPCEncodable;
 use krpc_mars::codec::RPCExtractable;
+use krpc_mars::krpc;
+use krpc_mars::protobuf;
 
 use std::fmt;
-
 
 #[derive(Copy, Clone)]
 pub struct Antenna {
@@ -19,13 +18,18 @@ impl fmt::Debug for Antenna {
 }
 
 impl RPCEncodable for Antenna {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Antenna {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Antenna { id })
     }
@@ -34,7 +38,7 @@ impl RPCExtractable for Antenna {
 #[allow(dead_code)]
 impl Antenna {
     /// <doc> <summary> Whether the antenna has a connection. </summary> </doc>
-    pub fn get_has_connection(&self, ) -> CallHandle<bool> {
+    pub fn get_has_connection(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("RemoteTech"));
         proc_call.set_procedure(String::from("Antenna_get_HasConnection"));
@@ -50,7 +54,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Get the part containing this antenna. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("RemoteTech"));
         proc_call.set_procedure(String::from("Antenna_get_Part"));
@@ -66,7 +70,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The object that the antenna is targetting. This property can be used to set the target to <see cref="M:RemoteTech.Target.None" /> or <see cref="M:RemoteTech.Target.ActiveVessel" />. To set the target to a celestial body, ground station or vessel see <see cref="M:RemoteTech.Antenna.TargetBody" />, <see cref="M:RemoteTech.Antenna.TargetGroundStation" /> and <see cref="M:RemoteTech.Antenna.TargetVessel" />. </summary> </doc>
-    pub fn get_target(&self, ) -> CallHandle<super::remote_tech::Target> {
+    pub fn get_target(&self) -> CallHandle<super::remote_tech::Target> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("RemoteTech"));
         proc_call.set_procedure(String::from("Antenna_get_Target"));
@@ -82,7 +86,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The celestial body the antenna is targetting. </summary> </doc>
-    pub fn get_target_body(&self, ) -> CallHandle<super::space_center::CelestialBody> {
+    pub fn get_target_body(&self) -> CallHandle<super::space_center::CelestialBody> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("RemoteTech"));
         proc_call.set_procedure(String::from("Antenna_get_TargetBody"));
@@ -98,7 +102,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The ground station the antenna is targetting. </summary> </doc>
-    pub fn get_target_ground_station(&self, ) -> CallHandle<String> {
+    pub fn get_target_ground_station(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("RemoteTech"));
         proc_call.set_procedure(String::from("Antenna_get_TargetGroundStation"));
@@ -114,7 +118,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The vessel the antenna is targetting. </summary> </doc>
-    pub fn get_target_vessel(&self, ) -> CallHandle<super::space_center::Vessel> {
+    pub fn get_target_vessel(&self) -> CallHandle<super::space_center::Vessel> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("RemoteTech"));
         proc_call.set_procedure(String::from("Antenna_get_TargetVessel"));
@@ -227,13 +231,18 @@ impl fmt::Debug for Comms {
 }
 
 impl RPCEncodable for Comms {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Comms {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Comms { id })
     }
@@ -263,7 +272,7 @@ impl Comms {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The antennas for this vessel. </summary> </doc>
-    pub fn get_antennas(&self, ) -> CallHandle<Vec<super::remote_tech::Antenna>> {
+    pub fn get_antennas(&self) -> CallHandle<Vec<super::remote_tech::Antenna>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("RemoteTech"));
         proc_call.set_procedure(String::from("Comms_get_Antennas"));
@@ -279,7 +288,7 @@ impl Comms {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the vessel has any connection. </summary> </doc>
-    pub fn get_has_connection(&self, ) -> CallHandle<bool> {
+    pub fn get_has_connection(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("RemoteTech"));
         proc_call.set_procedure(String::from("Comms_get_HasConnection"));
@@ -295,7 +304,7 @@ impl Comms {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the vessel has a connection to a ground station. </summary> </doc>
-    pub fn get_has_connection_to_ground_station(&self, ) -> CallHandle<bool> {
+    pub fn get_has_connection_to_ground_station(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("RemoteTech"));
         proc_call.set_procedure(String::from("Comms_get_HasConnectionToGroundStation"));
@@ -311,7 +320,7 @@ impl Comms {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the vessel has a flight computer on board. </summary> </doc>
-    pub fn get_has_flight_computer(&self, ) -> CallHandle<bool> {
+    pub fn get_has_flight_computer(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("RemoteTech"));
         proc_call.set_procedure(String::from("Comms_get_HasFlightComputer"));
@@ -327,7 +336,7 @@ impl Comms {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the vessel can be controlled locally. </summary> </doc>
-    pub fn get_has_local_control(&self, ) -> CallHandle<bool> {
+    pub fn get_has_local_control(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("RemoteTech"));
         proc_call.set_procedure(String::from("Comms_get_HasLocalControl"));
@@ -343,7 +352,7 @@ impl Comms {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The shortest signal delay to the vessel, in seconds. </summary> </doc>
-    pub fn get_signal_delay(&self, ) -> CallHandle<f64> {
+    pub fn get_signal_delay(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("RemoteTech"));
         proc_call.set_procedure(String::from("Comms_get_SignalDelay"));
@@ -359,7 +368,7 @@ impl Comms {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The signal delay between the vessel and the closest ground station, in seconds. </summary> </doc>
-    pub fn get_signal_delay_to_ground_station(&self, ) -> CallHandle<f64> {
+    pub fn get_signal_delay_to_ground_station(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("RemoteTech"));
         proc_call.set_procedure(String::from("Comms_get_SignalDelayToGroundStation"));
@@ -375,7 +384,7 @@ impl Comms {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Get the vessel. </summary> </doc>
-    pub fn get_vessel(&self, ) -> CallHandle<super::space_center::Vessel> {
+    pub fn get_vessel(&self) -> CallHandle<super::space_center::Vessel> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("RemoteTech"));
         proc_call.set_procedure(String::from("Comms_get_Vessel"));
@@ -391,8 +400,6 @@ impl Comms {
         CallHandle::new(proc_call)
     }
 }
-
-
 
 #[derive(Debug, Copy, Clone)]
 pub enum Target {
@@ -418,19 +425,22 @@ impl From<i32> for Target {
 }
 
 impl RPCEncodable for Target {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for Target {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(Target::from(value))
     }
 }
-
-
 
 #[allow(dead_code)]
 /// <doc> <summary> Get the antenna object for a particular part. </summary> </doc>
@@ -487,4 +497,3 @@ pub fn get_ground_stations() -> CallHandle<Vec<String>> {
 
     CallHandle::new(proc_call)
 }
-

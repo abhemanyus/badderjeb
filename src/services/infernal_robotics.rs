@@ -1,11 +1,10 @@
-use krpc_mars::krpc as krpc;
-use krpc_mars::protobuf as protobuf;
 use krpc_mars::client::CallHandle;
 use krpc_mars::codec::RPCEncodable;
 use krpc_mars::codec::RPCExtractable;
+use krpc_mars::krpc;
+use krpc_mars::protobuf;
 
 use std::fmt;
-
 
 #[derive(Copy, Clone)]
 pub struct Servo {
@@ -19,13 +18,18 @@ impl fmt::Debug for Servo {
 }
 
 impl RPCEncodable for Servo {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Servo {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Servo { id })
     }
@@ -34,7 +38,7 @@ impl RPCExtractable for Servo {
 #[allow(dead_code)]
 impl Servo {
     /// <doc> <summary> Moves the servo to the center. </summary> </doc>
-    pub fn move_center(&self, ) -> CallHandle<()> {
+    pub fn move_center(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_MoveCenter"));
@@ -50,7 +54,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Moves the servo to the left. </summary> </doc>
-    pub fn move_left(&self, ) -> CallHandle<()> {
+    pub fn move_left(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_MoveLeft"));
@@ -66,7 +70,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Moves the servo to the right. </summary> </doc>
-    pub fn move_right(&self, ) -> CallHandle<()> {
+    pub fn move_right(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_MoveRight"));
@@ -108,7 +112,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Stops the servo. </summary> </doc>
-    pub fn stop(&self, ) -> CallHandle<()> {
+    pub fn stop(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_Stop"));
@@ -124,7 +128,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current speed multiplier set in the UI. </summary> </doc>
-    pub fn get_acceleration(&self, ) -> CallHandle<f32> {
+    pub fn get_acceleration(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_get_Acceleration"));
@@ -140,7 +144,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The speed multiplier of the servo, specified by the part configuration. </summary> </doc>
-    pub fn get_config_speed(&self, ) -> CallHandle<f32> {
+    pub fn get_config_speed(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_get_ConfigSpeed"));
@@ -156,7 +160,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current speed at which the servo is moving. </summary> </doc>
-    pub fn get_current_speed(&self, ) -> CallHandle<f32> {
+    pub fn get_current_speed(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_get_CurrentSpeed"));
@@ -172,7 +176,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the servos axis is inverted. </summary> </doc>
-    pub fn get_is_axis_inverted(&self, ) -> CallHandle<bool> {
+    pub fn get_is_axis_inverted(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_get_IsAxisInverted"));
@@ -188,7 +192,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the servo is freely moving. </summary> </doc>
-    pub fn get_is_free_moving(&self, ) -> CallHandle<bool> {
+    pub fn get_is_free_moving(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_get_IsFreeMoving"));
@@ -204,7 +208,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the servo is locked. </summary> </doc>
-    pub fn get_is_locked(&self, ) -> CallHandle<bool> {
+    pub fn get_is_locked(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_get_IsLocked"));
@@ -220,7 +224,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the servo is moving. </summary> </doc>
-    pub fn get_is_moving(&self, ) -> CallHandle<bool> {
+    pub fn get_is_moving(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_get_IsMoving"));
@@ -236,7 +240,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The maximum position of the servo, specified by the part configuration. </summary> </doc>
-    pub fn get_max_config_position(&self, ) -> CallHandle<f32> {
+    pub fn get_max_config_position(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_get_MaxConfigPosition"));
@@ -252,7 +256,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The maximum position of the servo, specified by the in-game tweak menu. </summary> </doc>
-    pub fn get_max_position(&self, ) -> CallHandle<f32> {
+    pub fn get_max_position(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_get_MaxPosition"));
@@ -268,7 +272,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The minimum position of the servo, specified by the part configuration. </summary> </doc>
-    pub fn get_min_config_position(&self, ) -> CallHandle<f32> {
+    pub fn get_min_config_position(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_get_MinConfigPosition"));
@@ -284,7 +288,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The minimum position of the servo, specified by the in-game tweak menu. </summary> </doc>
-    pub fn get_min_position(&self, ) -> CallHandle<f32> {
+    pub fn get_min_position(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_get_MinPosition"));
@@ -300,7 +304,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The name of the servo. </summary> </doc>
-    pub fn get_name(&self, ) -> CallHandle<String> {
+    pub fn get_name(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_get_Name"));
@@ -316,7 +320,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part containing the servo. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_get_Part"));
@@ -332,7 +336,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The position of the servo. </summary> </doc>
-    pub fn get_position(&self, ) -> CallHandle<f32> {
+    pub fn get_position(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_get_Position"));
@@ -348,7 +352,7 @@ impl Servo {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The speed multiplier of the servo, specified by the in-game tweak menu. </summary> </doc>
-    pub fn get_speed(&self, ) -> CallHandle<f32> {
+    pub fn get_speed(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("Servo_get_Speed"));
@@ -545,13 +549,18 @@ impl fmt::Debug for ServoGroup {
 }
 
 impl RPCEncodable for ServoGroup {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for ServoGroup {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(ServoGroup { id })
     }
@@ -560,7 +569,7 @@ impl RPCExtractable for ServoGroup {
 #[allow(dead_code)]
 impl ServoGroup {
     /// <doc> <summary> Moves all of the servos in the group to the center. </summary> </doc>
-    pub fn move_center(&self, ) -> CallHandle<()> {
+    pub fn move_center(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("ServoGroup_MoveCenter"));
@@ -576,7 +585,7 @@ impl ServoGroup {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Moves all of the servos in the group to the left. </summary> </doc>
-    pub fn move_left(&self, ) -> CallHandle<()> {
+    pub fn move_left(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("ServoGroup_MoveLeft"));
@@ -592,7 +601,7 @@ impl ServoGroup {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Moves all of the servos in the group to the next preset. </summary> </doc>
-    pub fn move_next_preset(&self, ) -> CallHandle<()> {
+    pub fn move_next_preset(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("ServoGroup_MoveNextPreset"));
@@ -608,7 +617,7 @@ impl ServoGroup {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Moves all of the servos in the group to the previous preset. </summary> </doc>
-    pub fn move_prev_preset(&self, ) -> CallHandle<()> {
+    pub fn move_prev_preset(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("ServoGroup_MovePrevPreset"));
@@ -624,7 +633,7 @@ impl ServoGroup {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Moves all of the servos in the group to the right. </summary> </doc>
-    pub fn move_right(&self, ) -> CallHandle<()> {
+    pub fn move_right(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("ServoGroup_MoveRight"));
@@ -661,7 +670,7 @@ impl ServoGroup {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Stops the servos in the group. </summary> </doc>
-    pub fn stop(&self, ) -> CallHandle<()> {
+    pub fn stop(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("ServoGroup_Stop"));
@@ -677,7 +686,7 @@ impl ServoGroup {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the group is expanded in the InfernalRobotics UI. </summary> </doc>
-    pub fn get_expanded(&self, ) -> CallHandle<bool> {
+    pub fn get_expanded(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("ServoGroup_get_Expanded"));
@@ -693,7 +702,7 @@ impl ServoGroup {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The key assigned to be the "forward" key for the group. </summary> </doc>
-    pub fn get_forward_key(&self, ) -> CallHandle<String> {
+    pub fn get_forward_key(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("ServoGroup_get_ForwardKey"));
@@ -709,7 +718,7 @@ impl ServoGroup {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The name of the group. </summary> </doc>
-    pub fn get_name(&self, ) -> CallHandle<String> {
+    pub fn get_name(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("ServoGroup_get_Name"));
@@ -725,7 +734,7 @@ impl ServoGroup {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The parts containing the servos in the group. </summary> </doc>
-    pub fn get_parts(&self, ) -> CallHandle<Vec<super::space_center::Part>> {
+    pub fn get_parts(&self) -> CallHandle<Vec<super::space_center::Part>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("ServoGroup_get_Parts"));
@@ -741,7 +750,7 @@ impl ServoGroup {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The key assigned to be the "reverse" key for the group. </summary> </doc>
-    pub fn get_reverse_key(&self, ) -> CallHandle<String> {
+    pub fn get_reverse_key(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("ServoGroup_get_ReverseKey"));
@@ -757,7 +766,7 @@ impl ServoGroup {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The servos that are in the group. </summary> </doc>
-    pub fn get_servos(&self, ) -> CallHandle<Vec<super::infernal_robotics::Servo>> {
+    pub fn get_servos(&self) -> CallHandle<Vec<super::infernal_robotics::Servo>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("ServoGroup_get_Servos"));
@@ -773,7 +782,7 @@ impl ServoGroup {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The speed multiplier for the group. </summary> </doc>
-    pub fn get_speed(&self, ) -> CallHandle<f32> {
+    pub fn get_speed(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("InfernalRobotics"));
         proc_call.set_procedure(String::from("ServoGroup_get_Speed"));
@@ -895,13 +904,12 @@ impl ServoGroup {
     }
 }
 
-
-
-
-
 #[allow(dead_code)]
 /// <doc> <summary> Returns the servo group in the given <paramref name="vessel" /> with the given <paramref name="name" />, or <c>null</c> if none exists. If multiple servo groups have the same name, only one of them is returned. </summary> <param name="vessel">Vessel to check.</param> <param name="name">Name of servo group to find.</param> </doc>
-pub fn servo_group_with_name(p_vessel: super::space_center::Vessel, p_name: String) -> CallHandle<super::infernal_robotics::ServoGroup> {
+pub fn servo_group_with_name(
+    p_vessel: super::space_center::Vessel,
+    p_name: String,
+) -> CallHandle<super::infernal_robotics::ServoGroup> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("InfernalRobotics"));
     proc_call.set_procedure(String::from("ServoGroupWithName"));
@@ -924,7 +932,9 @@ pub fn servo_group_with_name(p_vessel: super::space_center::Vessel, p_name: Stri
 
 #[allow(dead_code)]
 /// <doc> <summary> A list of all the servo groups in the given <paramref name="vessel" />. </summary> </doc>
-pub fn servo_groups(p_vessel: super::space_center::Vessel) -> CallHandle<Vec<super::infernal_robotics::ServoGroup>> {
+pub fn servo_groups(
+    p_vessel: super::space_center::Vessel,
+) -> CallHandle<Vec<super::infernal_robotics::ServoGroup>> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("InfernalRobotics"));
     proc_call.set_procedure(String::from("ServoGroups"));
@@ -942,7 +952,10 @@ pub fn servo_groups(p_vessel: super::space_center::Vessel) -> CallHandle<Vec<sup
 
 #[allow(dead_code)]
 /// <doc> <summary> Returns the servo in the given <paramref name="vessel" /> with the given <paramref name="name" /> or <c>null</c> if none exists. If multiple servos have the same name, only one of them is returned. </summary> <param name="vessel">Vessel to check.</param> <param name="name">Name of the servo to find.</param> </doc>
-pub fn servo_with_name(p_vessel: super::space_center::Vessel, p_name: String) -> CallHandle<super::infernal_robotics::Servo> {
+pub fn servo_with_name(
+    p_vessel: super::space_center::Vessel,
+    p_name: String,
+) -> CallHandle<super::infernal_robotics::Servo> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("InfernalRobotics"));
     proc_call.set_procedure(String::from("ServoWithName"));
@@ -982,4 +995,3 @@ pub fn get_ready() -> CallHandle<bool> {
 
     CallHandle::new(proc_call)
 }
-

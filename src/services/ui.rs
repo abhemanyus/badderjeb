@@ -1,11 +1,10 @@
-use krpc_mars::krpc as krpc;
-use krpc_mars::protobuf as protobuf;
 use krpc_mars::client::CallHandle;
 use krpc_mars::codec::RPCEncodable;
 use krpc_mars::codec::RPCExtractable;
+use krpc_mars::krpc;
+use krpc_mars::protobuf;
 
 use std::fmt;
-
 
 #[derive(Copy, Clone)]
 pub struct Button {
@@ -19,13 +18,18 @@ impl fmt::Debug for Button {
 }
 
 impl RPCEncodable for Button {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Button {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Button { id })
     }
@@ -34,7 +38,7 @@ impl RPCExtractable for Button {
 #[allow(dead_code)]
 impl Button {
     /// <doc> <summary> Remove the UI object. </summary> </doc>
-    pub fn remove(&self, ) -> CallHandle<()> {
+    pub fn remove(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Button_Remove"));
@@ -50,7 +54,7 @@ impl Button {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the button has been clicked. </summary> <remarks> This property is set to true when the user clicks the button. A client script should reset the property to false in order to detect subsequent button presses. </remarks> </doc>
-    pub fn get_clicked(&self, ) -> CallHandle<bool> {
+    pub fn get_clicked(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Button_get_Clicked"));
@@ -66,7 +70,7 @@ impl Button {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rect transform for the text. </summary> </doc>
-    pub fn get_rect_transform(&self, ) -> CallHandle<super::ui::RectTransform> {
+    pub fn get_rect_transform(&self) -> CallHandle<super::ui::RectTransform> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Button_get_RectTransform"));
@@ -82,7 +86,7 @@ impl Button {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The text for the button. </summary> </doc>
-    pub fn get_text(&self, ) -> CallHandle<super::ui::Text> {
+    pub fn get_text(&self) -> CallHandle<super::ui::Text> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Button_get_Text"));
@@ -98,7 +102,7 @@ impl Button {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the UI object is visible. </summary> </doc>
-    pub fn get_visible(&self, ) -> CallHandle<bool> {
+    pub fn get_visible(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Button_get_Visible"));
@@ -169,13 +173,18 @@ impl fmt::Debug for Canvas {
 }
 
 impl RPCEncodable for Canvas {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Canvas {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Canvas { id })
     }
@@ -278,7 +287,7 @@ impl Canvas {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Remove the UI object. </summary> </doc>
-    pub fn remove(&self, ) -> CallHandle<()> {
+    pub fn remove(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Canvas_Remove"));
@@ -294,7 +303,7 @@ impl Canvas {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rect transform for the canvas. </summary> </doc>
-    pub fn get_rect_transform(&self, ) -> CallHandle<super::ui::RectTransform> {
+    pub fn get_rect_transform(&self) -> CallHandle<super::ui::RectTransform> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Canvas_get_RectTransform"));
@@ -310,7 +319,7 @@ impl Canvas {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the UI object is visible. </summary> </doc>
-    pub fn get_visible(&self, ) -> CallHandle<bool> {
+    pub fn get_visible(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Canvas_get_Visible"));
@@ -360,13 +369,18 @@ impl fmt::Debug for InputField {
 }
 
 impl RPCEncodable for InputField {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for InputField {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(InputField { id })
     }
@@ -375,7 +389,7 @@ impl RPCExtractable for InputField {
 #[allow(dead_code)]
 impl InputField {
     /// <doc> <summary> Remove the UI object. </summary> </doc>
-    pub fn remove(&self, ) -> CallHandle<()> {
+    pub fn remove(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("InputField_Remove"));
@@ -391,7 +405,7 @@ impl InputField {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the input field has been changed. </summary> <remarks> This property is set to true when the user modifies the value of the input field. A client script should reset the property to false in order to detect subsequent changes. </remarks> </doc>
-    pub fn get_changed(&self, ) -> CallHandle<bool> {
+    pub fn get_changed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("InputField_get_Changed"));
@@ -407,7 +421,7 @@ impl InputField {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rect transform for the input field. </summary> </doc>
-    pub fn get_rect_transform(&self, ) -> CallHandle<super::ui::RectTransform> {
+    pub fn get_rect_transform(&self) -> CallHandle<super::ui::RectTransform> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("InputField_get_RectTransform"));
@@ -423,7 +437,7 @@ impl InputField {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The text component of the input field. </summary> <remarks> Use <see cref="M:UI.InputField.Value" /> to get and set the value in the field. This object can be used to alter the style of the input field's text. </remarks> </doc>
-    pub fn get_text(&self, ) -> CallHandle<super::ui::Text> {
+    pub fn get_text(&self) -> CallHandle<super::ui::Text> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("InputField_get_Text"));
@@ -439,7 +453,7 @@ impl InputField {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The value of the input field. </summary> </doc>
-    pub fn get_value(&self, ) -> CallHandle<String> {
+    pub fn get_value(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("InputField_get_Value"));
@@ -455,7 +469,7 @@ impl InputField {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the UI object is visible. </summary> </doc>
-    pub fn get_visible(&self, ) -> CallHandle<bool> {
+    pub fn get_visible(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("InputField_get_Visible"));
@@ -547,13 +561,18 @@ impl fmt::Debug for Panel {
 }
 
 impl RPCEncodable for Panel {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Panel {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Panel { id })
     }
@@ -656,7 +675,7 @@ impl Panel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Remove the UI object. </summary> </doc>
-    pub fn remove(&self, ) -> CallHandle<()> {
+    pub fn remove(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Panel_Remove"));
@@ -672,7 +691,7 @@ impl Panel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rect transform for the panel. </summary> </doc>
-    pub fn get_rect_transform(&self, ) -> CallHandle<super::ui::RectTransform> {
+    pub fn get_rect_transform(&self) -> CallHandle<super::ui::RectTransform> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Panel_get_RectTransform"));
@@ -688,7 +707,7 @@ impl Panel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the UI object is visible. </summary> </doc>
-    pub fn get_visible(&self, ) -> CallHandle<bool> {
+    pub fn get_visible(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Panel_get_Visible"));
@@ -738,13 +757,18 @@ impl fmt::Debug for RectTransform {
 }
 
 impl RPCEncodable for RectTransform {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for RectTransform {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(RectTransform { id })
     }
@@ -753,7 +777,7 @@ impl RPCExtractable for RectTransform {
 #[allow(dead_code)]
 impl RectTransform {
     /// <doc> <summary> The anchor point for the lower left corner of the rectangle defined as a fraction of the size of the parent rectangle. </summary> </doc>
-    pub fn get_anchor_max(&self, ) -> CallHandle<(f64, f64)> {
+    pub fn get_anchor_max(&self) -> CallHandle<(f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("RectTransform_get_AnchorMax"));
@@ -769,7 +793,7 @@ impl RectTransform {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The anchor point for the upper right corner of the rectangle defined as a fraction of the size of the parent rectangle. </summary> </doc>
-    pub fn get_anchor_min(&self, ) -> CallHandle<(f64, f64)> {
+    pub fn get_anchor_min(&self) -> CallHandle<(f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("RectTransform_get_AnchorMin"));
@@ -785,7 +809,7 @@ impl RectTransform {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Position of the rectangles pivot point relative to the anchors. </summary> </doc>
-    pub fn get_local_position(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_local_position(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("RectTransform_get_LocalPosition"));
@@ -801,7 +825,7 @@ impl RectTransform {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Position of the rectangles lower left corner relative to the anchors. </summary> </doc>
-    pub fn get_lower_left(&self, ) -> CallHandle<(f64, f64)> {
+    pub fn get_lower_left(&self) -> CallHandle<(f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("RectTransform_get_LowerLeft"));
@@ -817,7 +841,7 @@ impl RectTransform {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Location of the pivot point around which the rectangle rotates, defined as a fraction of the size of the rectangle itself. </summary> </doc>
-    pub fn get_pivot(&self, ) -> CallHandle<(f64, f64)> {
+    pub fn get_pivot(&self) -> CallHandle<(f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("RectTransform_get_Pivot"));
@@ -833,7 +857,7 @@ impl RectTransform {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Position of the rectangles pivot point relative to the anchors. </summary> </doc>
-    pub fn get_position(&self, ) -> CallHandle<(f64, f64)> {
+    pub fn get_position(&self) -> CallHandle<(f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("RectTransform_get_Position"));
@@ -849,7 +873,7 @@ impl RectTransform {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Rotation, as a quaternion, of the object around its pivot point. </summary> </doc>
-    pub fn get_rotation(&self, ) -> CallHandle<(f64, f64, f64, f64)> {
+    pub fn get_rotation(&self) -> CallHandle<(f64, f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("RectTransform_get_Rotation"));
@@ -865,7 +889,7 @@ impl RectTransform {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Scale factor applied to the object in the x, y and z dimensions. </summary> </doc>
-    pub fn get_scale(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_scale(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("RectTransform_get_Scale"));
@@ -881,7 +905,7 @@ impl RectTransform {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Width and height of the rectangle. </summary> </doc>
-    pub fn get_size(&self, ) -> CallHandle<(f64, f64)> {
+    pub fn get_size(&self) -> CallHandle<(f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("RectTransform_get_Size"));
@@ -897,7 +921,7 @@ impl RectTransform {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Position of the rectangles upper right corner relative to the anchors. </summary> </doc>
-    pub fn get_upper_right(&self, ) -> CallHandle<(f64, f64)> {
+    pub fn get_upper_right(&self) -> CallHandle<(f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("RectTransform_get_UpperRight"));
@@ -1157,13 +1181,18 @@ impl fmt::Debug for Text {
 }
 
 impl RPCEncodable for Text {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Text {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Text { id })
     }
@@ -1172,7 +1201,7 @@ impl RPCExtractable for Text {
 #[allow(dead_code)]
 impl Text {
     /// <doc> <summary> Remove the UI object. </summary> </doc>
-    pub fn remove(&self, ) -> CallHandle<()> {
+    pub fn remove(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Text_Remove"));
@@ -1188,7 +1217,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Alignment. </summary> </doc>
-    pub fn get_alignment(&self, ) -> CallHandle<super::ui::TextAnchor> {
+    pub fn get_alignment(&self) -> CallHandle<super::ui::TextAnchor> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Text_get_Alignment"));
@@ -1204,7 +1233,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all available fonts. </summary> </doc>
-    pub fn get_available_fonts(&self, ) -> CallHandle<Vec<String>> {
+    pub fn get_available_fonts(&self) -> CallHandle<Vec<String>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Text_get_AvailableFonts"));
@@ -1220,7 +1249,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Set the color </summary> </doc>
-    pub fn get_color(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_color(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Text_get_Color"));
@@ -1236,7 +1265,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The text string </summary> </doc>
-    pub fn get_content(&self, ) -> CallHandle<String> {
+    pub fn get_content(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Text_get_Content"));
@@ -1252,7 +1281,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Name of the font </summary> </doc>
-    pub fn get_font(&self, ) -> CallHandle<String> {
+    pub fn get_font(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Text_get_Font"));
@@ -1268,7 +1297,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Line spacing. </summary> </doc>
-    pub fn get_line_spacing(&self, ) -> CallHandle<f32> {
+    pub fn get_line_spacing(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Text_get_LineSpacing"));
@@ -1284,7 +1313,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rect transform for the text. </summary> </doc>
-    pub fn get_rect_transform(&self, ) -> CallHandle<super::ui::RectTransform> {
+    pub fn get_rect_transform(&self) -> CallHandle<super::ui::RectTransform> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Text_get_RectTransform"));
@@ -1300,7 +1329,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Font size. </summary> </doc>
-    pub fn get_size(&self, ) -> CallHandle<i32> {
+    pub fn get_size(&self) -> CallHandle<i32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Text_get_Size"));
@@ -1316,7 +1345,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Font style. </summary> </doc>
-    pub fn get_style(&self, ) -> CallHandle<super::ui::FontStyle> {
+    pub fn get_style(&self) -> CallHandle<super::ui::FontStyle> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Text_get_Style"));
@@ -1332,7 +1361,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the UI object is visible. </summary> </doc>
-    pub fn get_visible(&self, ) -> CallHandle<bool> {
+    pub fn get_visible(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("UI"));
         proc_call.set_procedure(String::from("Text_get_Visible"));
@@ -1517,8 +1546,6 @@ impl Text {
     }
 }
 
-
-
 #[derive(Debug, Copy, Clone)]
 pub enum FontStyle {
     Normal = 0,
@@ -1541,14 +1568,19 @@ impl From<i32> for FontStyle {
 }
 
 impl RPCEncodable for FontStyle {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for FontStyle {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(FontStyle::from(value))
     }
 }
@@ -1575,14 +1607,19 @@ impl From<i32> for MessagePosition {
 }
 
 impl RPCEncodable for MessagePosition {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for MessagePosition {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(MessagePosition::from(value))
     }
 }
@@ -1607,14 +1644,19 @@ impl From<i32> for TextAlignment {
 }
 
 impl RPCEncodable for TextAlignment {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for TextAlignment {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(TextAlignment::from(value))
     }
 }
@@ -1651,19 +1693,22 @@ impl From<i32> for TextAnchor {
 }
 
 impl RPCEncodable for TextAnchor {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for TextAnchor {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(TextAnchor::from(value))
     }
 }
-
-
 
 #[allow(dead_code)]
 /// <doc> <summary> Add a new canvas. </summary> <remarks> If you want to add UI elements to KSPs stock UI canvas, use <see cref="M:UI.StockCanvas" />. </remarks> </doc>
@@ -1695,7 +1740,13 @@ pub fn clear(p_client_only: bool) -> CallHandle<()> {
 
 #[allow(dead_code)]
 /// <doc> <summary> Display a message on the screen. </summary> <remarks> The message appears just like a stock message, for example quicksave or quickload messages. </remarks> <param name="content">Message content.</param> <param name="duration">Duration before the message disappears, in seconds.</param> <param name="position">Position to display the message.</param> <param name="size">Size of the message, differs per position.</param> <param name="color">The color of the message.</param> </doc>
-pub fn message(p_content: String, p_duration: f32, p_position: super::ui::MessagePosition, p_color: (f64, f64, f64), p_size: f32) -> CallHandle<()> {
+pub fn message(
+    p_content: String,
+    p_duration: f32,
+    p_position: super::ui::MessagePosition,
+    p_color: (f64, f64, f64),
+    p_size: f32,
+) -> CallHandle<()> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("UI"));
     proc_call.set_procedure(String::from("Message"));
@@ -1740,4 +1791,3 @@ pub fn get_stock_canvas() -> CallHandle<super::ui::Canvas> {
 
     CallHandle::new(proc_call)
 }
-

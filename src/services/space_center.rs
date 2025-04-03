@@ -1,11 +1,10 @@
-use krpc_mars::krpc as krpc;
-use krpc_mars::protobuf as protobuf;
 use krpc_mars::client::CallHandle;
 use krpc_mars::codec::RPCEncodable;
 use krpc_mars::codec::RPCExtractable;
+use krpc_mars::krpc;
+use krpc_mars::protobuf;
 
 use std::fmt;
-
 
 #[derive(Copy, Clone)]
 pub struct Alarm {
@@ -19,13 +18,18 @@ impl fmt::Debug for Alarm {
 }
 
 impl RPCEncodable for Alarm {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Alarm {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Alarm { id })
     }
@@ -34,7 +38,7 @@ impl RPCExtractable for Alarm {
 #[allow(dead_code)]
 impl Alarm {
     /// <doc> <summary> Description of the alarm. </summary> </doc>
-    pub fn get_description(&self, ) -> CallHandle<String> {
+    pub fn get_description(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Alarm_get_Description"));
@@ -50,7 +54,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Seconds between the alarm going off and the event it references. </summary> </doc>
-    pub fn get_event_offset(&self, ) -> CallHandle<f64> {
+    pub fn get_event_offset(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Alarm_get_EventOffset"));
@@ -66,7 +70,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Unique identifier of the alarm. KSP destroys and recreates an alarm when it is edited. This id will remain constant between the old and new alarms. </summary> </doc>
-    pub fn get_id(&self, ) -> CallHandle<u32> {
+    pub fn get_id(&self) -> CallHandle<u32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Alarm_get_ID"));
@@ -82,7 +86,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Time the alarm will trigger. </summary> </doc>
-    pub fn get_time(&self, ) -> CallHandle<f64> {
+    pub fn get_time(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Alarm_get_Time"));
@@ -98,7 +102,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Time until the alarm triggers. </summary> </doc>
-    pub fn get_time_until(&self, ) -> CallHandle<f64> {
+    pub fn get_time_until(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Alarm_get_TimeUntil"));
@@ -114,7 +118,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Title of the alarm </summary> </doc>
-    pub fn get_title(&self, ) -> CallHandle<String> {
+    pub fn get_title(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Alarm_get_Title"));
@@ -130,7 +134,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Type of alarm </summary> </doc>
-    pub fn get_type(&self, ) -> CallHandle<String> {
+    pub fn get_type(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Alarm_get_Type"));
@@ -146,7 +150,7 @@ impl Alarm {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Vessel the alarm references. <c>null</c> if it does not reference a vessel. </summary> </doc>
-    pub fn get_vessel(&self, ) -> CallHandle<super::space_center::Vessel> {
+    pub fn get_vessel(&self) -> CallHandle<super::space_center::Vessel> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Alarm_get_Vessel"));
@@ -175,13 +179,18 @@ impl fmt::Debug for AlarmManager {
 }
 
 impl RPCEncodable for AlarmManager {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for AlarmManager {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(AlarmManager { id })
     }
@@ -190,7 +199,11 @@ impl RPCExtractable for AlarmManager {
 #[allow(dead_code)]
 impl AlarmManager {
     /// <doc> <summary> Create an alarm. </summary> <param name="time">Number of seconds from now that the alarm should trigger.</param> <param name="title">Title for the alarm.</param> <param name="description">Description for the alarm.</param> </doc>
-    pub fn add_alarm(p_time: f64, p_title: String, p_description: String) -> CallHandle<super::space_center::Alarm> {
+    pub fn add_alarm(
+        p_time: f64,
+        p_title: String,
+        p_description: String,
+    ) -> CallHandle<super::space_center::Alarm> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AlarmManager_static_AddAlarm"));
@@ -216,7 +229,12 @@ impl AlarmManager {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Create an alarm for the given vessel's next apoapsis. </summary> <param name="vessel">The vessel.</param> <param name="offset">Time in seconds to offset the alarm by.</param> <param name="title">Title for the alarm.</param> <param name="description">Description for the alarm.</param> </doc>
-    pub fn add_apoapsis_alarm(p_vessel: super::space_center::Vessel, p_offset: f64, p_title: String, p_description: String) -> CallHandle<super::space_center::Alarm> {
+    pub fn add_apoapsis_alarm(
+        p_vessel: super::space_center::Vessel,
+        p_offset: f64,
+        p_title: String,
+        p_description: String,
+    ) -> CallHandle<super::space_center::Alarm> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AlarmManager_static_AddApoapsisAlarm"));
@@ -247,7 +265,14 @@ impl AlarmManager {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Create an alarm for the given vessel and maneuver node. </summary> <param name="vessel">The vessel.</param> <param name="node">The maneuver node.</param> <param name="offset">Time in seconds to offset the alarm by.</param> <param name="addBurnTime">Whether the node's burn time should be included in the alarm.</param> <param name="title">Title for the alarm.</param> <param name="description">Description for the alarm.</param> </doc>
-    pub fn add_maneuver_node_alarm(p_vessel: super::space_center::Vessel, p_node: super::space_center::Node, p_offset: f64, p_add_burn_time: bool, p_title: String, p_description: String) -> CallHandle<super::space_center::Alarm> {
+    pub fn add_maneuver_node_alarm(
+        p_vessel: super::space_center::Vessel,
+        p_node: super::space_center::Node,
+        p_offset: f64,
+        p_add_burn_time: bool,
+        p_title: String,
+        p_description: String,
+    ) -> CallHandle<super::space_center::Alarm> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AlarmManager_static_AddManeuverNodeAlarm"));
@@ -288,7 +313,12 @@ impl AlarmManager {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Create an alarm for the given vessel's next periapsis. </summary> <param name="vessel">The vessel.</param> <param name="offset">Time in seconds to offset the alarm by.</param> <param name="title">Title for the alarm.</param> <param name="description">Description for the alarm.</param> </doc>
-    pub fn add_periapsis_alarm(p_vessel: super::space_center::Vessel, p_offset: f64, p_title: String, p_description: String) -> CallHandle<super::space_center::Alarm> {
+    pub fn add_periapsis_alarm(
+        p_vessel: super::space_center::Vessel,
+        p_offset: f64,
+        p_title: String,
+        p_description: String,
+    ) -> CallHandle<super::space_center::Alarm> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AlarmManager_static_AddPeriapsisAlarm"));
@@ -319,7 +349,12 @@ impl AlarmManager {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Create an alarm for the given vessel's next sphere of influence change. </summary> <param name="vessel">The vessel.</param> <param name="offset">Time in seconds to offset the alarm by.</param> <param name="title">Title for the alarm.</param> <param name="description">Description for the alarm.</param> </doc>
-    pub fn add_soi_alarm(p_vessel: super::space_center::Vessel, p_offset: f64, p_title: String, p_description: String) -> CallHandle<super::space_center::Alarm> {
+    pub fn add_soi_alarm(
+        p_vessel: super::space_center::Vessel,
+        p_offset: f64,
+        p_title: String,
+        p_description: String,
+    ) -> CallHandle<super::space_center::Alarm> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AlarmManager_static_AddSOIAlarm"));
@@ -350,7 +385,12 @@ impl AlarmManager {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Create an alarm linked to a vessel. </summary> <param name="time">Number of seconds from now that the alarm should trigger.</param> <param name="vessel">Vessel to link the alarm to.</param> <param name="title">Title for the alarm.</param> <param name="description">Description for the alarm.</param> </doc>
-    pub fn add_vessel_alarm(p_time: f64, p_vessel: super::space_center::Vessel, p_title: String, p_description: String) -> CallHandle<super::space_center::Alarm> {
+    pub fn add_vessel_alarm(
+        p_time: f64,
+        p_vessel: super::space_center::Vessel,
+        p_title: String,
+        p_description: String,
+    ) -> CallHandle<super::space_center::Alarm> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AlarmManager_static_AddVesselAlarm"));
@@ -381,7 +421,7 @@ impl AlarmManager {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all alarms. </summary> </doc>
-    pub fn get_alarms(&self, ) -> CallHandle<Vec<super::space_center::Alarm>> {
+    pub fn get_alarms(&self) -> CallHandle<Vec<super::space_center::Alarm>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AlarmManager_get_Alarms"));
@@ -410,13 +450,18 @@ impl fmt::Debug for Antenna {
 }
 
 impl RPCEncodable for Antenna {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Antenna {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Antenna { id })
     }
@@ -425,7 +470,7 @@ impl RPCExtractable for Antenna {
 #[allow(dead_code)]
 impl Antenna {
     /// <doc> <summary> Cancel current transmission of data. </summary> </doc>
-    pub fn cancel(&self, ) -> CallHandle<()> {
+    pub fn cancel(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Antenna_Cancel"));
@@ -441,7 +486,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Transmit data. </summary> </doc>
-    pub fn transmit(&self, ) -> CallHandle<()> {
+    pub fn transmit(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Antenna_Transmit"));
@@ -457,7 +502,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether partial data transmission is permitted. </summary> </doc>
-    pub fn get_allow_partial(&self, ) -> CallHandle<bool> {
+    pub fn get_allow_partial(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Antenna_get_AllowPartial"));
@@ -473,7 +518,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether data can be transmitted by this antenna. </summary> </doc>
-    pub fn get_can_transmit(&self, ) -> CallHandle<bool> {
+    pub fn get_can_transmit(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Antenna_get_CanTransmit"));
@@ -489,7 +534,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the antenna can be combined with other antennae on the vessel to boost the power. </summary> </doc>
-    pub fn get_combinable(&self, ) -> CallHandle<bool> {
+    pub fn get_combinable(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Antenna_get_Combinable"));
@@ -505,7 +550,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Exponent used to calculate the combined power of multiple antennae on a vessel. </summary> </doc>
-    pub fn get_combinable_exponent(&self, ) -> CallHandle<f64> {
+    pub fn get_combinable_exponent(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Antenna_get_CombinableExponent"));
@@ -521,7 +566,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the antenna is deployable. </summary> </doc>
-    pub fn get_deployable(&self, ) -> CallHandle<bool> {
+    pub fn get_deployable(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Antenna_get_Deployable"));
@@ -537,7 +582,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the antenna is deployed. </summary> <remarks> Fixed antennas are always deployed. Returns an error if you try to deploy a fixed antenna. </remarks> </doc>
-    pub fn get_deployed(&self, ) -> CallHandle<bool> {
+    pub fn get_deployed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Antenna_get_Deployed"));
@@ -553,7 +598,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Interval between sending packets in seconds. </summary> </doc>
-    pub fn get_packet_interval(&self, ) -> CallHandle<f32> {
+    pub fn get_packet_interval(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Antenna_get_PacketInterval"));
@@ -569,7 +614,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Units of electric charge consumed per packet sent. </summary> </doc>
-    pub fn get_packet_resource_cost(&self, ) -> CallHandle<f64> {
+    pub fn get_packet_resource_cost(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Antenna_get_PacketResourceCost"));
@@ -585,7 +630,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Amount of data sent per packet in Mits. </summary> </doc>
-    pub fn get_packet_size(&self, ) -> CallHandle<f32> {
+    pub fn get_packet_size(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Antenna_get_PacketSize"));
@@ -601,7 +646,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this antenna. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Antenna_get_Part"));
@@ -617,7 +662,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The power of the antenna. </summary> </doc>
-    pub fn get_power(&self, ) -> CallHandle<f64> {
+    pub fn get_power(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Antenna_get_Power"));
@@ -633,7 +678,7 @@ impl Antenna {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current state of the antenna. </summary> </doc>
-    pub fn get_state(&self, ) -> CallHandle<super::space_center::AntennaState> {
+    pub fn get_state(&self) -> CallHandle<super::space_center::AntennaState> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Antenna_get_State"));
@@ -704,13 +749,18 @@ impl fmt::Debug for AutoPilot {
 }
 
 impl RPCEncodable for AutoPilot {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for AutoPilot {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(AutoPilot { id })
     }
@@ -719,7 +769,7 @@ impl RPCExtractable for AutoPilot {
 #[allow(dead_code)]
 impl AutoPilot {
     /// <doc> <summary> Disengage the auto-pilot. </summary> </doc>
-    pub fn disengage(&self, ) -> CallHandle<()> {
+    pub fn disengage(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_Disengage"));
@@ -735,7 +785,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Engage the auto-pilot. </summary> </doc>
-    pub fn engage(&self, ) -> CallHandle<()> {
+    pub fn engage(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_Engage"));
@@ -777,7 +827,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Blocks until the vessel is pointing in the target direction and has the target roll (if set). Throws an exception if the auto-pilot has not been engaged. </summary> </doc>
-    pub fn wait(&self, ) -> CallHandle<()> {
+    pub fn wait(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_Wait"));
@@ -793,7 +843,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The angle at which the autopilot considers the vessel to be pointing close to the target. This determines the midpoint of the target velocity attenuation function. A vector of three angles, in degrees, one for each of the pitch, roll and yaw axes. Defaults to 1° for each axis. </summary> </doc>
-    pub fn get_attenuation_angle(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_attenuation_angle(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_AttenuationAngle"));
@@ -809,7 +859,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the rotation rate controllers PID parameters should be automatically tuned using the vessels moment of inertia and available torque. Defaults to <c>true</c>. See <see cref="M:SpaceCenter.AutoPilot.TimeToPeak" /> and <see cref="M:SpaceCenter.AutoPilot.Overshoot" />. </summary> </doc>
-    pub fn get_auto_tune(&self, ) -> CallHandle<bool> {
+    pub fn get_auto_tune(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_AutoTune"));
@@ -825,7 +875,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The time the vessel should take to come to a stop pointing in the target direction. This determines the angular acceleration used to decelerate the vessel. A vector of three times, in seconds, one for each of the pitch, roll and yaw axes. Defaults to 5 seconds for each axis. </summary> </doc>
-    pub fn get_deceleration_time(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_deceleration_time(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_DecelerationTime"));
@@ -841,7 +891,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The error, in degrees, between the direction the ship has been asked to point in and the direction it is pointing in. Throws an exception if the auto-pilot has not been engaged and SAS is not enabled or is in stability assist mode. </summary> </doc>
-    pub fn get_error(&self, ) -> CallHandle<f32> {
+    pub fn get_error(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_Error"));
@@ -857,7 +907,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The error, in degrees, between the vessels current and target heading. Throws an exception if the auto-pilot has not been engaged. </summary> </doc>
-    pub fn get_heading_error(&self, ) -> CallHandle<f32> {
+    pub fn get_heading_error(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_HeadingError"));
@@ -873,7 +923,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The target overshoot percentage used to autotune the PID controllers. A vector of three values, between 0 and 1, for each of the pitch, roll and yaw axes. Defaults to 0.01 for each axis. </summary> </doc>
-    pub fn get_overshoot(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_overshoot(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_Overshoot"));
@@ -889,7 +939,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The error, in degrees, between the vessels current and target pitch. Throws an exception if the auto-pilot has not been engaged. </summary> </doc>
-    pub fn get_pitch_error(&self, ) -> CallHandle<f32> {
+    pub fn get_pitch_error(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_PitchError"));
@@ -905,7 +955,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Gains for the pitch PID controller. </summary> <remarks> When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes. </remarks> </doc>
-    pub fn get_pitch_pid_gains(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_pitch_pid_gains(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_PitchPIDGains"));
@@ -921,7 +971,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The reference frame for the target direction (<see cref="M:SpaceCenter.AutoPilot.TargetDirection" />). </summary> <remarks> An error will be thrown if this property is set to a reference frame that rotates with the vessel being controlled, as it is impossible to rotate the vessel in such a reference frame. </remarks> </doc>
-    pub fn get_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_reference_frame(&self) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_ReferenceFrame"));
@@ -937,7 +987,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The error, in degrees, between the vessels current and target roll. Throws an exception if the auto-pilot has not been engaged or no target roll is set. </summary> </doc>
-    pub fn get_roll_error(&self, ) -> CallHandle<f32> {
+    pub fn get_roll_error(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_RollError"));
@@ -953,7 +1003,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Gains for the roll PID controller. </summary> <remarks> When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes. </remarks> </doc>
-    pub fn get_roll_pid_gains(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_roll_pid_gains(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_RollPIDGains"));
@@ -969,7 +1019,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The threshold at which the autopilot will try to match the target roll angle, if any. Defaults to 5 degrees. </summary> </doc>
-    pub fn get_roll_threshold(&self, ) -> CallHandle<f64> {
+    pub fn get_roll_threshold(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_RollThreshold"));
@@ -985,7 +1035,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of SAS. </summary> <remarks>Equivalent to <see cref="M:SpaceCenter.Control.SAS" /></remarks> </doc>
-    pub fn get_sas(&self, ) -> CallHandle<bool> {
+    pub fn get_sas(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_SAS"));
@@ -1001,7 +1051,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current <see cref="T:SpaceCenter.SASMode" />. These modes are equivalent to the mode buttons to the left of the navball that appear when SAS is enabled. </summary> <remarks>Equivalent to <see cref="M:SpaceCenter.Control.SASMode" /></remarks> </doc>
-    pub fn get_sas_mode(&self, ) -> CallHandle<super::space_center::SASMode> {
+    pub fn get_sas_mode(&self) -> CallHandle<super::space_center::SASMode> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_SASMode"));
@@ -1017,7 +1067,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The maximum amount of time that the vessel should need to come to a complete stop. This determines the maximum angular velocity of the vessel. A vector of three stopping times, in seconds, one for each of the pitch, roll and yaw axes. Defaults to 0.5 seconds for each axis. </summary> </doc>
-    pub fn get_stopping_time(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_stopping_time(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_StoppingTime"));
@@ -1033,7 +1083,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Direction vector corresponding to the target pitch and heading. This is in the reference frame specified by <see cref="T:SpaceCenter.ReferenceFrame" />. </summary> </doc>
-    pub fn get_target_direction(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_target_direction(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_TargetDirection"));
@@ -1049,7 +1099,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The target heading, in degrees, between 0° and 360°. </summary> </doc>
-    pub fn get_target_heading(&self, ) -> CallHandle<f32> {
+    pub fn get_target_heading(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_TargetHeading"));
@@ -1065,7 +1115,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The target pitch, in degrees, between -90° and +90°. </summary> </doc>
-    pub fn get_target_pitch(&self, ) -> CallHandle<f32> {
+    pub fn get_target_pitch(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_TargetPitch"));
@@ -1081,7 +1131,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The target roll, in degrees. <c>NaN</c> if no target roll is set. </summary> </doc>
-    pub fn get_target_roll(&self, ) -> CallHandle<f32> {
+    pub fn get_target_roll(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_TargetRoll"));
@@ -1097,7 +1147,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The target time to peak used to autotune the PID controllers. A vector of three times, in seconds, for each of the pitch, roll and yaw axes. Defaults to 3 seconds for each axis. </summary> </doc>
-    pub fn get_time_to_peak(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_time_to_peak(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_TimeToPeak"));
@@ -1113,7 +1163,7 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Gains for the yaw PID controller. </summary> <remarks> When <see cref="M:SpaceCenter.AutoPilot.AutoTune" /> is true, these values are updated automatically, which will overwrite any manual changes. </remarks> </doc>
-    pub fn get_yaw_pid_gains(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_yaw_pid_gains(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_get_YawPIDGains"));
@@ -1234,7 +1284,10 @@ impl AutoPilot {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The reference frame for the target direction (<see cref="M:SpaceCenter.AutoPilot.TargetDirection" />). </summary> <remarks> An error will be thrown if this property is set to a reference frame that rotates with the vessel being controlled, as it is impossible to rotate the vessel in such a reference frame. </remarks> </doc>
-    pub fn set_reference_frame(&self, p_value: super::space_center::ReferenceFrame) -> CallHandle<()> {
+    pub fn set_reference_frame(
+        &self,
+        p_value: super::space_center::ReferenceFrame,
+    ) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("AutoPilot_set_ReferenceFrame"));
@@ -1499,13 +1552,18 @@ impl fmt::Debug for Camera {
 }
 
 impl RPCEncodable for Camera {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Camera {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Camera { id })
     }
@@ -1514,7 +1572,7 @@ impl RPCExtractable for Camera {
 #[allow(dead_code)]
 impl Camera {
     /// <doc> <summary> Default distance from the camera to the subject, in meters. </summary> </doc>
-    pub fn get_default_distance(&self, ) -> CallHandle<f32> {
+    pub fn get_default_distance(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Camera_get_DefaultDistance"));
@@ -1530,7 +1588,7 @@ impl Camera {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The distance from the camera to the subject, in meters. A value between <see cref="M:SpaceCenter.Camera.MinDistance" /> and <see cref="M:SpaceCenter.Camera.MaxDistance" />. </summary> </doc>
-    pub fn get_distance(&self, ) -> CallHandle<f32> {
+    pub fn get_distance(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Camera_get_Distance"));
@@ -1546,7 +1604,7 @@ impl Camera {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> In map mode, the celestial body that the camera is focussed on. Returns <c>null</c> if the camera is not focussed on a celestial body. Returns an error is the camera is not in map mode. </summary> </doc>
-    pub fn get_focussed_body(&self, ) -> CallHandle<super::space_center::CelestialBody> {
+    pub fn get_focussed_body(&self) -> CallHandle<super::space_center::CelestialBody> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Camera_get_FocussedBody"));
@@ -1562,7 +1620,7 @@ impl Camera {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> In map mode, the maneuver node that the camera is focussed on. Returns <c>null</c> if the camera is not focussed on a maneuver node. Returns an error is the camera is not in map mode. </summary> </doc>
-    pub fn get_focussed_node(&self, ) -> CallHandle<super::space_center::Node> {
+    pub fn get_focussed_node(&self) -> CallHandle<super::space_center::Node> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Camera_get_FocussedNode"));
@@ -1578,7 +1636,7 @@ impl Camera {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> In map mode, the vessel that the camera is focussed on. Returns <c>null</c> if the camera is not focussed on a vessel. Returns an error is the camera is not in map mode. </summary> </doc>
-    pub fn get_focussed_vessel(&self, ) -> CallHandle<super::space_center::Vessel> {
+    pub fn get_focussed_vessel(&self) -> CallHandle<super::space_center::Vessel> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Camera_get_FocussedVessel"));
@@ -1594,7 +1652,7 @@ impl Camera {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The heading of the camera, in degrees. </summary> </doc>
-    pub fn get_heading(&self, ) -> CallHandle<f32> {
+    pub fn get_heading(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Camera_get_Heading"));
@@ -1610,7 +1668,7 @@ impl Camera {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Maximum distance from the camera to the subject, in meters. </summary> </doc>
-    pub fn get_max_distance(&self, ) -> CallHandle<f32> {
+    pub fn get_max_distance(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Camera_get_MaxDistance"));
@@ -1626,7 +1684,7 @@ impl Camera {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The maximum pitch of the camera. </summary> </doc>
-    pub fn get_max_pitch(&self, ) -> CallHandle<f32> {
+    pub fn get_max_pitch(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Camera_get_MaxPitch"));
@@ -1642,7 +1700,7 @@ impl Camera {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Minimum distance from the camera to the subject, in meters. </summary> </doc>
-    pub fn get_min_distance(&self, ) -> CallHandle<f32> {
+    pub fn get_min_distance(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Camera_get_MinDistance"));
@@ -1658,7 +1716,7 @@ impl Camera {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The minimum pitch of the camera. </summary> </doc>
-    pub fn get_min_pitch(&self, ) -> CallHandle<f32> {
+    pub fn get_min_pitch(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Camera_get_MinPitch"));
@@ -1674,7 +1732,7 @@ impl Camera {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current mode of the camera. </summary> </doc>
-    pub fn get_mode(&self, ) -> CallHandle<super::space_center::CameraMode> {
+    pub fn get_mode(&self) -> CallHandle<super::space_center::CameraMode> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Camera_get_Mode"));
@@ -1690,7 +1748,7 @@ impl Camera {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The pitch of the camera, in degrees. A value between <see cref="M:SpaceCenter.Camera.MinPitch" /> and <see cref="M:SpaceCenter.Camera.MaxPitch" /></summary> </doc>
-    pub fn get_pitch(&self, ) -> CallHandle<f32> {
+    pub fn get_pitch(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Camera_get_Pitch"));
@@ -1866,13 +1924,18 @@ impl fmt::Debug for CargoBay {
 }
 
 impl RPCEncodable for CargoBay {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for CargoBay {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(CargoBay { id })
     }
@@ -1881,7 +1944,7 @@ impl RPCExtractable for CargoBay {
 #[allow(dead_code)]
 impl CargoBay {
     /// <doc> <summary> Whether the cargo bay is open. </summary> </doc>
-    pub fn get_open(&self, ) -> CallHandle<bool> {
+    pub fn get_open(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CargoBay_get_Open"));
@@ -1897,7 +1960,7 @@ impl CargoBay {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this cargo bay. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CargoBay_get_Part"));
@@ -1913,7 +1976,7 @@ impl CargoBay {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of the cargo bay. </summary> </doc>
-    pub fn get_state(&self, ) -> CallHandle<super::space_center::CargoBayState> {
+    pub fn get_state(&self) -> CallHandle<super::space_center::CargoBayState> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CargoBay_get_State"));
@@ -1963,13 +2026,18 @@ impl fmt::Debug for CelestialBody {
 }
 
 impl RPCEncodable for CelestialBody {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for CelestialBody {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(CelestialBody { id })
     }
@@ -1978,7 +2046,11 @@ impl RPCExtractable for CelestialBody {
 #[allow(dead_code)]
 impl CelestialBody {
     /// <doc> <summary> The altitude, in meters, of the given position in the given reference frame. </summary> <param name="position">Position as a vector.</param> <param name="referenceFrame">Reference frame for the position vector.</param> </doc>
-    pub fn altitude_at_position(&self, p_position: (f64, f64, f64), p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<f64> {
+    pub fn altitude_at_position(
+        &self,
+        p_position: (f64, f64, f64),
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_AltitudeAtPosition"));
@@ -2004,7 +2076,10 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The angular velocity of the body in the specified reference frame. </summary> <returns>The angular velocity as a vector. The magnitude of the vector is the rotational speed of the body, in radians per second. The direction of the vector indicates the axis of rotation, using the right-hand rule.</returns> <param name="referenceFrame">The reference frame the returned angular velocity is in.</param> </doc>
-    pub fn angular_velocity(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn angular_velocity(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_AngularVelocity"));
@@ -2025,7 +2100,11 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The atmospheric density at the given position, in <math>kg/m^3</math>, in the given reference frame. </summary> <param name="position">The position vector at which to measure the density.</param> <param name="referenceFrame">Reference frame that the position vector is in.</param> </doc>
-    pub fn atmospheric_density_at_position(&self, p_position: (f64, f64, f64), p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<f64> {
+    pub fn atmospheric_density_at_position(
+        &self,
+        p_position: (f64, f64, f64),
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_AtmosphericDensityAtPosition"));
@@ -2077,7 +2156,12 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The position of the surface at the given latitude and longitude, in the given reference frame. When over water, this is the position at the bottom of the sea-bed. </summary> <returns>Position as a vector.</returns> <param name="latitude">Latitude in degrees.</param> <param name="longitude">Longitude in degrees.</param> <param name="referenceFrame">Reference frame for the returned position vector.</param> </doc>
-    pub fn bedrock_position(&self, p_latitude: f64, p_longitude: f64, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn bedrock_position(
+        &self,
+        p_latitude: f64,
+        p_longitude: f64,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_BedrockPosition"));
@@ -2155,7 +2239,10 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The direction in which the north pole of the celestial body is pointing, in the specified reference frame. </summary> <returns>The direction as a unit vector.</returns> <param name="referenceFrame">The reference frame that the returned direction is in.</param> </doc>
-    pub fn direction(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn direction(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_Direction"));
@@ -2176,7 +2263,11 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The latitude of the given position, in the given reference frame. </summary> <param name="position">Position as a vector.</param> <param name="referenceFrame">Reference frame for the position vector.</param> </doc>
-    pub fn latitude_at_position(&self, p_position: (f64, f64, f64), p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<f64> {
+    pub fn latitude_at_position(
+        &self,
+        p_position: (f64, f64, f64),
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_LatitudeAtPosition"));
@@ -2202,7 +2293,11 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The longitude of the given position, in the given reference frame. </summary> <param name="position">Position as a vector.</param> <param name="referenceFrame">Reference frame for the position vector.</param> </doc>
-    pub fn longitude_at_position(&self, p_position: (f64, f64, f64), p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<f64> {
+    pub fn longitude_at_position(
+        &self,
+        p_position: (f64, f64, f64),
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_LongitudeAtPosition"));
@@ -2228,7 +2323,12 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The position at mean sea level at the given latitude and longitude, in the given reference frame. </summary> <returns>Position as a vector.</returns> <param name="latitude">Latitude in degrees.</param> <param name="longitude">Longitude in degrees.</param> <param name="referenceFrame">Reference frame for the returned position vector.</param> </doc>
-    pub fn msl_position(&self, p_latitude: f64, p_longitude: f64, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn msl_position(
+        &self,
+        p_latitude: f64,
+        p_longitude: f64,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_MSLPosition"));
@@ -2259,7 +2359,10 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The position of the center of the body, in the specified reference frame. </summary> <returns>The position as a vector.</returns> <param name="referenceFrame">The reference frame that the returned position vector is in.</param> </doc>
-    pub fn position(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn position(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_Position"));
@@ -2280,7 +2383,13 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The position at the given latitude, longitude and altitude, in the given reference frame. </summary> <returns>Position as a vector.</returns> <param name="latitude">Latitude in degrees.</param> <param name="longitude">Longitude in degrees.</param> <param name="altitude">Altitude in meters above sea level.</param> <param name="referenceFrame">Reference frame for the returned position vector.</param> </doc>
-    pub fn position_at_altitude(&self, p_latitude: f64, p_longitude: f64, p_altitude: f64, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn position_at_altitude(
+        &self,
+        p_latitude: f64,
+        p_longitude: f64,
+        p_altitude: f64,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_PositionAtAltitude"));
@@ -2337,7 +2446,10 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rotation of the body, in the specified reference frame. </summary> <returns>The rotation as a quaternion of the form <math>(x, y, z, w)</math>.</returns> <param name="referenceFrame">The reference frame that the returned rotation is in.</param> </doc>
-    pub fn rotation(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64, f64)> {
+    pub fn rotation(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_Rotation"));
@@ -2384,7 +2496,12 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The position of the surface at the given latitude and longitude, in the given reference frame. When over water, this is the position of the surface of the water. </summary> <returns>Position as a vector.</returns> <param name="latitude">Latitude in degrees.</param> <param name="longitude">Longitude in degrees.</param> <param name="referenceFrame">Reference frame for the returned position vector.</param> </doc>
-    pub fn surface_position(&self, p_latitude: f64, p_longitude: f64, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn surface_position(
+        &self,
+        p_latitude: f64,
+        p_longitude: f64,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_SurfacePosition"));
@@ -2415,7 +2532,11 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The temperature on the body at the given position, in the given reference frame. </summary> <param name="position">Position as a vector.</param> <param name="referenceFrame">The reference frame that the position is in.</param> <remarks> This calculation is performed using the bodies current position, which means that the value could be wrong if you want to know the temperature in the far future. </remarks> </doc>
-    pub fn temperature_at(&self, p_position: (f64, f64, f64), p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<f64> {
+    pub fn temperature_at(
+        &self,
+        p_position: (f64, f64, f64),
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_TemperatureAt"));
@@ -2441,7 +2562,10 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The linear velocity of the body, in the specified reference frame. </summary> <returns>The velocity as a vector. The vector points in the direction of travel, and its magnitude is the speed of the body in meters per second.</returns> <param name="referenceFrame">The reference frame that the returned velocity vector is in.</param> </doc>
-    pub fn velocity(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn velocity(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_Velocity"));
@@ -2462,7 +2586,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The depth of the atmosphere, in meters. </summary> </doc>
-    pub fn get_atmosphere_depth(&self, ) -> CallHandle<f64> {
+    pub fn get_atmosphere_depth(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_AtmosphereDepth"));
@@ -2478,7 +2602,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The biomes present on this body. </summary> </doc>
-    pub fn get_biomes(&self, ) -> CallHandle<std::collections::HashSet<String>> {
+    pub fn get_biomes(&self) -> CallHandle<std::collections::HashSet<String>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_Biomes"));
@@ -2494,7 +2618,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The equatorial radius of the body, in meters. </summary> </doc>
-    pub fn get_equatorial_radius(&self, ) -> CallHandle<f64> {
+    pub fn get_equatorial_radius(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_EquatorialRadius"));
@@ -2510,10 +2634,12 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The altitude, in meters, above which a vessel is considered to be flying "high" when doing science. </summary> </doc>
-    pub fn get_flying_high_altitude_threshold(&self, ) -> CallHandle<f32> {
+    pub fn get_flying_high_altitude_threshold(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
-        proc_call.set_procedure(String::from("CelestialBody_get_FlyingHighAltitudeThreshold"));
+        proc_call.set_procedure(String::from(
+            "CelestialBody_get_FlyingHighAltitudeThreshold",
+        ));
 
         let mut arguments = protobuf::RepeatedField::<krpc::Argument>::new();
 
@@ -2526,7 +2652,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/Standard_gravitational_parameter">standard gravitational parameter</a> of the body in <math>m^3s^{-2}</math>. </summary> </doc>
-    pub fn get_gravitational_parameter(&self, ) -> CallHandle<f64> {
+    pub fn get_gravitational_parameter(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_GravitationalParameter"));
@@ -2542,7 +2668,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary><c>true</c> if the body has an atmosphere. </summary> </doc>
-    pub fn get_has_atmosphere(&self, ) -> CallHandle<bool> {
+    pub fn get_has_atmosphere(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_HasAtmosphere"));
@@ -2558,7 +2684,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary><c>true</c> if there is oxygen in the atmosphere, required for air-breathing engines. </summary> </doc>
-    pub fn get_has_atmospheric_oxygen(&self, ) -> CallHandle<bool> {
+    pub fn get_has_atmospheric_oxygen(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_HasAtmosphericOxygen"));
@@ -2574,7 +2700,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether or not the body has a solid surface. </summary> </doc>
-    pub fn get_has_solid_surface(&self, ) -> CallHandle<bool> {
+    pub fn get_has_solid_surface(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_HasSolidSurface"));
@@ -2590,7 +2716,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The initial rotation angle of the body (at UT 0), in radians. A value between 0 and <math>2\pi</math></summary> </doc>
-    pub fn get_initial_rotation(&self, ) -> CallHandle<f64> {
+    pub fn get_initial_rotation(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_InitialRotation"));
@@ -2606,7 +2732,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether or not the body is a star. </summary> </doc>
-    pub fn get_is_star(&self, ) -> CallHandle<bool> {
+    pub fn get_is_star(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_IsStar"));
@@ -2622,7 +2748,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The mass of the body, in kilograms. </summary> </doc>
-    pub fn get_mass(&self, ) -> CallHandle<f64> {
+    pub fn get_mass(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_Mass"));
@@ -2638,7 +2764,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The name of the body. </summary> </doc>
-    pub fn get_name(&self, ) -> CallHandle<String> {
+    pub fn get_name(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_Name"));
@@ -2654,7 +2780,9 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The reference frame that is fixed relative to this celestial body, and orientated in a fixed direction (it does not rotate with the body). <list type="bullet"><item><description>The origin is at the center of the body.</description></item><item><description>The axes do not rotate.</description></item><item><description>The x-axis points in an arbitrary direction through the equator.</description></item><item><description>The y-axis points from the center of the body towards the north pole.</description></item><item><description>The z-axis points in an arbitrary direction through the equator.</description></item></list></summary> </doc>
-    pub fn get_non_rotating_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_non_rotating_reference_frame(
+        &self,
+    ) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_NonRotatingReferenceFrame"));
@@ -2670,7 +2798,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The orbit of the body. </summary> </doc>
-    pub fn get_orbit(&self, ) -> CallHandle<super::space_center::Orbit> {
+    pub fn get_orbit(&self) -> CallHandle<super::space_center::Orbit> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_Orbit"));
@@ -2686,7 +2814,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The reference frame that is fixed relative to this celestial body, but orientated with the body's orbital prograde/normal/radial directions. <list type="bullet"><item><description>The origin is at the center of the body. </description></item><item><description>The axes rotate with the orbital prograde/normal/radial directions.</description></item><item><description>The x-axis points in the orbital anti-radial direction. </description></item><item><description>The y-axis points in the orbital prograde direction. </description></item><item><description>The z-axis points in the orbital normal direction. </description></item></list></summary> </doc>
-    pub fn get_orbital_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_orbital_reference_frame(&self) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_OrbitalReferenceFrame"));
@@ -2702,7 +2830,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The reference frame that is fixed relative to the celestial body. <list type="bullet"><item><description>The origin is at the center of the body. </description></item><item><description>The axes rotate with the body.</description></item><item><description>The x-axis points from the center of the body towards the intersection of the prime meridian and equator (the position at 0° longitude, 0° latitude).</description></item><item><description>The y-axis points from the center of the body towards the north pole.</description></item><item><description>The z-axis points from the center of the body towards the equator at 90°E longitude.</description></item></list></summary> </doc>
-    pub fn get_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_reference_frame(&self) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_ReferenceFrame"));
@@ -2718,7 +2846,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current rotation angle of the body, in radians. A value between 0 and <math>2\pi</math></summary> </doc>
-    pub fn get_rotation_angle(&self, ) -> CallHandle<f64> {
+    pub fn get_rotation_angle(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_RotationAngle"));
@@ -2734,7 +2862,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The sidereal rotational period of the body, in seconds. </summary> </doc>
-    pub fn get_rotational_period(&self, ) -> CallHandle<f64> {
+    pub fn get_rotational_period(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_RotationalPeriod"));
@@ -2750,7 +2878,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rotational speed of the body, in radians per second. </summary> </doc>
-    pub fn get_rotational_speed(&self, ) -> CallHandle<f64> {
+    pub fn get_rotational_speed(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_RotationalSpeed"));
@@ -2766,7 +2894,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of celestial bodies that are in orbit around this celestial body. </summary> </doc>
-    pub fn get_satellites(&self, ) -> CallHandle<Vec<super::space_center::CelestialBody>> {
+    pub fn get_satellites(&self) -> CallHandle<Vec<super::space_center::CelestialBody>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_Satellites"));
@@ -2782,7 +2910,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The altitude, in meters, above which a vessel is considered to be in "high" space when doing science. </summary> </doc>
-    pub fn get_space_high_altitude_threshold(&self, ) -> CallHandle<f32> {
+    pub fn get_space_high_altitude_threshold(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_SpaceHighAltitudeThreshold"));
@@ -2798,7 +2926,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The radius of the sphere of influence of the body, in meters. </summary> </doc>
-    pub fn get_sphere_of_influence(&self, ) -> CallHandle<f64> {
+    pub fn get_sphere_of_influence(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_SphereOfInfluence"));
@@ -2814,7 +2942,7 @@ impl CelestialBody {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The acceleration due to gravity at sea level (mean altitude) on the body, in <math>m/s^2</math>. </summary> </doc>
-    pub fn get_surface_gravity(&self, ) -> CallHandle<f64> {
+    pub fn get_surface_gravity(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CelestialBody_get_SurfaceGravity"));
@@ -2843,13 +2971,18 @@ impl fmt::Debug for CommLink {
 }
 
 impl RPCEncodable for CommLink {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for CommLink {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(CommLink { id })
     }
@@ -2858,7 +2991,7 @@ impl RPCExtractable for CommLink {
 #[allow(dead_code)]
 impl CommLink {
     /// <doc> <summary> Start point of the link. </summary> </doc>
-    pub fn get_end(&self, ) -> CallHandle<super::space_center::CommNode> {
+    pub fn get_end(&self) -> CallHandle<super::space_center::CommNode> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CommLink_get_End"));
@@ -2874,7 +3007,7 @@ impl CommLink {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Signal strength of the link. </summary> </doc>
-    pub fn get_signal_strength(&self, ) -> CallHandle<f64> {
+    pub fn get_signal_strength(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CommLink_get_SignalStrength"));
@@ -2890,7 +3023,7 @@ impl CommLink {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Start point of the link. </summary> </doc>
-    pub fn get_start(&self, ) -> CallHandle<super::space_center::CommNode> {
+    pub fn get_start(&self) -> CallHandle<super::space_center::CommNode> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CommLink_get_Start"));
@@ -2906,7 +3039,7 @@ impl CommLink {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The type of link. </summary> </doc>
-    pub fn get_type(&self, ) -> CallHandle<super::space_center::CommLinkType> {
+    pub fn get_type(&self) -> CallHandle<super::space_center::CommLinkType> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CommLink_get_Type"));
@@ -2935,13 +3068,18 @@ impl fmt::Debug for CommNode {
 }
 
 impl RPCEncodable for CommNode {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for CommNode {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(CommNode { id })
     }
@@ -2950,7 +3088,7 @@ impl RPCExtractable for CommNode {
 #[allow(dead_code)]
 impl CommNode {
     /// <doc> <summary> Whether the communication node is a control point, for example a manned vessel. </summary> </doc>
-    pub fn get_is_control_point(&self, ) -> CallHandle<bool> {
+    pub fn get_is_control_point(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CommNode_get_IsControlPoint"));
@@ -2966,7 +3104,7 @@ impl CommNode {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the communication node is on Kerbin. </summary> </doc>
-    pub fn get_is_home(&self, ) -> CallHandle<bool> {
+    pub fn get_is_home(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CommNode_get_IsHome"));
@@ -2982,7 +3120,7 @@ impl CommNode {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the communication node is a vessel. </summary> </doc>
-    pub fn get_is_vessel(&self, ) -> CallHandle<bool> {
+    pub fn get_is_vessel(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CommNode_get_IsVessel"));
@@ -2998,7 +3136,7 @@ impl CommNode {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Name of the communication node. </summary> </doc>
-    pub fn get_name(&self, ) -> CallHandle<String> {
+    pub fn get_name(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CommNode_get_Name"));
@@ -3014,7 +3152,7 @@ impl CommNode {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The vessel for this communication node. </summary> </doc>
-    pub fn get_vessel(&self, ) -> CallHandle<super::space_center::Vessel> {
+    pub fn get_vessel(&self) -> CallHandle<super::space_center::Vessel> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CommNode_get_Vessel"));
@@ -3043,13 +3181,18 @@ impl fmt::Debug for Comms {
 }
 
 impl RPCEncodable for Comms {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Comms {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Comms { id })
     }
@@ -3058,7 +3201,7 @@ impl RPCExtractable for Comms {
 #[allow(dead_code)]
 impl Comms {
     /// <doc> <summary> Whether the vessel can communicate with KSC. </summary> </doc>
-    pub fn get_can_communicate(&self, ) -> CallHandle<bool> {
+    pub fn get_can_communicate(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Comms_get_CanCommunicate"));
@@ -3074,7 +3217,7 @@ impl Comms {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the vessel can transmit science data to KSC. </summary> </doc>
-    pub fn get_can_transmit_science(&self, ) -> CallHandle<bool> {
+    pub fn get_can_transmit_science(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Comms_get_CanTransmitScience"));
@@ -3090,7 +3233,7 @@ impl Comms {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The communication path used to control the vessel. </summary> </doc>
-    pub fn get_control_path(&self, ) -> CallHandle<Vec<super::space_center::CommLink>> {
+    pub fn get_control_path(&self) -> CallHandle<Vec<super::space_center::CommLink>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Comms_get_ControlPath"));
@@ -3106,7 +3249,7 @@ impl Comms {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The combined power of all active antennae on the vessel. </summary> </doc>
-    pub fn get_power(&self, ) -> CallHandle<f64> {
+    pub fn get_power(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Comms_get_Power"));
@@ -3122,7 +3265,7 @@ impl Comms {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Signal delay to KSC in seconds. </summary> </doc>
-    pub fn get_signal_delay(&self, ) -> CallHandle<f64> {
+    pub fn get_signal_delay(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Comms_get_SignalDelay"));
@@ -3138,7 +3281,7 @@ impl Comms {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Signal strength to KSC. </summary> </doc>
-    pub fn get_signal_strength(&self, ) -> CallHandle<f64> {
+    pub fn get_signal_strength(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Comms_get_SignalStrength"));
@@ -3167,13 +3310,18 @@ impl fmt::Debug for Contract {
 }
 
 impl RPCEncodable for Contract {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Contract {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Contract { id })
     }
@@ -3182,7 +3330,7 @@ impl RPCExtractable for Contract {
 #[allow(dead_code)]
 impl Contract {
     /// <doc> <summary> Accept an offered contract. </summary> </doc>
-    pub fn accept(&self, ) -> CallHandle<()> {
+    pub fn accept(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_Accept"));
@@ -3198,7 +3346,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Cancel an active contract. </summary> </doc>
-    pub fn cancel(&self, ) -> CallHandle<()> {
+    pub fn cancel(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_Cancel"));
@@ -3214,7 +3362,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Decline an offered contract. </summary> </doc>
-    pub fn decline(&self, ) -> CallHandle<()> {
+    pub fn decline(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_Decline"));
@@ -3230,7 +3378,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the contract is active. </summary> </doc>
-    pub fn get_active(&self, ) -> CallHandle<bool> {
+    pub fn get_active(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_Active"));
@@ -3246,7 +3394,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the contract can be canceled. </summary> </doc>
-    pub fn get_can_be_canceled(&self, ) -> CallHandle<bool> {
+    pub fn get_can_be_canceled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_CanBeCanceled"));
@@ -3262,7 +3410,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the contract can be declined. </summary> </doc>
-    pub fn get_can_be_declined(&self, ) -> CallHandle<bool> {
+    pub fn get_can_be_declined(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_CanBeDeclined"));
@@ -3278,7 +3426,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the contract can be failed. </summary> </doc>
-    pub fn get_can_be_failed(&self, ) -> CallHandle<bool> {
+    pub fn get_can_be_failed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_CanBeFailed"));
@@ -3294,7 +3442,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Description of the contract. </summary> </doc>
-    pub fn get_description(&self, ) -> CallHandle<String> {
+    pub fn get_description(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_Description"));
@@ -3310,7 +3458,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the contract has been failed. </summary> </doc>
-    pub fn get_failed(&self, ) -> CallHandle<bool> {
+    pub fn get_failed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_Failed"));
@@ -3326,7 +3474,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Funds received when accepting the contract. </summary> </doc>
-    pub fn get_funds_advance(&self, ) -> CallHandle<f64> {
+    pub fn get_funds_advance(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_FundsAdvance"));
@@ -3342,7 +3490,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Funds received on completion of the contract. </summary> </doc>
-    pub fn get_funds_completion(&self, ) -> CallHandle<f64> {
+    pub fn get_funds_completion(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_FundsCompletion"));
@@ -3358,7 +3506,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Funds lost if the contract is failed. </summary> </doc>
-    pub fn get_funds_failure(&self, ) -> CallHandle<f64> {
+    pub fn get_funds_failure(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_FundsFailure"));
@@ -3374,7 +3522,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Keywords for the contract. </summary> </doc>
-    pub fn get_keywords(&self, ) -> CallHandle<Vec<String>> {
+    pub fn get_keywords(&self) -> CallHandle<Vec<String>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_Keywords"));
@@ -3390,7 +3538,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Notes for the contract. </summary> </doc>
-    pub fn get_notes(&self, ) -> CallHandle<String> {
+    pub fn get_notes(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_Notes"));
@@ -3406,7 +3554,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Parameters for the contract. </summary> </doc>
-    pub fn get_parameters(&self, ) -> CallHandle<Vec<super::space_center::ContractParameter>> {
+    pub fn get_parameters(&self) -> CallHandle<Vec<super::space_center::ContractParameter>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_Parameters"));
@@ -3422,7 +3570,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the contract has been read. </summary> </doc>
-    pub fn get_read(&self, ) -> CallHandle<bool> {
+    pub fn get_read(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_Read"));
@@ -3438,7 +3586,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Reputation gained on completion of the contract. </summary> </doc>
-    pub fn get_reputation_completion(&self, ) -> CallHandle<f64> {
+    pub fn get_reputation_completion(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_ReputationCompletion"));
@@ -3454,7 +3602,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Reputation lost if the contract is failed. </summary> </doc>
-    pub fn get_reputation_failure(&self, ) -> CallHandle<f64> {
+    pub fn get_reputation_failure(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_ReputationFailure"));
@@ -3470,7 +3618,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Science gained on completion of the contract. </summary> </doc>
-    pub fn get_science_completion(&self, ) -> CallHandle<f64> {
+    pub fn get_science_completion(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_ScienceCompletion"));
@@ -3486,7 +3634,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the contract has been seen. </summary> </doc>
-    pub fn get_seen(&self, ) -> CallHandle<bool> {
+    pub fn get_seen(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_Seen"));
@@ -3502,7 +3650,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> State of the contract. </summary> </doc>
-    pub fn get_state(&self, ) -> CallHandle<super::space_center::ContractState> {
+    pub fn get_state(&self) -> CallHandle<super::space_center::ContractState> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_State"));
@@ -3518,7 +3666,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Synopsis for the contract. </summary> </doc>
-    pub fn get_synopsis(&self, ) -> CallHandle<String> {
+    pub fn get_synopsis(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_Synopsis"));
@@ -3534,7 +3682,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Title of the contract. </summary> </doc>
-    pub fn get_title(&self, ) -> CallHandle<String> {
+    pub fn get_title(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_Title"));
@@ -3550,7 +3698,7 @@ impl Contract {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Type of the contract. </summary> </doc>
-    pub fn get_type(&self, ) -> CallHandle<String> {
+    pub fn get_type(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Contract_get_Type"));
@@ -3579,13 +3727,18 @@ impl fmt::Debug for ContractManager {
 }
 
 impl RPCEncodable for ContractManager {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for ContractManager {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(ContractManager { id })
     }
@@ -3594,7 +3747,7 @@ impl RPCExtractable for ContractManager {
 #[allow(dead_code)]
 impl ContractManager {
     /// <doc> <summary> A list of all active contracts. </summary> </doc>
-    pub fn get_active_contracts(&self, ) -> CallHandle<Vec<super::space_center::Contract>> {
+    pub fn get_active_contracts(&self) -> CallHandle<Vec<super::space_center::Contract>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractManager_get_ActiveContracts"));
@@ -3610,7 +3763,7 @@ impl ContractManager {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all contracts. </summary> </doc>
-    pub fn get_all_contracts(&self, ) -> CallHandle<Vec<super::space_center::Contract>> {
+    pub fn get_all_contracts(&self) -> CallHandle<Vec<super::space_center::Contract>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractManager_get_AllContracts"));
@@ -3626,7 +3779,7 @@ impl ContractManager {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all completed contracts. </summary> </doc>
-    pub fn get_completed_contracts(&self, ) -> CallHandle<Vec<super::space_center::Contract>> {
+    pub fn get_completed_contracts(&self) -> CallHandle<Vec<super::space_center::Contract>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractManager_get_CompletedContracts"));
@@ -3642,7 +3795,7 @@ impl ContractManager {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all failed contracts. </summary> </doc>
-    pub fn get_failed_contracts(&self, ) -> CallHandle<Vec<super::space_center::Contract>> {
+    pub fn get_failed_contracts(&self) -> CallHandle<Vec<super::space_center::Contract>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractManager_get_FailedContracts"));
@@ -3658,7 +3811,7 @@ impl ContractManager {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all offered, but unaccepted, contracts. </summary> </doc>
-    pub fn get_offered_contracts(&self, ) -> CallHandle<Vec<super::space_center::Contract>> {
+    pub fn get_offered_contracts(&self) -> CallHandle<Vec<super::space_center::Contract>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractManager_get_OfferedContracts"));
@@ -3674,7 +3827,7 @@ impl ContractManager {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all contract types. </summary> </doc>
-    pub fn get_types(&self, ) -> CallHandle<std::collections::HashSet<String>> {
+    pub fn get_types(&self) -> CallHandle<std::collections::HashSet<String>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractManager_get_Types"));
@@ -3703,13 +3856,18 @@ impl fmt::Debug for ContractParameter {
 }
 
 impl RPCEncodable for ContractParameter {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for ContractParameter {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(ContractParameter { id })
     }
@@ -3718,7 +3876,7 @@ impl RPCExtractable for ContractParameter {
 #[allow(dead_code)]
 impl ContractParameter {
     /// <doc> <summary> Child contract parameters. </summary> </doc>
-    pub fn get_children(&self, ) -> CallHandle<Vec<super::space_center::ContractParameter>> {
+    pub fn get_children(&self) -> CallHandle<Vec<super::space_center::ContractParameter>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractParameter_get_Children"));
@@ -3734,7 +3892,7 @@ impl ContractParameter {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the parameter has been completed. </summary> </doc>
-    pub fn get_completed(&self, ) -> CallHandle<bool> {
+    pub fn get_completed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractParameter_get_Completed"));
@@ -3750,7 +3908,7 @@ impl ContractParameter {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the parameter has been failed. </summary> </doc>
-    pub fn get_failed(&self, ) -> CallHandle<bool> {
+    pub fn get_failed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractParameter_get_Failed"));
@@ -3766,7 +3924,7 @@ impl ContractParameter {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Funds received on completion of the contract parameter. </summary> </doc>
-    pub fn get_funds_completion(&self, ) -> CallHandle<f64> {
+    pub fn get_funds_completion(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractParameter_get_FundsCompletion"));
@@ -3782,7 +3940,7 @@ impl ContractParameter {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Funds lost if the contract parameter is failed. </summary> </doc>
-    pub fn get_funds_failure(&self, ) -> CallHandle<f64> {
+    pub fn get_funds_failure(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractParameter_get_FundsFailure"));
@@ -3798,7 +3956,7 @@ impl ContractParameter {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Notes for the parameter. </summary> </doc>
-    pub fn get_notes(&self, ) -> CallHandle<String> {
+    pub fn get_notes(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractParameter_get_Notes"));
@@ -3814,7 +3972,7 @@ impl ContractParameter {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the contract parameter is optional. </summary> </doc>
-    pub fn get_optional(&self, ) -> CallHandle<bool> {
+    pub fn get_optional(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractParameter_get_Optional"));
@@ -3830,7 +3988,7 @@ impl ContractParameter {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Reputation gained on completion of the contract parameter. </summary> </doc>
-    pub fn get_reputation_completion(&self, ) -> CallHandle<f64> {
+    pub fn get_reputation_completion(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractParameter_get_ReputationCompletion"));
@@ -3846,7 +4004,7 @@ impl ContractParameter {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Reputation lost if the contract parameter is failed. </summary> </doc>
-    pub fn get_reputation_failure(&self, ) -> CallHandle<f64> {
+    pub fn get_reputation_failure(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractParameter_get_ReputationFailure"));
@@ -3862,7 +4020,7 @@ impl ContractParameter {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Science gained on completion of the contract parameter. </summary> </doc>
-    pub fn get_science_completion(&self, ) -> CallHandle<f64> {
+    pub fn get_science_completion(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractParameter_get_ScienceCompletion"));
@@ -3878,7 +4036,7 @@ impl ContractParameter {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Title of the parameter. </summary> </doc>
-    pub fn get_title(&self, ) -> CallHandle<String> {
+    pub fn get_title(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ContractParameter_get_Title"));
@@ -3907,13 +4065,18 @@ impl fmt::Debug for Control {
 }
 
 impl RPCEncodable for Control {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Control {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Control { id })
     }
@@ -3922,7 +4085,7 @@ impl RPCExtractable for Control {
 #[allow(dead_code)]
 impl Control {
     /// <doc> <summary> Activates the next stage. Equivalent to pressing the space bar in-game. </summary> <returns>A list of vessel objects that are jettisoned from the active vessel.</returns> <remarks> When called, the active vessel may change. It is therefore possible that, after calling this function, the object(s) returned by previous call(s) to <see cref="M:SpaceCenter.ActiveVessel" /> no longer refer to the active vessel. Throws an exception if staging is locked. </remarks> </doc>
-    pub fn activate_next_stage(&self, ) -> CallHandle<Vec<super::space_center::Vessel>> {
+    pub fn activate_next_stage(&self) -> CallHandle<Vec<super::space_center::Vessel>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_ActivateNextStage"));
@@ -3938,7 +4101,13 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Creates a maneuver node at the given universal time, and returns a <see cref="T:SpaceCenter.Node" /> object that can be used to modify it. Optionally sets the magnitude of the delta-v for the maneuver node in the prograde, normal and radial directions. </summary> <param name="ut">Universal time of the maneuver node.</param> <param name="prograde">Delta-v in the prograde direction.</param> <param name="normal">Delta-v in the normal direction.</param> <param name="radial">Delta-v in the radial direction.</param> </doc>
-    pub fn add_node(&self, p_ut: f64, p_prograde: f32, p_normal: f32, p_radial: f32) -> CallHandle<super::space_center::Node> {
+    pub fn add_node(
+        &self,
+        p_ut: f64,
+        p_prograde: f32,
+        p_normal: f32,
+        p_radial: f32,
+    ) -> CallHandle<super::space_center::Node> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_AddNode"));
@@ -3995,7 +4164,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Remove all maneuver nodes. </summary> </doc>
-    pub fn remove_nodes(&self, ) -> CallHandle<()> {
+    pub fn remove_nodes(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_RemoveNodes"));
@@ -4058,7 +4227,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of the abort action group. </summary> </doc>
-    pub fn get_abort(&self, ) -> CallHandle<bool> {
+    pub fn get_abort(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Abort"));
@@ -4074,7 +4243,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns whether all antennas on the vessel are deployed, and sets the deployment state of all antennas. See <see cref="M:SpaceCenter.Antenna.Deployed" />. </summary> </doc>
-    pub fn get_antennas(&self, ) -> CallHandle<bool> {
+    pub fn get_antennas(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Antennas"));
@@ -4090,7 +4259,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of the wheel brakes. </summary> </doc>
-    pub fn get_brakes(&self, ) -> CallHandle<bool> {
+    pub fn get_brakes(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Brakes"));
@@ -4106,7 +4275,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns whether any of the cargo bays on the vessel are open, and sets the open state of all cargo bays. See <see cref="M:SpaceCenter.CargoBay.Open" />. </summary> </doc>
-    pub fn get_cargo_bays(&self, ) -> CallHandle<bool> {
+    pub fn get_cargo_bays(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_CargoBays"));
@@ -4122,7 +4291,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current stage of the vessel. Corresponds to the stage number in the in-game UI. </summary> </doc>
-    pub fn get_current_stage(&self, ) -> CallHandle<i32> {
+    pub fn get_current_stage(&self) -> CallHandle<i32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_CurrentStage"));
@@ -4138,7 +4307,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of CustomAxis01. A value between -1 and 1. </summary> </doc>
-    pub fn get_custom_axis01(&self, ) -> CallHandle<f32> {
+    pub fn get_custom_axis01(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_CustomAxis01"));
@@ -4154,7 +4323,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of CustomAxis02. A value between -1 and 1. </summary> </doc>
-    pub fn get_custom_axis02(&self, ) -> CallHandle<f32> {
+    pub fn get_custom_axis02(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_CustomAxis02"));
@@ -4170,7 +4339,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of CustomAxis03. A value between -1 and 1. </summary> </doc>
-    pub fn get_custom_axis03(&self, ) -> CallHandle<f32> {
+    pub fn get_custom_axis03(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_CustomAxis03"));
@@ -4186,7 +4355,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of CustomAxis04. A value between -1 and 1. </summary> </doc>
-    pub fn get_custom_axis04(&self, ) -> CallHandle<f32> {
+    pub fn get_custom_axis04(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_CustomAxis04"));
@@ -4202,7 +4371,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of the forward translational control. A value between -1 and 1. Equivalent to the h and n keys. </summary> </doc>
-    pub fn get_forward(&self, ) -> CallHandle<f32> {
+    pub fn get_forward(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Forward"));
@@ -4218,7 +4387,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of the landing gear/legs. </summary> </doc>
-    pub fn get_gear(&self, ) -> CallHandle<bool> {
+    pub fn get_gear(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Gear"));
@@ -4234,7 +4403,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Sets the behavior of the pitch, yaw, roll and translation control inputs. When set to additive, these inputs are added to the vessels current inputs. This mode is the default. When set to override, these inputs (if non-zero) override the vessels inputs. This mode prevents keyboard control, or SAS, from interfering with the controls when they are set. </summary> </doc>
-    pub fn get_input_mode(&self, ) -> CallHandle<super::space_center::ControlInputMode> {
+    pub fn get_input_mode(&self) -> CallHandle<super::space_center::ControlInputMode> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_InputMode"));
@@ -4250,7 +4419,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns whether all of the air intakes on the vessel are open, and sets the open state of all air intakes. See <see cref="M:SpaceCenter.Intake.Open" />. </summary> </doc>
-    pub fn get_intakes(&self, ) -> CallHandle<bool> {
+    pub fn get_intakes(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Intakes"));
@@ -4266,7 +4435,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns whether all landing legs on the vessel are deployed, and sets the deployment state of all landing legs. Does not include wheels (for example landing gear). See <see cref="M:SpaceCenter.Leg.Deployed" />. </summary> </doc>
-    pub fn get_legs(&self, ) -> CallHandle<bool> {
+    pub fn get_legs(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Legs"));
@@ -4282,7 +4451,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of the lights. </summary> </doc>
-    pub fn get_lights(&self, ) -> CallHandle<bool> {
+    pub fn get_lights(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Lights"));
@@ -4298,7 +4467,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns a list of all existing maneuver nodes, ordered by time from first to last. </summary> </doc>
-    pub fn get_nodes(&self, ) -> CallHandle<Vec<super::space_center::Node>> {
+    pub fn get_nodes(&self) -> CallHandle<Vec<super::space_center::Node>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Nodes"));
@@ -4314,7 +4483,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns whether all parachutes on the vessel are deployed, and sets the deployment state of all parachutes. Cannot be set to <c>false</c>. See <see cref="M:SpaceCenter.Parachute.Deployed" />. </summary> </doc>
-    pub fn get_parachutes(&self, ) -> CallHandle<bool> {
+    pub fn get_parachutes(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Parachutes"));
@@ -4330,7 +4499,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of the pitch control. A value between -1 and 1. Equivalent to the w and s keys. </summary> </doc>
-    pub fn get_pitch(&self, ) -> CallHandle<f32> {
+    pub fn get_pitch(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Pitch"));
@@ -4346,7 +4515,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of RCS. </summary> </doc>
-    pub fn get_rcs(&self, ) -> CallHandle<bool> {
+    pub fn get_rcs(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_RCS"));
@@ -4362,7 +4531,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns whether all radiators on the vessel are deployed, and sets the deployment state of all radiators. See <see cref="M:SpaceCenter.Radiator.Deployed" />. </summary> </doc>
-    pub fn get_radiators(&self, ) -> CallHandle<bool> {
+    pub fn get_radiators(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Radiators"));
@@ -4378,7 +4547,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns whether all reactive wheels on the vessel are active, and sets the active state of all reaction wheels. See <see cref="M:SpaceCenter.ReactionWheel.Active" />. </summary> </doc>
-    pub fn get_reaction_wheels(&self, ) -> CallHandle<bool> {
+    pub fn get_reaction_wheels(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_ReactionWheels"));
@@ -4394,7 +4563,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns whether all of the resource harvesters on the vessel are deployed, and sets the deployment state of all resource harvesters. See <see cref="M:SpaceCenter.ResourceHarvester.Deployed" />. </summary> </doc>
-    pub fn get_resource_harvesters(&self, ) -> CallHandle<bool> {
+    pub fn get_resource_harvesters(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_ResourceHarvesters"));
@@ -4410,7 +4579,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns whether any of the resource harvesters on the vessel are active, and sets the active state of all resource harvesters. See <see cref="M:SpaceCenter.ResourceHarvester.Active" />. </summary> </doc>
-    pub fn get_resource_harvesters_active(&self, ) -> CallHandle<bool> {
+    pub fn get_resource_harvesters_active(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_ResourceHarvestersActive"));
@@ -4426,7 +4595,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of the right translational control. A value between -1 and 1. Equivalent to the j and l keys. </summary> </doc>
-    pub fn get_right(&self, ) -> CallHandle<f32> {
+    pub fn get_right(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Right"));
@@ -4442,7 +4611,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of the roll control. A value between -1 and 1. Equivalent to the q and e keys. </summary> </doc>
-    pub fn get_roll(&self, ) -> CallHandle<f32> {
+    pub fn get_roll(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Roll"));
@@ -4458,7 +4627,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of SAS. </summary> <remarks>Equivalent to <see cref="M:SpaceCenter.AutoPilot.SAS" /></remarks> </doc>
-    pub fn get_sas(&self, ) -> CallHandle<bool> {
+    pub fn get_sas(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_SAS"));
@@ -4474,7 +4643,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current <see cref="T:SpaceCenter.SASMode" />. These modes are equivalent to the mode buttons to the left of the navball that appear when SAS is enabled. </summary> <remarks>Equivalent to <see cref="M:SpaceCenter.AutoPilot.SASMode" /></remarks> </doc>
-    pub fn get_sas_mode(&self, ) -> CallHandle<super::space_center::SASMode> {
+    pub fn get_sas_mode(&self) -> CallHandle<super::space_center::SASMode> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_SASMode"));
@@ -4490,7 +4659,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns whether all solar panels on the vessel are deployed, and sets the deployment state of all solar panels. See <see cref="M:SpaceCenter.SolarPanel.Deployed" />. </summary> </doc>
-    pub fn get_solar_panels(&self, ) -> CallHandle<bool> {
+    pub fn get_solar_panels(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_SolarPanels"));
@@ -4506,7 +4675,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The source of the vessels control, for example by a kerbal or a probe core. </summary> </doc>
-    pub fn get_source(&self, ) -> CallHandle<super::space_center::ControlSource> {
+    pub fn get_source(&self) -> CallHandle<super::space_center::ControlSource> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Source"));
@@ -4522,7 +4691,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current <see cref="T:SpaceCenter.SpeedMode" /> of the navball. This is the mode displayed next to the speed at the top of the navball. </summary> </doc>
-    pub fn get_speed_mode(&self, ) -> CallHandle<super::space_center::SpeedMode> {
+    pub fn get_speed_mode(&self) -> CallHandle<super::space_center::SpeedMode> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_SpeedMode"));
@@ -4538,7 +4707,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether staging is locked on the vessel. </summary> <remarks> This is equivalent to locking the staging using Alt+L </remarks> </doc>
-    pub fn get_stage_lock(&self, ) -> CallHandle<bool> {
+    pub fn get_stage_lock(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_StageLock"));
@@ -4554,7 +4723,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The control state of the vessel. </summary> </doc>
-    pub fn get_state(&self, ) -> CallHandle<super::space_center::ControlState> {
+    pub fn get_state(&self) -> CallHandle<super::space_center::ControlState> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_State"));
@@ -4570,7 +4739,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of the throttle. A value between 0 and 1. </summary> </doc>
-    pub fn get_throttle(&self, ) -> CallHandle<f32> {
+    pub fn get_throttle(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Throttle"));
@@ -4586,7 +4755,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of the up translational control. A value between -1 and 1. Equivalent to the i and k keys. </summary> </doc>
-    pub fn get_up(&self, ) -> CallHandle<f32> {
+    pub fn get_up(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Up"));
@@ -4602,7 +4771,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of the wheel steering. A value between -1 and 1. A value of 1 steers to the left, and a value of -1 steers to the right. </summary> </doc>
-    pub fn get_wheel_steering(&self, ) -> CallHandle<f32> {
+    pub fn get_wheel_steering(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_WheelSteering"));
@@ -4618,7 +4787,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of the wheel throttle. A value between -1 and 1. A value of 1 rotates the wheels forwards, a value of -1 rotates the wheels backwards. </summary> </doc>
-    pub fn get_wheel_throttle(&self, ) -> CallHandle<f32> {
+    pub fn get_wheel_throttle(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_WheelThrottle"));
@@ -4634,7 +4803,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns whether all wheels on the vessel are deployed, and sets the deployment state of all wheels. Does not include landing legs. See <see cref="M:SpaceCenter.Wheel.Deployed" />. </summary> </doc>
-    pub fn get_wheels(&self, ) -> CallHandle<bool> {
+    pub fn get_wheels(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Wheels"));
@@ -4650,7 +4819,7 @@ impl Control {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of the yaw control. A value between -1 and 1. Equivalent to the a and d keys. </summary> </doc>
-    pub fn get_yaw(&self, ) -> CallHandle<f32> {
+    pub fn get_yaw(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Control_get_Yaw"));
@@ -5393,13 +5562,18 @@ impl fmt::Debug for ControlSurface {
 }
 
 impl RPCEncodable for ControlSurface {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for ControlSurface {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(ControlSurface { id })
     }
@@ -5408,7 +5582,7 @@ impl RPCExtractable for ControlSurface {
 #[allow(dead_code)]
 impl ControlSurface {
     /// <doc> <summary> The authority limiter for the control surface, which controls how far the control surface will move. </summary> </doc>
-    pub fn get_authority_limiter(&self, ) -> CallHandle<f32> {
+    pub fn get_authority_limiter(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ControlSurface_get_AuthorityLimiter"));
@@ -5424,7 +5598,7 @@ impl ControlSurface {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The available torque, in Newton meters, that can be produced by this control surface, in the positive and negative pitch, roll and yaw axes of the vessel. These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />. </summary> </doc>
-    pub fn get_available_torque(&self, ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
+    pub fn get_available_torque(&self) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ControlSurface_get_AvailableTorque"));
@@ -5440,7 +5614,7 @@ impl ControlSurface {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the control surface has been fully deployed. </summary> </doc>
-    pub fn get_deployed(&self, ) -> CallHandle<bool> {
+    pub fn get_deployed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ControlSurface_get_Deployed"));
@@ -5456,7 +5630,7 @@ impl ControlSurface {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the control surface movement is inverted. </summary> </doc>
-    pub fn get_inverted(&self, ) -> CallHandle<bool> {
+    pub fn get_inverted(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ControlSurface_get_Inverted"));
@@ -5472,7 +5646,7 @@ impl ControlSurface {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this control surface. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ControlSurface_get_Part"));
@@ -5488,7 +5662,7 @@ impl ControlSurface {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the control surface has pitch control enabled. </summary> </doc>
-    pub fn get_pitch_enabled(&self, ) -> CallHandle<bool> {
+    pub fn get_pitch_enabled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ControlSurface_get_PitchEnabled"));
@@ -5504,7 +5678,7 @@ impl ControlSurface {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the control surface has roll control enabled. </summary> </doc>
-    pub fn get_roll_enabled(&self, ) -> CallHandle<bool> {
+    pub fn get_roll_enabled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ControlSurface_get_RollEnabled"));
@@ -5520,7 +5694,7 @@ impl ControlSurface {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Surface area of the control surface in <math>m^2</math>. </summary> </doc>
-    pub fn get_surface_area(&self, ) -> CallHandle<f32> {
+    pub fn get_surface_area(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ControlSurface_get_SurfaceArea"));
@@ -5536,7 +5710,7 @@ impl ControlSurface {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the control surface has yaw control enabled. </summary> </doc>
-    pub fn get_yaw_enabled(&self, ) -> CallHandle<bool> {
+    pub fn get_yaw_enabled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ControlSurface_get_YawEnabled"));
@@ -5691,13 +5865,18 @@ impl fmt::Debug for CrewMember {
 }
 
 impl RPCEncodable for CrewMember {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for CrewMember {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(CrewMember { id })
     }
@@ -5706,7 +5885,7 @@ impl RPCExtractable for CrewMember {
 #[allow(dead_code)]
 impl CrewMember {
     /// <doc> <summary> Whether the crew member is a badass. </summary> </doc>
-    pub fn get_badass(&self, ) -> CallHandle<bool> {
+    pub fn get_badass(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CrewMember_get_Badass"));
@@ -5722,7 +5901,7 @@ impl CrewMember {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The flight IDs for each entry in the career flight log. </summary> </doc>
-    pub fn get_career_log_flights(&self, ) -> CallHandle<Vec<i32>> {
+    pub fn get_career_log_flights(&self) -> CallHandle<Vec<i32>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CrewMember_get_CareerLogFlights"));
@@ -5738,7 +5917,7 @@ impl CrewMember {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The body name for each entry in the career flight log. </summary> </doc>
-    pub fn get_career_log_targets(&self, ) -> CallHandle<Vec<String>> {
+    pub fn get_career_log_targets(&self) -> CallHandle<Vec<String>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CrewMember_get_CareerLogTargets"));
@@ -5754,7 +5933,7 @@ impl CrewMember {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The type for each entry in the career flight log. </summary> </doc>
-    pub fn get_career_log_types(&self, ) -> CallHandle<Vec<String>> {
+    pub fn get_career_log_types(&self) -> CallHandle<Vec<String>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CrewMember_get_CareerLogTypes"));
@@ -5770,7 +5949,7 @@ impl CrewMember {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The crew members courage. </summary> </doc>
-    pub fn get_courage(&self, ) -> CallHandle<f32> {
+    pub fn get_courage(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CrewMember_get_Courage"));
@@ -5786,7 +5965,7 @@ impl CrewMember {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The crew members experience. </summary> </doc>
-    pub fn get_experience(&self, ) -> CallHandle<f32> {
+    pub fn get_experience(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CrewMember_get_Experience"));
@@ -5802,7 +5981,7 @@ impl CrewMember {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The crew member's gender. </summary> </doc>
-    pub fn get_gender(&self, ) -> CallHandle<super::space_center::CrewMemberGender> {
+    pub fn get_gender(&self) -> CallHandle<super::space_center::CrewMemberGender> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CrewMember_get_Gender"));
@@ -5818,7 +5997,7 @@ impl CrewMember {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The crew members name. </summary> </doc>
-    pub fn get_name(&self, ) -> CallHandle<String> {
+    pub fn get_name(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CrewMember_get_Name"));
@@ -5834,7 +6013,7 @@ impl CrewMember {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the crew member is on a mission. </summary> </doc>
-    pub fn get_on_mission(&self, ) -> CallHandle<bool> {
+    pub fn get_on_mission(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CrewMember_get_OnMission"));
@@ -5850,7 +6029,7 @@ impl CrewMember {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The crew member's current roster status. </summary> </doc>
-    pub fn get_roster_status(&self, ) -> CallHandle<super::space_center::RosterStatus> {
+    pub fn get_roster_status(&self) -> CallHandle<super::space_center::RosterStatus> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CrewMember_get_RosterStatus"));
@@ -5866,7 +6045,7 @@ impl CrewMember {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The crew members stupidity. </summary> </doc>
-    pub fn get_stupidity(&self, ) -> CallHandle<f32> {
+    pub fn get_stupidity(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CrewMember_get_Stupidity"));
@@ -5882,7 +6061,7 @@ impl CrewMember {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The crew member's suit type. </summary> </doc>
-    pub fn get_suit_type(&self, ) -> CallHandle<super::space_center::SuitType> {
+    pub fn get_suit_type(&self) -> CallHandle<super::space_center::SuitType> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CrewMember_get_SuitType"));
@@ -5898,7 +6077,7 @@ impl CrewMember {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The crew member's job. </summary> </doc>
-    pub fn get_trait(&self, ) -> CallHandle<String> {
+    pub fn get_trait(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CrewMember_get_Trait"));
@@ -5914,7 +6093,7 @@ impl CrewMember {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The type of crew member. </summary> </doc>
-    pub fn get_type(&self, ) -> CallHandle<super::space_center::CrewMemberType> {
+    pub fn get_type(&self) -> CallHandle<super::space_center::CrewMemberType> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CrewMember_get_Type"));
@@ -5930,7 +6109,7 @@ impl CrewMember {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the crew member is a veteran. </summary> </doc>
-    pub fn get_veteran(&self, ) -> CallHandle<bool> {
+    pub fn get_veteran(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("CrewMember_get_Veteran"));
@@ -6106,13 +6285,18 @@ impl fmt::Debug for Decoupler {
 }
 
 impl RPCEncodable for Decoupler {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Decoupler {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Decoupler { id })
     }
@@ -6121,7 +6305,7 @@ impl RPCExtractable for Decoupler {
 #[allow(dead_code)]
 impl Decoupler {
     /// <doc> <summary> Fires the decoupler. Returns the new vessel created when the decoupler fires. Throws an exception if the decoupler has already fired. </summary> <remarks> When called, the active vessel may change. It is therefore possible that, after calling this function, the object(s) returned by previous call(s) to <see cref="M:SpaceCenter.ActiveVessel" /> no longer refer to the active vessel. </remarks> </doc>
-    pub fn decouple(&self, ) -> CallHandle<super::space_center::Vessel> {
+    pub fn decouple(&self) -> CallHandle<super::space_center::Vessel> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Decoupler_Decouple"));
@@ -6137,7 +6321,7 @@ impl Decoupler {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part attached to this decoupler's explosive node. </summary> </doc>
-    pub fn get_attached_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_attached_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Decoupler_get_AttachedPart"));
@@ -6153,7 +6337,7 @@ impl Decoupler {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the decoupler has fired. </summary> </doc>
-    pub fn get_decoupled(&self, ) -> CallHandle<bool> {
+    pub fn get_decoupled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Decoupler_get_Decoupled"));
@@ -6169,7 +6353,7 @@ impl Decoupler {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The impulse that the decoupler imparts when it is fired, in Newton seconds. </summary> </doc>
-    pub fn get_impulse(&self, ) -> CallHandle<f32> {
+    pub fn get_impulse(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Decoupler_get_Impulse"));
@@ -6185,7 +6369,7 @@ impl Decoupler {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the decoupler is an omni-decoupler (e.g. stack separator) </summary> </doc>
-    pub fn get_is_omni_decoupler(&self, ) -> CallHandle<bool> {
+    pub fn get_is_omni_decoupler(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Decoupler_get_IsOmniDecoupler"));
@@ -6201,7 +6385,7 @@ impl Decoupler {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this decoupler. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Decoupler_get_Part"));
@@ -6217,7 +6401,7 @@ impl Decoupler {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the decoupler is enabled in the staging sequence. </summary> </doc>
-    pub fn get_staged(&self, ) -> CallHandle<bool> {
+    pub fn get_staged(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Decoupler_get_Staged"));
@@ -6246,13 +6430,18 @@ impl fmt::Debug for DockingPort {
 }
 
 impl RPCEncodable for DockingPort {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for DockingPort {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(DockingPort { id })
     }
@@ -6261,7 +6450,10 @@ impl RPCExtractable for DockingPort {
 #[allow(dead_code)]
 impl DockingPort {
     /// <doc> <summary> The direction that docking port points in, in the given reference frame. </summary> <returns>The direction as a unit vector.</returns> <param name="referenceFrame">The reference frame that the returned direction is in.</param> </doc>
-    pub fn direction(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn direction(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("DockingPort_Direction"));
@@ -6282,7 +6474,10 @@ impl DockingPort {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The position of the docking port, in the given reference frame. </summary> <returns>The position as a vector.</returns> <param name="referenceFrame">The reference frame that the returned position vector is in.</param> </doc>
-    pub fn position(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn position(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("DockingPort_Position"));
@@ -6303,7 +6498,10 @@ impl DockingPort {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rotation of the docking port, in the given reference frame. </summary> <returns>The rotation as a quaternion of the form <math>(x, y, z, w)</math>.</returns> <param name="referenceFrame">The reference frame that the returned rotation is in.</param> </doc>
-    pub fn rotation(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64, f64)> {
+    pub fn rotation(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("DockingPort_Rotation"));
@@ -6324,7 +6522,7 @@ impl DockingPort {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Undocks the docking port and returns the new <see cref="T:SpaceCenter.Vessel" /> that is created. This method can be called for either docking port in a docked pair. Throws an exception if the docking port is not docked to anything. </summary> <remarks> When called, the active vessel may change. It is therefore possible that, after calling this function, the object(s) returned by previous call(s) to <see cref="M:SpaceCenter.ActiveVessel" /> no longer refer to the active vessel. </remarks> </doc>
-    pub fn undock(&self, ) -> CallHandle<super::space_center::Vessel> {
+    pub fn undock(&self) -> CallHandle<super::space_center::Vessel> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("DockingPort_Undock"));
@@ -6340,7 +6538,7 @@ impl DockingPort {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the docking port can be commanded to rotate while docked. </summary> </doc>
-    pub fn get_can_rotate(&self, ) -> CallHandle<bool> {
+    pub fn get_can_rotate(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("DockingPort_get_CanRotate"));
@@ -6356,7 +6554,7 @@ impl DockingPort {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part that this docking port is docked to. Returns <c>null</c> if this docking port is not docked to anything. </summary> </doc>
-    pub fn get_docked_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_docked_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("DockingPort_get_DockedPart"));
@@ -6372,7 +6570,7 @@ impl DockingPort {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the docking port has a shield. </summary> </doc>
-    pub fn get_has_shield(&self, ) -> CallHandle<bool> {
+    pub fn get_has_shield(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("DockingPort_get_HasShield"));
@@ -6388,7 +6586,7 @@ impl DockingPort {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Maximum rotation angle in degrees. </summary> </doc>
-    pub fn get_maximum_rotation(&self, ) -> CallHandle<f32> {
+    pub fn get_maximum_rotation(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("DockingPort_get_MaximumRotation"));
@@ -6404,7 +6602,7 @@ impl DockingPort {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Minimum rotation angle in degrees. </summary> </doc>
-    pub fn get_minimum_rotation(&self, ) -> CallHandle<f32> {
+    pub fn get_minimum_rotation(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("DockingPort_get_MinimumRotation"));
@@ -6420,7 +6618,7 @@ impl DockingPort {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this docking port. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("DockingPort_get_Part"));
@@ -6436,7 +6634,7 @@ impl DockingPort {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The distance a docking port must move away when it undocks before it becomes ready to dock with another port, in meters. </summary> </doc>
-    pub fn get_reengage_distance(&self, ) -> CallHandle<f32> {
+    pub fn get_reengage_distance(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("DockingPort_get_ReengageDistance"));
@@ -6452,7 +6650,7 @@ impl DockingPort {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The reference frame that is fixed relative to this docking port, and oriented with the port. <list type="bullet"><item><description>The origin is at the position of the docking port. </description></item><item><description>The axes rotate with the docking port.</description></item><item><description>The x-axis points out to the right side of the docking port. </description></item><item><description>The y-axis points in the direction the docking port is facing. </description></item><item><description>The z-axis points out of the bottom off the docking port. </description></item></list></summary> <remarks> This reference frame is not necessarily equivalent to the reference frame for the part, returned by <see cref="M:SpaceCenter.Part.ReferenceFrame" />. </remarks> </doc>
-    pub fn get_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_reference_frame(&self) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("DockingPort_get_ReferenceFrame"));
@@ -6468,7 +6666,7 @@ impl DockingPort {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Lock rotation. When locked, allows auto-strut to work across the joint. </summary> </doc>
-    pub fn get_rotation_locked(&self, ) -> CallHandle<bool> {
+    pub fn get_rotation_locked(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("DockingPort_get_RotationLocked"));
@@ -6484,7 +6682,7 @@ impl DockingPort {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Rotation target angle in degrees. </summary> </doc>
-    pub fn get_rotation_target(&self, ) -> CallHandle<f32> {
+    pub fn get_rotation_target(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("DockingPort_get_RotationTarget"));
@@ -6500,7 +6698,7 @@ impl DockingPort {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of the docking ports shield, if it has one.  Returns <c>true</c> if the docking port has a shield, and the shield is closed. Otherwise returns <c>false</c>. When set to <c>true</c>, the shield is closed, and when set to <c>false</c> the shield is opened. If the docking port does not have a shield, setting this attribute has no effect. </summary> </doc>
-    pub fn get_shielded(&self, ) -> CallHandle<bool> {
+    pub fn get_shielded(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("DockingPort_get_Shielded"));
@@ -6516,7 +6714,7 @@ impl DockingPort {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current state of the docking port. </summary> </doc>
-    pub fn get_state(&self, ) -> CallHandle<super::space_center::DockingPortState> {
+    pub fn get_state(&self) -> CallHandle<super::space_center::DockingPortState> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("DockingPort_get_State"));
@@ -6608,13 +6806,18 @@ impl fmt::Debug for Engine {
 }
 
 impl RPCEncodable for Engine {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Engine {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Engine { id })
     }
@@ -6686,7 +6889,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Toggle the current engine mode. </summary> </doc>
-    pub fn toggle_mode(&self, ) -> CallHandle<()> {
+    pub fn toggle_mode(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_ToggleMode"));
@@ -6702,7 +6905,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the engine is active. Setting this attribute may have no effect, depending on <see cref="M:SpaceCenter.Engine.CanShutdown" /> and <see cref="M:SpaceCenter.Engine.CanRestart" />. </summary> </doc>
-    pub fn get_active(&self, ) -> CallHandle<bool> {
+    pub fn get_active(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_Active"));
@@ -6718,7 +6921,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the engine will automatically switch modes. </summary> </doc>
-    pub fn get_auto_mode_switch(&self, ) -> CallHandle<bool> {
+    pub fn get_auto_mode_switch(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_AutoModeSwitch"));
@@ -6734,7 +6937,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The amount of thrust, in Newtons, that would be produced by the engine when activated and with its throttle set to 100%. Returns zero if the engine does not have any fuel. Takes the engine's current <see cref="M:SpaceCenter.Engine.ThrustLimit" /> and atmospheric conditions into account. </summary> </doc>
-    pub fn get_available_thrust(&self, ) -> CallHandle<f32> {
+    pub fn get_available_thrust(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_AvailableThrust"));
@@ -6750,7 +6953,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The available torque, in Newton meters, that can be produced by this engine, in the positive and negative pitch, roll and yaw axes of the vessel. These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />. Returns zero if the engine is inactive, or not gimballed. </summary> </doc>
-    pub fn get_available_torque(&self, ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
+    pub fn get_available_torque(&self) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_AvailableTorque"));
@@ -6766,7 +6969,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the engine can be restarted once shutdown. If the engine cannot be shutdown, returns <c>false</c>. For example, this is <c>true</c> for liquid fueled rockets and <c>false</c> for solid rocket boosters. </summary> </doc>
-    pub fn get_can_restart(&self, ) -> CallHandle<bool> {
+    pub fn get_can_restart(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_CanRestart"));
@@ -6782,7 +6985,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the engine can be shutdown once activated. For example, this is <c>true</c> for liquid fueled rockets and <c>false</c> for solid rocket boosters. </summary> </doc>
-    pub fn get_can_shutdown(&self, ) -> CallHandle<bool> {
+    pub fn get_can_shutdown(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_CanShutdown"));
@@ -6798,7 +7001,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The gimbal limiter of the engine. A value between 0 and 1. Returns 0 if the gimbal is locked. </summary> </doc>
-    pub fn get_gimbal_limit(&self, ) -> CallHandle<f32> {
+    pub fn get_gimbal_limit(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_GimbalLimit"));
@@ -6814,7 +7017,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the engines gimbal is locked in place. Setting this attribute has no effect if the engine is not gimballed. </summary> </doc>
-    pub fn get_gimbal_locked(&self, ) -> CallHandle<bool> {
+    pub fn get_gimbal_locked(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_GimbalLocked"));
@@ -6830,7 +7033,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The range over which the gimbal can move, in degrees. Returns 0 if the engine is not gimballed. </summary> </doc>
-    pub fn get_gimbal_range(&self, ) -> CallHandle<f32> {
+    pub fn get_gimbal_range(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_GimbalRange"));
@@ -6846,7 +7049,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the engine is gimballed. </summary> </doc>
-    pub fn get_gimballed(&self, ) -> CallHandle<bool> {
+    pub fn get_gimballed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_Gimballed"));
@@ -6862,7 +7065,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the engine has any fuel available. </summary> </doc>
-    pub fn get_has_fuel(&self, ) -> CallHandle<bool> {
+    pub fn get_has_fuel(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_HasFuel"));
@@ -6878,7 +7081,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the engine has multiple modes of operation. </summary> </doc>
-    pub fn get_has_modes(&self, ) -> CallHandle<bool> {
+    pub fn get_has_modes(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_HasModes"));
@@ -6894,7 +7097,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the independent throttle is enabled for the engine. </summary> </doc>
-    pub fn get_independent_throttle(&self, ) -> CallHandle<bool> {
+    pub fn get_independent_throttle(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_IndependentThrottle"));
@@ -6910,7 +7113,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The specific impulse of the engine at sea level on Kerbin, in seconds. </summary> </doc>
-    pub fn get_kerbin_sea_level_specific_impulse(&self, ) -> CallHandle<f32> {
+    pub fn get_kerbin_sea_level_specific_impulse(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_KerbinSeaLevelSpecificImpulse"));
@@ -6926,7 +7129,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The amount of thrust, in Newtons, that would be produced by the engine when activated and fueled, with its throttle and throttle limiter set to 100%. </summary> </doc>
-    pub fn get_max_thrust(&self, ) -> CallHandle<f32> {
+    pub fn get_max_thrust(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_MaxThrust"));
@@ -6942,7 +7145,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The maximum amount of thrust that can be produced by the engine in a vacuum, in Newtons. This is the amount of thrust produced by the engine when activated, <see cref="M:SpaceCenter.Engine.ThrustLimit" /> is set to 100%, the main vessel's throttle is set to 100% and the engine is in a vacuum. </summary> </doc>
-    pub fn get_max_vacuum_thrust(&self, ) -> CallHandle<f32> {
+    pub fn get_max_vacuum_thrust(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_MaxVacuumThrust"));
@@ -6958,7 +7161,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The name of the current engine mode. </summary> </doc>
-    pub fn get_mode(&self, ) -> CallHandle<String> {
+    pub fn get_mode(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_Mode"));
@@ -6974,7 +7177,9 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The available modes for the engine. A dictionary mapping mode names to <see cref="T:SpaceCenter.Engine" /> objects. </summary> </doc>
-    pub fn get_modes(&self, ) -> CallHandle<std::collections::HashMap<String, super::space_center::Engine>> {
+    pub fn get_modes(
+        &self,
+    ) -> CallHandle<std::collections::HashMap<String, super::space_center::Engine>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_Modes"));
@@ -6990,7 +7195,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this engine. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_Part"));
@@ -7006,7 +7211,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The names of the propellants that the engine consumes. </summary> </doc>
-    pub fn get_propellant_names(&self, ) -> CallHandle<Vec<String>> {
+    pub fn get_propellant_names(&self) -> CallHandle<Vec<String>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_PropellantNames"));
@@ -7022,7 +7227,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The ratio of resources that the engine consumes. A dictionary mapping resource names to the ratio at which they are consumed by the engine. </summary> <remarks> For example, if the ratios are 0.6 for LiquidFuel and 0.4 for Oxidizer, then for every 0.6 units of LiquidFuel that the engine burns, it will burn 0.4 units of Oxidizer. </remarks> </doc>
-    pub fn get_propellant_ratios(&self, ) -> CallHandle<std::collections::HashMap<String, f32>> {
+    pub fn get_propellant_ratios(&self) -> CallHandle<std::collections::HashMap<String, f32>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_PropellantRatios"));
@@ -7038,7 +7243,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The propellants that the engine consumes. </summary> </doc>
-    pub fn get_propellants(&self, ) -> CallHandle<Vec<super::space_center::Propellant>> {
+    pub fn get_propellants(&self) -> CallHandle<Vec<super::space_center::Propellant>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_Propellants"));
@@ -7054,7 +7259,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current specific impulse of the engine, in seconds. Returns zero if the engine is not active. </summary> </doc>
-    pub fn get_specific_impulse(&self, ) -> CallHandle<f32> {
+    pub fn get_specific_impulse(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_SpecificImpulse"));
@@ -7070,7 +7275,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current throttle setting for the engine. A value between 0 and 1. This is not necessarily the same as the vessel's main throttle setting, as some engines take time to adjust their throttle (such as jet engines), or independent throttle may be enabled.  When the engine's independent throttle is enabled (see <see cref="M:SpaceCenter.Engine.IndependentThrottle" />), can be used to set the throttle percentage. </summary> </doc>
-    pub fn get_throttle(&self, ) -> CallHandle<f32> {
+    pub fn get_throttle(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_Throttle"));
@@ -7086,7 +7291,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the <see cref="M:SpaceCenter.Control.Throttle" /> affects the engine. For example, this is <c>true</c> for liquid fueled rockets, and <c>false</c> for solid rocket boosters. </summary> </doc>
-    pub fn get_throttle_locked(&self, ) -> CallHandle<bool> {
+    pub fn get_throttle_locked(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_ThrottleLocked"));
@@ -7102,7 +7307,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current amount of thrust being produced by the engine, in Newtons. </summary> </doc>
-    pub fn get_thrust(&self, ) -> CallHandle<f32> {
+    pub fn get_thrust(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_Thrust"));
@@ -7118,7 +7323,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The thrust limiter of the engine. A value between 0 and 1. Setting this attribute may have no effect, for example the thrust limit for a solid rocket booster cannot be changed in flight. </summary> </doc>
-    pub fn get_thrust_limit(&self, ) -> CallHandle<f32> {
+    pub fn get_thrust_limit(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_ThrustLimit"));
@@ -7134,7 +7339,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The components of the engine that generate thrust. </summary> <remarks> For example, this corresponds to the rocket nozzel on a solid rocket booster, or the individual nozzels on a RAPIER engine. The overall thrust produced by the engine, as reported by <see cref="M:SpaceCenter.Engine.AvailableThrust" />, <see cref="M:SpaceCenter.Engine.MaxThrust" /> and others, is the sum of the thrust generated by each thruster. </remarks> </doc>
-    pub fn get_thrusters(&self, ) -> CallHandle<Vec<super::space_center::Thruster>> {
+    pub fn get_thrusters(&self) -> CallHandle<Vec<super::space_center::Thruster>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_Thrusters"));
@@ -7150,7 +7355,7 @@ impl Engine {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The vacuum specific impulse of the engine, in seconds. </summary> </doc>
-    pub fn get_vacuum_specific_impulse(&self, ) -> CallHandle<f32> {
+    pub fn get_vacuum_specific_impulse(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Engine_get_VacuumSpecificImpulse"));
@@ -7347,13 +7552,18 @@ impl fmt::Debug for Experiment {
 }
 
 impl RPCEncodable for Experiment {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Experiment {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Experiment { id })
     }
@@ -7362,7 +7572,7 @@ impl RPCExtractable for Experiment {
 #[allow(dead_code)]
 impl Experiment {
     /// <doc> <summary> Dump the experimental data contained by the experiment. </summary> </doc>
-    pub fn dump(&self, ) -> CallHandle<()> {
+    pub fn dump(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Experiment_Dump"));
@@ -7378,7 +7588,7 @@ impl Experiment {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Reset the experiment. </summary> </doc>
-    pub fn reset(&self, ) -> CallHandle<()> {
+    pub fn reset(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Experiment_Reset"));
@@ -7394,7 +7604,7 @@ impl Experiment {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Run the experiment. </summary> </doc>
-    pub fn run(&self, ) -> CallHandle<()> {
+    pub fn run(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Experiment_Run"));
@@ -7410,7 +7620,7 @@ impl Experiment {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Transmit all experimental data contained by this part. </summary> </doc>
-    pub fn transmit(&self, ) -> CallHandle<()> {
+    pub fn transmit(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Experiment_Transmit"));
@@ -7426,7 +7636,7 @@ impl Experiment {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Determines if the experiment is available given the current conditions. </summary> </doc>
-    pub fn get_available(&self, ) -> CallHandle<bool> {
+    pub fn get_available(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Experiment_get_Available"));
@@ -7442,7 +7652,7 @@ impl Experiment {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The name of the biome the experiment is currently in. </summary> </doc>
-    pub fn get_biome(&self, ) -> CallHandle<String> {
+    pub fn get_biome(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Experiment_get_Biome"));
@@ -7458,7 +7668,7 @@ impl Experiment {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The data contained in this experiment. </summary> </doc>
-    pub fn get_data(&self, ) -> CallHandle<Vec<super::space_center::ScienceData>> {
+    pub fn get_data(&self) -> CallHandle<Vec<super::space_center::ScienceData>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Experiment_get_Data"));
@@ -7474,7 +7684,7 @@ impl Experiment {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the experiment has been deployed. </summary> </doc>
-    pub fn get_deployed(&self, ) -> CallHandle<bool> {
+    pub fn get_deployed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Experiment_get_Deployed"));
@@ -7490,7 +7700,7 @@ impl Experiment {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the experiment contains data. </summary> </doc>
-    pub fn get_has_data(&self, ) -> CallHandle<bool> {
+    pub fn get_has_data(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Experiment_get_HasData"));
@@ -7506,7 +7716,7 @@ impl Experiment {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the experiment is inoperable. </summary> </doc>
-    pub fn get_inoperable(&self, ) -> CallHandle<bool> {
+    pub fn get_inoperable(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Experiment_get_Inoperable"));
@@ -7522,7 +7732,7 @@ impl Experiment {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Internal name of the experiment, as used in <a href="https://wiki.kerbalspaceprogram.com/wiki/CFG_File_Documentation">part cfg files</a>. </summary> </doc>
-    pub fn get_name(&self, ) -> CallHandle<String> {
+    pub fn get_name(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Experiment_get_Name"));
@@ -7538,7 +7748,7 @@ impl Experiment {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this experiment. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Experiment_get_Part"));
@@ -7554,7 +7764,7 @@ impl Experiment {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the experiment can be re-run. </summary> </doc>
-    pub fn get_rerunnable(&self, ) -> CallHandle<bool> {
+    pub fn get_rerunnable(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Experiment_get_Rerunnable"));
@@ -7570,7 +7780,7 @@ impl Experiment {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Containing information on the corresponding specific science result for the current conditions. Returns <c>null</c> if the experiment is unavailable. </summary> </doc>
-    pub fn get_science_subject(&self, ) -> CallHandle<super::space_center::ScienceSubject> {
+    pub fn get_science_subject(&self) -> CallHandle<super::space_center::ScienceSubject> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Experiment_get_ScienceSubject"));
@@ -7586,7 +7796,7 @@ impl Experiment {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Title of the experiment, as shown on the in-game UI. </summary> </doc>
-    pub fn get_title(&self, ) -> CallHandle<String> {
+    pub fn get_title(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Experiment_get_Title"));
@@ -7615,13 +7825,18 @@ impl fmt::Debug for Fairing {
 }
 
 impl RPCEncodable for Fairing {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Fairing {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Fairing { id })
     }
@@ -7630,7 +7845,7 @@ impl RPCExtractable for Fairing {
 #[allow(dead_code)]
 impl Fairing {
     /// <doc> <summary> Jettison the fairing. Has no effect if it has already been jettisoned. </summary> </doc>
-    pub fn jettison(&self, ) -> CallHandle<()> {
+    pub fn jettison(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Fairing_Jettison"));
@@ -7646,7 +7861,7 @@ impl Fairing {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the fairing has been jettisoned. </summary> </doc>
-    pub fn get_jettisoned(&self, ) -> CallHandle<bool> {
+    pub fn get_jettisoned(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Fairing_get_Jettisoned"));
@@ -7662,7 +7877,7 @@ impl Fairing {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this fairing. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Fairing_get_Part"));
@@ -7691,13 +7906,18 @@ impl fmt::Debug for Flight {
 }
 
 impl RPCEncodable for Flight {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Flight {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Flight { id })
     }
@@ -7706,7 +7926,12 @@ impl RPCExtractable for Flight {
 #[allow(dead_code)]
 impl Flight {
     /// <doc> <summary> Simulate and return the total aerodynamic forces acting on the vessel, if it where to be traveling with the given velocity at the given position in the atmosphere of the given celestial body. </summary> <returns>A vector pointing in the direction that the force acts, with its magnitude equal to the strength of the force in Newtons.</returns> </doc>
-    pub fn simulate_aerodynamic_force_at(&self, p_body: super::space_center::CelestialBody, p_position: (f64, f64, f64), p_velocity: (f64, f64, f64)) -> CallHandle<(f64, f64, f64)> {
+    pub fn simulate_aerodynamic_force_at(
+        &self,
+        p_body: super::space_center::CelestialBody,
+        p_position: (f64, f64, f64),
+        p_velocity: (f64, f64, f64),
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_SimulateAerodynamicForceAt"));
@@ -7737,7 +7962,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The total aerodynamic forces acting on the vessel, in reference frame <see cref="T:SpaceCenter.ReferenceFrame" />. </summary> <returns>A vector pointing in the direction that the force acts, with its magnitude equal to the strength of the force in Newtons.</returns> </doc>
-    pub fn get_aerodynamic_force(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_aerodynamic_force(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_AerodynamicForce"));
@@ -7753,7 +7978,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The pitch angle between the orientation of the vessel and its velocity vector, in degrees. </summary> </doc>
-    pub fn get_angle_of_attack(&self, ) -> CallHandle<f32> {
+    pub fn get_angle_of_attack(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_AngleOfAttack"));
@@ -7769,7 +7994,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The direction opposite to the normal of the vessels orbit, in the reference frame <see cref="T:SpaceCenter.ReferenceFrame" />. </summary> <returns>The direction as a unit vector.</returns> </doc>
-    pub fn get_anti_normal(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_anti_normal(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_AntiNormal"));
@@ -7785,7 +8010,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The direction opposite to the radial direction of the vessels orbit, in the reference frame <see cref="T:SpaceCenter.ReferenceFrame" />. </summary> <returns>The direction as a unit vector.</returns> </doc>
-    pub fn get_anti_radial(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_anti_radial(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_AntiRadial"));
@@ -7801,7 +8026,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current density of the atmosphere around the vessel, in <math>kg/m^3</math>. </summary> </doc>
-    pub fn get_atmosphere_density(&self, ) -> CallHandle<f32> {
+    pub fn get_atmosphere_density(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_AtmosphereDensity"));
@@ -7817,7 +8042,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/Ballistic_coefficient">ballistic coefficient</a>. </summary> <remarks> Requires <a href="https://forum.kerbalspaceprogram.com/index.php?/topic/19321-130-ferram-aerospace-research-v0159-liebe-82117/">Ferram Aerospace Research</a>. </remarks> </doc>
-    pub fn get_ballistic_coefficient(&self, ) -> CallHandle<f32> {
+    pub fn get_ballistic_coefficient(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_BallisticCoefficient"));
@@ -7833,7 +8058,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The altitude above the surface of the body, in meters. When over water, this is the altitude above the sea floor. Measured from the center of mass of the vessel. </summary> </doc>
-    pub fn get_bedrock_altitude(&self, ) -> CallHandle<f64> {
+    pub fn get_bedrock_altitude(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_BedrockAltitude"));
@@ -7849,7 +8074,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The position of the center of mass of the vessel, in the reference frame <see cref="T:SpaceCenter.ReferenceFrame" /></summary> <returns>The position as a vector.</returns> </doc>
-    pub fn get_center_of_mass(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_center_of_mass(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_CenterOfMass"));
@@ -7865,7 +8090,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The direction that the vessel is pointing in, in the reference frame <see cref="T:SpaceCenter.ReferenceFrame" />. </summary> <returns>The direction as a unit vector.</returns> </doc>
-    pub fn get_direction(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_direction(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Direction"));
@@ -7881,7 +8106,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/Aerodynamic_force">aerodynamic drag</a> currently acting on the vessel. </summary> <returns>A vector pointing in the direction of the force, with its magnitude equal to the strength of the force in Newtons.</returns> </doc>
-    pub fn get_drag(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_drag(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Drag"));
@@ -7897,7 +8122,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The coefficient of drag. This is the amount of drag produced by the vessel. It depends on air speed, air density and wing area. </summary> <remarks> Requires <a href="https://forum.kerbalspaceprogram.com/index.php?/topic/19321-130-ferram-aerospace-research-v0159-liebe-82117/">Ferram Aerospace Research</a>. </remarks> </doc>
-    pub fn get_drag_coefficient(&self, ) -> CallHandle<f32> {
+    pub fn get_drag_coefficient(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_DragCoefficient"));
@@ -7913,7 +8138,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The dynamic pressure acting on the vessel, in Pascals. This is a measure of the strength of the aerodynamic forces. It is equal to <math>\frac{1}{2} . \mbox{air density} . \mbox{velocity}^2</math>. It is commonly denoted <math>Q</math>. </summary> </doc>
-    pub fn get_dynamic_pressure(&self, ) -> CallHandle<f32> {
+    pub fn get_dynamic_pressure(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_DynamicPressure"));
@@ -7929,7 +8154,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The elevation of the terrain under the vessel, in meters. This is the height of the terrain above sea level, and is negative when the vessel is over the sea. </summary> </doc>
-    pub fn get_elevation(&self, ) -> CallHandle<f64> {
+    pub fn get_elevation(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Elevation"));
@@ -7945,7 +8170,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/Equivalent_airspeed">equivalent air speed</a> of the vessel, in meters per second. </summary> </doc>
-    pub fn get_equivalent_air_speed(&self, ) -> CallHandle<f32> {
+    pub fn get_equivalent_air_speed(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_EquivalentAirSpeed"));
@@ -7961,7 +8186,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current G force acting on the vessel in <math>g</math>. </summary> </doc>
-    pub fn get_g_force(&self, ) -> CallHandle<f32> {
+    pub fn get_g_force(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_GForce"));
@@ -7977,7 +8202,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The heading of the vessel (its angle relative to north), in degrees. A value between 0° and 360°. </summary> </doc>
-    pub fn get_heading(&self, ) -> CallHandle<f32> {
+    pub fn get_heading(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Heading"));
@@ -7993,7 +8218,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The horizontal speed of the vessel in meters per second, in the reference frame <see cref="T:SpaceCenter.ReferenceFrame" />. </summary> </doc>
-    pub fn get_horizontal_speed(&self, ) -> CallHandle<f64> {
+    pub fn get_horizontal_speed(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_HorizontalSpeed"));
@@ -8009,7 +8234,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/Latitude">latitude</a> of the vessel for the body being orbited, in degrees. </summary> </doc>
-    pub fn get_latitude(&self, ) -> CallHandle<f64> {
+    pub fn get_latitude(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Latitude"));
@@ -8025,7 +8250,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/Aerodynamic_force">aerodynamic lift</a> currently acting on the vessel. </summary> <returns>A vector pointing in the direction that the force acts, with its magnitude equal to the strength of the force in Newtons.</returns> </doc>
-    pub fn get_lift(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_lift(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Lift"));
@@ -8041,7 +8266,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The coefficient of lift. This is the amount of lift produced by the vessel, and depends on air speed, air density and wing area. </summary> <remarks> Requires <a href="https://forum.kerbalspaceprogram.com/index.php?/topic/19321-130-ferram-aerospace-research-v0159-liebe-82117/">Ferram Aerospace Research</a>. </remarks> </doc>
-    pub fn get_lift_coefficient(&self, ) -> CallHandle<f32> {
+    pub fn get_lift_coefficient(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_LiftCoefficient"));
@@ -8057,7 +8282,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/Longitude">longitude</a> of the vessel for the body being orbited, in degrees. </summary> </doc>
-    pub fn get_longitude(&self, ) -> CallHandle<f64> {
+    pub fn get_longitude(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Longitude"));
@@ -8073,7 +8298,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The speed of the vessel, in multiples of the speed of sound. </summary> </doc>
-    pub fn get_mach(&self, ) -> CallHandle<f32> {
+    pub fn get_mach(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Mach"));
@@ -8089,7 +8314,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The altitude above sea level, in meters. Measured from the center of mass of the vessel. </summary> </doc>
-    pub fn get_mean_altitude(&self, ) -> CallHandle<f64> {
+    pub fn get_mean_altitude(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_MeanAltitude"));
@@ -8105,7 +8330,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The direction normal to the vessels orbit, in the reference frame <see cref="T:SpaceCenter.ReferenceFrame" />. </summary> <returns>The direction as a unit vector.</returns> </doc>
-    pub fn get_normal(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_normal(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Normal"));
@@ -8121,7 +8346,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The pitch of the vessel relative to the horizon, in degrees. A value between -90° and +90°. </summary> </doc>
-    pub fn get_pitch(&self, ) -> CallHandle<f32> {
+    pub fn get_pitch(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Pitch"));
@@ -8137,7 +8362,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The prograde direction of the vessels orbit, in the reference frame <see cref="T:SpaceCenter.ReferenceFrame" />. </summary> <returns>The direction as a unit vector.</returns> </doc>
-    pub fn get_prograde(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_prograde(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Prograde"));
@@ -8153,7 +8378,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The radial direction of the vessels orbit, in the reference frame <see cref="T:SpaceCenter.ReferenceFrame" />. </summary> <returns>The direction as a unit vector.</returns> </doc>
-    pub fn get_radial(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_radial(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Radial"));
@@ -8169,7 +8394,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The retrograde direction of the vessels orbit, in the reference frame <see cref="T:SpaceCenter.ReferenceFrame" />. </summary> <returns>The direction as a unit vector.</returns> </doc>
-    pub fn get_retrograde(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_retrograde(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Retrograde"));
@@ -8185,7 +8410,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The vessels Reynolds number. </summary> <remarks> Requires <a href="https://forum.kerbalspaceprogram.com/index.php?/topic/19321-130-ferram-aerospace-research-v0159-liebe-82117/">Ferram Aerospace Research</a>. </remarks> </doc>
-    pub fn get_reynolds_number(&self, ) -> CallHandle<f32> {
+    pub fn get_reynolds_number(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_ReynoldsNumber"));
@@ -8201,7 +8426,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The roll of the vessel relative to the horizon, in degrees. A value between -180° and +180°. </summary> </doc>
-    pub fn get_roll(&self, ) -> CallHandle<f32> {
+    pub fn get_roll(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Roll"));
@@ -8217,7 +8442,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rotation of the vessel, in the reference frame <see cref="T:SpaceCenter.ReferenceFrame" /></summary> <returns>The rotation as a quaternion of the form <math>(x, y, z, w)</math>.</returns> </doc>
-    pub fn get_rotation(&self, ) -> CallHandle<(f64, f64, f64, f64)> {
+    pub fn get_rotation(&self) -> CallHandle<(f64, f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Rotation"));
@@ -8233,7 +8458,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The yaw angle between the orientation of the vessel and its velocity vector, in degrees. </summary> </doc>
-    pub fn get_sideslip_angle(&self, ) -> CallHandle<f32> {
+    pub fn get_sideslip_angle(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_SideslipAngle"));
@@ -8249,7 +8474,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The speed of the vessel in meters per second, in the reference frame <see cref="T:SpaceCenter.ReferenceFrame" />. </summary> </doc>
-    pub fn get_speed(&self, ) -> CallHandle<f64> {
+    pub fn get_speed(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Speed"));
@@ -8265,7 +8490,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The speed of sound, in the atmosphere around the vessel, in <math>m/s</math>. </summary> </doc>
-    pub fn get_speed_of_sound(&self, ) -> CallHandle<f32> {
+    pub fn get_speed_of_sound(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_SpeedOfSound"));
@@ -8281,7 +8506,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current amount of stall, between 0 and 1. A value greater than 0.005 indicates a minor stall and a value greater than 0.5 indicates a large-scale stall. </summary> <remarks> Requires <a href="https://forum.kerbalspaceprogram.com/index.php?/topic/19321-130-ferram-aerospace-research-v0159-liebe-82117/">Ferram Aerospace Research</a>. </remarks> </doc>
-    pub fn get_stall_fraction(&self, ) -> CallHandle<f32> {
+    pub fn get_stall_fraction(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_StallFraction"));
@@ -8297,7 +8522,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/Total_air_temperature">static (ambient) temperature</a> of the atmosphere around the vessel, in Kelvin. </summary> </doc>
-    pub fn get_static_air_temperature(&self, ) -> CallHandle<f32> {
+    pub fn get_static_air_temperature(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_StaticAirTemperature"));
@@ -8313,7 +8538,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The static atmospheric pressure acting on the vessel, in Pascals. </summary> </doc>
-    pub fn get_static_pressure(&self, ) -> CallHandle<f32> {
+    pub fn get_static_pressure(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_StaticPressure"));
@@ -8329,7 +8554,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The static atmospheric pressure at mean sea level, in Pascals. </summary> </doc>
-    pub fn get_static_pressure_at_msl(&self, ) -> CallHandle<f32> {
+    pub fn get_static_pressure_at_msl(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_StaticPressureAtMSL"));
@@ -8345,7 +8570,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The altitude above the surface of the body or sea level, whichever is closer, in meters. Measured from the center of mass of the vessel. </summary> </doc>
-    pub fn get_surface_altitude(&self, ) -> CallHandle<f64> {
+    pub fn get_surface_altitude(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_SurfaceAltitude"));
@@ -8361,7 +8586,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> An estimate of the current terminal velocity of the vessel, in meters per second. This is the speed at which the drag forces cancel out the force of gravity. </summary> </doc>
-    pub fn get_terminal_velocity(&self, ) -> CallHandle<f32> {
+    pub fn get_terminal_velocity(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_TerminalVelocity"));
@@ -8377,7 +8602,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The thrust specific fuel consumption for the jet engines on the vessel. This is a measure of the efficiency of the engines, with a lower value indicating a more efficient vessel. This value is the number of Newtons of fuel that are burned, per hour, to produce one newton of thrust. </summary> <remarks> Requires <a href="https://forum.kerbalspaceprogram.com/index.php?/topic/19321-130-ferram-aerospace-research-v0159-liebe-82117/">Ferram Aerospace Research</a>. </remarks> </doc>
-    pub fn get_thrust_specific_fuel_consumption(&self, ) -> CallHandle<f32> {
+    pub fn get_thrust_specific_fuel_consumption(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_ThrustSpecificFuelConsumption"));
@@ -8393,7 +8618,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/Total_air_temperature">total air temperature</a> of the atmosphere around the vessel, in Kelvin. This includes the <see cref="M:SpaceCenter.Flight.StaticAirTemperature" /> and the vessel's kinetic energy. </summary> </doc>
-    pub fn get_total_air_temperature(&self, ) -> CallHandle<f32> {
+    pub fn get_total_air_temperature(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_TotalAirTemperature"));
@@ -8409,7 +8634,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/True_airspeed">true air speed</a> of the vessel, in meters per second. </summary> </doc>
-    pub fn get_true_air_speed(&self, ) -> CallHandle<f32> {
+    pub fn get_true_air_speed(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_TrueAirSpeed"));
@@ -8425,7 +8650,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The velocity of the vessel, in the reference frame <see cref="T:SpaceCenter.ReferenceFrame" />. </summary> <returns>The velocity as a vector. The vector points in the direction of travel, and its magnitude is the speed of the vessel in meters per second.</returns> </doc>
-    pub fn get_velocity(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_velocity(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_Velocity"));
@@ -8441,7 +8666,7 @@ impl Flight {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The vertical speed of the vessel in meters per second, in the reference frame <see cref="T:SpaceCenter.ReferenceFrame" />. </summary> </doc>
-    pub fn get_vertical_speed(&self, ) -> CallHandle<f64> {
+    pub fn get_vertical_speed(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Flight_get_VerticalSpeed"));
@@ -8470,13 +8695,18 @@ impl fmt::Debug for Force {
 }
 
 impl RPCEncodable for Force {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Force {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Force { id })
     }
@@ -8485,7 +8715,7 @@ impl RPCExtractable for Force {
 #[allow(dead_code)]
 impl Force {
     /// <doc> <summary> Remove the force. </summary> </doc>
-    pub fn remove(&self, ) -> CallHandle<()> {
+    pub fn remove(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Force_Remove"));
@@ -8501,7 +8731,7 @@ impl Force {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The force vector, in Newtons. </summary> <returns>A vector pointing in the direction that the force acts, with its magnitude equal to the strength of the force in Newtons.</returns> </doc>
-    pub fn get_force_vector(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_force_vector(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Force_get_ForceVector"));
@@ -8517,7 +8747,7 @@ impl Force {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part that this force is applied to. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Force_get_Part"));
@@ -8533,7 +8763,7 @@ impl Force {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The position at which the force acts, in reference frame <see cref="T:SpaceCenter.ReferenceFrame" />. </summary> <returns>The position as a vector.</returns> </doc>
-    pub fn get_position(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_position(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Force_get_Position"));
@@ -8549,7 +8779,7 @@ impl Force {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The reference frame of the force vector and position. </summary> </doc>
-    pub fn get_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_reference_frame(&self) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Force_get_ReferenceFrame"));
@@ -8607,7 +8837,10 @@ impl Force {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The reference frame of the force vector and position. </summary> </doc>
-    pub fn set_reference_frame(&self, p_value: super::space_center::ReferenceFrame) -> CallHandle<()> {
+    pub fn set_reference_frame(
+        &self,
+        p_value: super::space_center::ReferenceFrame,
+    ) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Force_set_ReferenceFrame"));
@@ -8641,13 +8874,18 @@ impl fmt::Debug for Intake {
 }
 
 impl RPCEncodable for Intake {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Intake {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Intake { id })
     }
@@ -8656,7 +8894,7 @@ impl RPCExtractable for Intake {
 #[allow(dead_code)]
 impl Intake {
     /// <doc> <summary> The area of the intake's opening, in square meters. </summary> </doc>
-    pub fn get_area(&self, ) -> CallHandle<f32> {
+    pub fn get_area(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Intake_get_Area"));
@@ -8672,7 +8910,7 @@ impl Intake {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rate of flow into the intake, in units of resource per second. </summary> </doc>
-    pub fn get_flow(&self, ) -> CallHandle<f32> {
+    pub fn get_flow(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Intake_get_Flow"));
@@ -8688,7 +8926,7 @@ impl Intake {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the intake is open. </summary> </doc>
-    pub fn get_open(&self, ) -> CallHandle<bool> {
+    pub fn get_open(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Intake_get_Open"));
@@ -8704,7 +8942,7 @@ impl Intake {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this intake. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Intake_get_Part"));
@@ -8720,7 +8958,7 @@ impl Intake {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Speed of the flow into the intake, in <math>m/s</math>. </summary> </doc>
-    pub fn get_speed(&self, ) -> CallHandle<f32> {
+    pub fn get_speed(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Intake_get_Speed"));
@@ -8770,13 +9008,18 @@ impl fmt::Debug for LaunchClamp {
 }
 
 impl RPCEncodable for LaunchClamp {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for LaunchClamp {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(LaunchClamp { id })
     }
@@ -8785,7 +9028,7 @@ impl RPCExtractable for LaunchClamp {
 #[allow(dead_code)]
 impl LaunchClamp {
     /// <doc> <summary> Releases the docking clamp. Has no effect if the clamp has already been released. </summary> </doc>
-    pub fn release(&self, ) -> CallHandle<()> {
+    pub fn release(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("LaunchClamp_Release"));
@@ -8801,7 +9044,7 @@ impl LaunchClamp {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this launch clamp. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("LaunchClamp_get_Part"));
@@ -8830,13 +9073,18 @@ impl fmt::Debug for LaunchSite {
 }
 
 impl RPCEncodable for LaunchSite {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for LaunchSite {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(LaunchSite { id })
     }
@@ -8845,7 +9093,7 @@ impl RPCExtractable for LaunchSite {
 #[allow(dead_code)]
 impl LaunchSite {
     /// <doc> <summary> The celestial body the launch site is on. </summary> </doc>
-    pub fn get_body(&self, ) -> CallHandle<super::space_center::CelestialBody> {
+    pub fn get_body(&self) -> CallHandle<super::space_center::CelestialBody> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("LaunchSite_get_Body"));
@@ -8861,7 +9109,7 @@ impl LaunchSite {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Which editor is normally used for this launch site. </summary> </doc>
-    pub fn get_editor_facility(&self, ) -> CallHandle<super::space_center::EditorFacility> {
+    pub fn get_editor_facility(&self) -> CallHandle<super::space_center::EditorFacility> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("LaunchSite_get_EditorFacility"));
@@ -8877,7 +9125,7 @@ impl LaunchSite {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The name of the launch site. </summary> </doc>
-    pub fn get_name(&self, ) -> CallHandle<String> {
+    pub fn get_name(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("LaunchSite_get_Name"));
@@ -8906,13 +9154,18 @@ impl fmt::Debug for Leg {
 }
 
 impl RPCEncodable for Leg {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Leg {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Leg { id })
     }
@@ -8921,7 +9174,7 @@ impl RPCExtractable for Leg {
 #[allow(dead_code)]
 impl Leg {
     /// <doc> <summary> Whether the leg is deployable. </summary> </doc>
-    pub fn get_deployable(&self, ) -> CallHandle<bool> {
+    pub fn get_deployable(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Leg_get_Deployable"));
@@ -8937,7 +9190,7 @@ impl Leg {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the landing leg is deployed. </summary> <remarks> Fixed landing legs are always deployed. Returns an error if you try to deploy fixed landing gear. </remarks> </doc>
-    pub fn get_deployed(&self, ) -> CallHandle<bool> {
+    pub fn get_deployed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Leg_get_Deployed"));
@@ -8953,7 +9206,7 @@ impl Leg {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns whether the leg is touching the ground. </summary> </doc>
-    pub fn get_is_grounded(&self, ) -> CallHandle<bool> {
+    pub fn get_is_grounded(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Leg_get_IsGrounded"));
@@ -8969,7 +9222,7 @@ impl Leg {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this landing leg. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Leg_get_Part"));
@@ -8985,7 +9238,7 @@ impl Leg {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current state of the landing leg. </summary> </doc>
-    pub fn get_state(&self, ) -> CallHandle<super::space_center::LegState> {
+    pub fn get_state(&self) -> CallHandle<super::space_center::LegState> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Leg_get_State"));
@@ -9035,13 +9288,18 @@ impl fmt::Debug for Light {
 }
 
 impl RPCEncodable for Light {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Light {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Light { id })
     }
@@ -9050,7 +9308,7 @@ impl RPCExtractable for Light {
 #[allow(dead_code)]
 impl Light {
     /// <doc> <summary> Whether the light is switched on. </summary> </doc>
-    pub fn get_active(&self, ) -> CallHandle<bool> {
+    pub fn get_active(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Light_get_Active"));
@@ -9066,7 +9324,7 @@ impl Light {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether blinking is enabled. </summary> </doc>
-    pub fn get_blink(&self, ) -> CallHandle<bool> {
+    pub fn get_blink(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Light_get_Blink"));
@@ -9082,7 +9340,7 @@ impl Light {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The blink rate of the light. </summary> </doc>
-    pub fn get_blink_rate(&self, ) -> CallHandle<f32> {
+    pub fn get_blink_rate(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Light_get_BlinkRate"));
@@ -9098,7 +9356,7 @@ impl Light {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The color of the light, as an RGB triple. </summary> </doc>
-    pub fn get_color(&self, ) -> CallHandle<(f32, f32, f32)> {
+    pub fn get_color(&self) -> CallHandle<(f32, f32, f32)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Light_get_Color"));
@@ -9114,7 +9372,7 @@ impl Light {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this light. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Light_get_Part"));
@@ -9130,7 +9388,7 @@ impl Light {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current power usage, in units of charge per second. </summary> </doc>
-    pub fn get_power_usage(&self, ) -> CallHandle<f32> {
+    pub fn get_power_usage(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Light_get_PowerUsage"));
@@ -9243,13 +9501,18 @@ impl fmt::Debug for Module {
 }
 
 impl RPCEncodable for Module {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Module {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Module { id })
     }
@@ -9770,7 +10033,7 @@ impl Module {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all the names of the modules actions. These are the parts actions that can be assigned to action groups in the in-game editor. </summary> </doc>
-    pub fn get_actions(&self, ) -> CallHandle<Vec<String>> {
+    pub fn get_actions(&self) -> CallHandle<Vec<String>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Module_get_Actions"));
@@ -9786,7 +10049,7 @@ impl Module {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all the identifiers of the modules actions. These are the parts actions that can be assigned to action groups in the in-game editor. </summary> </doc>
-    pub fn get_actions_by_id(&self, ) -> CallHandle<Vec<String>> {
+    pub fn get_actions_by_id(&self) -> CallHandle<Vec<String>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Module_get_ActionsById"));
@@ -9802,7 +10065,7 @@ impl Module {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of the names of all of the modules events. Events are the clickable buttons visible in the right-click menu of the part. </summary> </doc>
-    pub fn get_events(&self, ) -> CallHandle<Vec<String>> {
+    pub fn get_events(&self) -> CallHandle<Vec<String>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Module_get_Events"));
@@ -9818,7 +10081,7 @@ impl Module {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of the identifiers of all of the modules events. Events are the clickable buttons visible in the right-click menu of the part. </summary> </doc>
-    pub fn get_events_by_id(&self, ) -> CallHandle<Vec<String>> {
+    pub fn get_events_by_id(&self) -> CallHandle<Vec<String>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Module_get_EventsById"));
@@ -9834,7 +10097,7 @@ impl Module {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The modules field names and their associated values, as a dictionary. These are the values visible in the right-click menu of the part. </summary> <remarks> Throws an exception if there is more than one field with the same name. In that case, use <see cref="M:SpaceCenter.Module.FieldsById" /> to get the fields by identifier. </remarks> </doc>
-    pub fn get_fields(&self, ) -> CallHandle<std::collections::HashMap<String, String>> {
+    pub fn get_fields(&self) -> CallHandle<std::collections::HashMap<String, String>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Module_get_Fields"));
@@ -9850,7 +10113,7 @@ impl Module {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The modules field identifiers and their associated values, as a dictionary. These are the values visible in the right-click menu of the part. </summary> </doc>
-    pub fn get_fields_by_id(&self, ) -> CallHandle<std::collections::HashMap<String, String>> {
+    pub fn get_fields_by_id(&self) -> CallHandle<std::collections::HashMap<String, String>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Module_get_FieldsById"));
@@ -9866,7 +10129,7 @@ impl Module {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Name of the PartModule. For example, "ModuleEngines". </summary> </doc>
-    pub fn get_name(&self, ) -> CallHandle<String> {
+    pub fn get_name(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Module_get_Name"));
@@ -9882,7 +10145,7 @@ impl Module {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part that contains this module. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Module_get_Part"));
@@ -9911,13 +10174,18 @@ impl fmt::Debug for Node {
 }
 
 impl RPCEncodable for Node {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Node {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Node { id })
     }
@@ -9926,7 +10194,10 @@ impl RPCExtractable for Node {
 #[allow(dead_code)]
 impl Node {
     /// <doc> <summary> Returns the burn vector for the maneuver node. </summary> <param name="referenceFrame">The reference frame that the returned vector is in. Defaults to <see cref="M:SpaceCenter.Vessel.OrbitalReferenceFrame" />.</param> <returns>A vector whose direction is the direction of the maneuver node burn, and magnitude is the delta-v of the burn in meters per second. </returns> <remarks> Does not change when executing the maneuver node. See <see cref="M:SpaceCenter.Node.RemainingBurnVector" />. </remarks> </doc>
-    pub fn burn_vector(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn burn_vector(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Node_BurnVector"));
@@ -9947,7 +10218,10 @@ impl Node {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The direction of the maneuver nodes burn. </summary> <returns>The direction as a unit vector.</returns> <param name="referenceFrame">The reference frame that the returned direction is in.</param> </doc>
-    pub fn direction(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn direction(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Node_Direction"));
@@ -9968,7 +10242,10 @@ impl Node {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The position vector of the maneuver node in the given reference frame. </summary> <returns>The position as a vector.</returns> <param name="referenceFrame">The reference frame that the returned position vector is in.</param> </doc>
-    pub fn position(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn position(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Node_Position"));
@@ -9989,7 +10266,10 @@ impl Node {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns the remaining burn vector for the maneuver node. </summary> <param name="referenceFrame">The reference frame that the returned vector is in. Defaults to <see cref="M:SpaceCenter.Vessel.OrbitalReferenceFrame" />.</param> <returns>A vector whose direction is the direction of the maneuver node burn, and magnitude is the delta-v of the burn in meters per second. </returns> <remarks> Changes as the maneuver node is executed. See <see cref="M:SpaceCenter.Node.BurnVector" />. </remarks> </doc>
-    pub fn remaining_burn_vector(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn remaining_burn_vector(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Node_RemainingBurnVector"));
@@ -10010,7 +10290,7 @@ impl Node {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Removes the maneuver node. </summary> </doc>
-    pub fn remove(&self, ) -> CallHandle<()> {
+    pub fn remove(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Node_Remove"));
@@ -10026,7 +10306,7 @@ impl Node {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The delta-v of the maneuver node, in meters per second. </summary> <remarks> Does not change when executing the maneuver node. See <see cref="M:SpaceCenter.Node.RemainingDeltaV" />. </remarks> </doc>
-    pub fn get_delta_v(&self, ) -> CallHandle<f64> {
+    pub fn get_delta_v(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Node_get_DeltaV"));
@@ -10042,7 +10322,7 @@ impl Node {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The magnitude of the maneuver nodes delta-v in the normal direction, in meters per second. </summary> </doc>
-    pub fn get_normal(&self, ) -> CallHandle<f64> {
+    pub fn get_normal(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Node_get_Normal"));
@@ -10058,7 +10338,7 @@ impl Node {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The orbit that results from executing the maneuver node. </summary> </doc>
-    pub fn get_orbit(&self, ) -> CallHandle<super::space_center::Orbit> {
+    pub fn get_orbit(&self) -> CallHandle<super::space_center::Orbit> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Node_get_Orbit"));
@@ -10074,7 +10354,7 @@ impl Node {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The reference frame that is fixed relative to the maneuver node, and orientated with the orbital prograde/normal/radial directions of the original orbit at the maneuver node's position. <list type="bullet"><item><description>The origin is at the position of the maneuver node.</description></item><item><description>The x-axis points in the orbital anti-radial direction of the original orbit, at the position of the maneuver node.</description></item><item><description>The y-axis points in the orbital prograde direction of the original orbit, at the position of the maneuver node.</description></item><item><description>The z-axis points in the orbital normal direction of the original orbit, at the position of the maneuver node.</description></item></list></summary> </doc>
-    pub fn get_orbital_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_orbital_reference_frame(&self) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Node_get_OrbitalReferenceFrame"));
@@ -10090,7 +10370,7 @@ impl Node {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The magnitude of the maneuver nodes delta-v in the prograde direction, in meters per second. </summary> </doc>
-    pub fn get_prograde(&self, ) -> CallHandle<f64> {
+    pub fn get_prograde(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Node_get_Prograde"));
@@ -10106,7 +10386,7 @@ impl Node {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The magnitude of the maneuver nodes delta-v in the radial direction, in meters per second. </summary> </doc>
-    pub fn get_radial(&self, ) -> CallHandle<f64> {
+    pub fn get_radial(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Node_get_Radial"));
@@ -10122,7 +10402,7 @@ impl Node {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The reference frame that is fixed relative to the maneuver node's burn. <list type="bullet"><item><description>The origin is at the position of the maneuver node.</description></item><item><description>The y-axis points in the direction of the burn.</description></item><item><description>The x-axis and z-axis point in arbitrary but fixed directions.</description></item></list></summary> </doc>
-    pub fn get_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_reference_frame(&self) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Node_get_ReferenceFrame"));
@@ -10138,7 +10418,7 @@ impl Node {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Gets the remaining delta-v of the maneuver node, in meters per second. Changes as the node is executed. This is equivalent to the delta-v reported in-game. </summary> </doc>
-    pub fn get_remaining_delta_v(&self, ) -> CallHandle<f64> {
+    pub fn get_remaining_delta_v(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Node_get_RemainingDeltaV"));
@@ -10154,7 +10434,7 @@ impl Node {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The time until the maneuver node will be encountered, in seconds. </summary> </doc>
-    pub fn get_time_to(&self, ) -> CallHandle<f64> {
+    pub fn get_time_to(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Node_get_TimeTo"));
@@ -10170,7 +10450,7 @@ impl Node {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The universal time at which the maneuver will occur, in seconds. </summary> </doc>
-    pub fn get_ut(&self, ) -> CallHandle<f64> {
+    pub fn get_ut(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Node_get_UT"));
@@ -10304,13 +10584,18 @@ impl fmt::Debug for Orbit {
 }
 
 impl RPCEncodable for Orbit {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Orbit {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Orbit { id })
     }
@@ -10319,7 +10604,9 @@ impl RPCExtractable for Orbit {
 #[allow(dead_code)]
 impl Orbit {
     /// <doc> <summary> The direction from which the orbits longitude of ascending node is measured, in the given reference frame. </summary> <returns>The direction as a unit vector.</returns> <param name="referenceFrame">The reference frame that the returned direction is in.</param> </doc>
-    pub fn reference_plane_direction(p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn reference_plane_direction(
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_static_ReferencePlaneDirection"));
@@ -10335,7 +10622,9 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The direction that is normal to the orbits reference plane, in the given reference frame. The reference plane is the plane from which the orbits inclination is measured. </summary> <returns>The direction as a unit vector.</returns> <param name="referenceFrame">The reference frame that the returned direction is in.</param> </doc>
-    pub fn reference_plane_normal(p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn reference_plane_normal(
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_static_ReferencePlaneNormal"));
@@ -10351,7 +10640,10 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Estimates and returns the distance at closest approach to a target orbit, in meters. </summary> <param name="target">Target orbit.</param> </doc>
-    pub fn distance_at_closest_approach(&self, p_target: super::space_center::Orbit) -> CallHandle<f64> {
+    pub fn distance_at_closest_approach(
+        &self,
+        p_target: super::space_center::Orbit,
+    ) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_DistanceAtClosestApproach"));
@@ -10393,7 +10685,11 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns the times at closest approach and corresponding distances, to a target orbit. </summary> <returns> A list of two lists. The first is a list of times at closest approach, as universal times in seconds. The second is a list of corresponding distances at closest approach, in meters. </returns> <param name="target">Target orbit.</param> <param name="orbits">The number of future orbits to search.</param> </doc>
-    pub fn list_closest_approaches(&self, p_target: super::space_center::Orbit, p_orbits: i32) -> CallHandle<Vec<Vec<f64>>> {
+    pub fn list_closest_approaches(
+        &self,
+        p_target: super::space_center::Orbit,
+        p_orbits: i32,
+    ) -> CallHandle<Vec<Vec<f64>>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_ListClosestApproaches"));
@@ -10461,7 +10757,11 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The position at a given time, in the specified reference frame. </summary> <returns>The position as a vector.</returns> <param name="ut">The universal time to measure the position at.</param> <param name="referenceFrame">The reference frame that the returned position vector is in.</param> </doc>
-    pub fn position_at(&self, p_ut: f64, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn position_at(
+        &self,
+        p_ut: f64,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_PositionAt"));
@@ -10550,7 +10850,10 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Estimates and returns the time at closest approach to a target orbit. </summary> <returns>The universal time at closest approach, in seconds.</returns> <param name="target">Target orbit.</param> </doc>
-    pub fn time_of_closest_approach(&self, p_target: super::space_center::Orbit) -> CallHandle<f64> {
+    pub fn time_of_closest_approach(
+        &self,
+        p_target: super::space_center::Orbit,
+    ) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_TimeOfClosestApproach"));
@@ -10676,7 +10979,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Gets the apoapsis of the orbit, in meters, from the center of mass of the body being orbited. </summary> <remarks> For the apoapsis altitude reported on the in-game map view, use <see cref="M:SpaceCenter.Orbit.ApoapsisAltitude" />. </remarks> </doc>
-    pub fn get_apoapsis(&self, ) -> CallHandle<f64> {
+    pub fn get_apoapsis(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_Apoapsis"));
@@ -10692,7 +10995,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The apoapsis of the orbit, in meters, above the sea level of the body being orbited. </summary> <remarks> This is equal to <see cref="M:SpaceCenter.Orbit.Apoapsis" /> minus the equatorial radius of the body. </remarks> </doc>
-    pub fn get_apoapsis_altitude(&self, ) -> CallHandle<f64> {
+    pub fn get_apoapsis_altitude(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_ApoapsisAltitude"));
@@ -10708,7 +11011,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/Argument_of_periapsis">argument of periapsis</a>, in radians. </summary> </doc>
-    pub fn get_argument_of_periapsis(&self, ) -> CallHandle<f64> {
+    pub fn get_argument_of_periapsis(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_ArgumentOfPeriapsis"));
@@ -10724,7 +11027,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The celestial body (e.g. planet or moon) around which the object is orbiting. </summary> </doc>
-    pub fn get_body(&self, ) -> CallHandle<super::space_center::CelestialBody> {
+    pub fn get_body(&self) -> CallHandle<super::space_center::CelestialBody> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_Body"));
@@ -10740,7 +11043,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/Eccentric_anomaly">eccentric anomaly</a>. </summary> </doc>
-    pub fn get_eccentric_anomaly(&self, ) -> CallHandle<f64> {
+    pub fn get_eccentric_anomaly(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_EccentricAnomaly"));
@@ -10756,7 +11059,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/Orbital_eccentricity">eccentricity</a> of the orbit. </summary> </doc>
-    pub fn get_eccentricity(&self, ) -> CallHandle<f64> {
+    pub fn get_eccentricity(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_Eccentricity"));
@@ -10772,7 +11075,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The time since the epoch (the point at which the <a href="https://en.wikipedia.org/wiki/Mean_anomaly">mean anomaly at epoch</a> was measured, in seconds. </summary> </doc>
-    pub fn get_epoch(&self, ) -> CallHandle<f64> {
+    pub fn get_epoch(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_Epoch"));
@@ -10788,7 +11091,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/Orbital_inclination">inclination</a> of the orbit, in radians. </summary> </doc>
-    pub fn get_inclination(&self, ) -> CallHandle<f64> {
+    pub fn get_inclination(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_Inclination"));
@@ -10804,7 +11107,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/Longitude_of_the_ascending_node">longitude of the ascending node</a>, in radians. </summary> </doc>
-    pub fn get_longitude_of_ascending_node(&self, ) -> CallHandle<f64> {
+    pub fn get_longitude_of_ascending_node(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_LongitudeOfAscendingNode"));
@@ -10820,7 +11123,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/Mean_anomaly">mean anomaly</a>. </summary> </doc>
-    pub fn get_mean_anomaly(&self, ) -> CallHandle<f64> {
+    pub fn get_mean_anomaly(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_MeanAnomaly"));
@@ -10836,7 +11139,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/Mean_anomaly">mean anomaly at epoch</a>. </summary> </doc>
-    pub fn get_mean_anomaly_at_epoch(&self, ) -> CallHandle<f64> {
+    pub fn get_mean_anomaly_at_epoch(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_MeanAnomalyAtEpoch"));
@@ -10852,7 +11155,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> If the object is going to change sphere of influence in the future, returns the new orbit after the change. Otherwise returns <c>null</c>. </summary> </doc>
-    pub fn get_next_orbit(&self, ) -> CallHandle<super::space_center::Orbit> {
+    pub fn get_next_orbit(&self) -> CallHandle<super::space_center::Orbit> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_NextOrbit"));
@@ -10868,7 +11171,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current orbital speed in meters per second. </summary> </doc>
-    pub fn get_orbital_speed(&self, ) -> CallHandle<f64> {
+    pub fn get_orbital_speed(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_OrbitalSpeed"));
@@ -10884,7 +11187,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The periapsis of the orbit, in meters, from the center of mass of the body being orbited. </summary> <remarks> For the periapsis altitude reported on the in-game map view, use <see cref="M:SpaceCenter.Orbit.PeriapsisAltitude" />. </remarks> </doc>
-    pub fn get_periapsis(&self, ) -> CallHandle<f64> {
+    pub fn get_periapsis(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_Periapsis"));
@@ -10900,7 +11203,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The periapsis of the orbit, in meters, above the sea level of the body being orbited. </summary> <remarks> This is equal to <see cref="M:SpaceCenter.Orbit.Periapsis" /> minus the equatorial radius of the body. </remarks> </doc>
-    pub fn get_periapsis_altitude(&self, ) -> CallHandle<f64> {
+    pub fn get_periapsis_altitude(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_PeriapsisAltitude"));
@@ -10916,7 +11219,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The orbital period, in seconds. </summary> </doc>
-    pub fn get_period(&self, ) -> CallHandle<f64> {
+    pub fn get_period(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_Period"));
@@ -10932,7 +11235,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current radius of the orbit, in meters. This is the distance between the center of mass of the object in orbit, and the center of mass of the body around which it is orbiting. </summary> <remarks> This value will change over time if the orbit is elliptical. </remarks> </doc>
-    pub fn get_radius(&self, ) -> CallHandle<f64> {
+    pub fn get_radius(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_Radius"));
@@ -10948,7 +11251,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The semi-major axis of the orbit, in meters. </summary> </doc>
-    pub fn get_semi_major_axis(&self, ) -> CallHandle<f64> {
+    pub fn get_semi_major_axis(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_SemiMajorAxis"));
@@ -10964,7 +11267,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The semi-minor axis of the orbit, in meters. </summary> </doc>
-    pub fn get_semi_minor_axis(&self, ) -> CallHandle<f64> {
+    pub fn get_semi_minor_axis(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_SemiMinorAxis"));
@@ -10980,7 +11283,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current orbital speed of the object in meters per second. </summary> <remarks> This value will change over time if the orbit is elliptical. </remarks> </doc>
-    pub fn get_speed(&self, ) -> CallHandle<f64> {
+    pub fn get_speed(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_Speed"));
@@ -10996,7 +11299,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The time until the object reaches apoapsis, in seconds. </summary> </doc>
-    pub fn get_time_to_apoapsis(&self, ) -> CallHandle<f64> {
+    pub fn get_time_to_apoapsis(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_TimeToApoapsis"));
@@ -11012,7 +11315,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The time until the object reaches periapsis, in seconds. </summary> </doc>
-    pub fn get_time_to_periapsis(&self, ) -> CallHandle<f64> {
+    pub fn get_time_to_periapsis(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_TimeToPeriapsis"));
@@ -11028,7 +11331,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The time until the object changes sphere of influence, in seconds. Returns <c>NaN</c> if the object is not going to change sphere of influence. </summary> </doc>
-    pub fn get_time_to_soi_change(&self, ) -> CallHandle<f64> {
+    pub fn get_time_to_soi_change(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_TimeToSOIChange"));
@@ -11044,7 +11347,7 @@ impl Orbit {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <a href="https://en.wikipedia.org/wiki/True_anomaly">true anomaly</a>. </summary> </doc>
-    pub fn get_true_anomaly(&self, ) -> CallHandle<f64> {
+    pub fn get_true_anomaly(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Orbit_get_TrueAnomaly"));
@@ -11073,13 +11376,18 @@ impl fmt::Debug for Parachute {
 }
 
 impl RPCEncodable for Parachute {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Parachute {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Parachute { id })
     }
@@ -11088,7 +11396,7 @@ impl RPCExtractable for Parachute {
 #[allow(dead_code)]
 impl Parachute {
     /// <doc> <summary> Deploys the parachute. This has no effect if the parachute has already been armed or deployed. </summary> </doc>
-    pub fn arm(&self, ) -> CallHandle<()> {
+    pub fn arm(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parachute_Arm"));
@@ -11104,7 +11412,7 @@ impl Parachute {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Cuts the parachute. </summary> </doc>
-    pub fn cut(&self, ) -> CallHandle<()> {
+    pub fn cut(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parachute_Cut"));
@@ -11120,7 +11428,7 @@ impl Parachute {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Deploys the parachute. This has no effect if the parachute has already been deployed. </summary> </doc>
-    pub fn deploy(&self, ) -> CallHandle<()> {
+    pub fn deploy(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parachute_Deploy"));
@@ -11136,7 +11444,7 @@ impl Parachute {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the parachute has been armed or deployed. </summary> </doc>
-    pub fn get_armed(&self, ) -> CallHandle<bool> {
+    pub fn get_armed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parachute_get_Armed"));
@@ -11152,7 +11460,7 @@ impl Parachute {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The altitude at which the parachute will full deploy, in meters. Only applicable to stock parachutes. </summary> </doc>
-    pub fn get_deploy_altitude(&self, ) -> CallHandle<f32> {
+    pub fn get_deploy_altitude(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parachute_get_DeployAltitude"));
@@ -11168,7 +11476,7 @@ impl Parachute {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The minimum pressure at which the parachute will semi-deploy, in atmospheres. Only applicable to stock parachutes. </summary> </doc>
-    pub fn get_deploy_min_pressure(&self, ) -> CallHandle<f32> {
+    pub fn get_deploy_min_pressure(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parachute_get_DeployMinPressure"));
@@ -11184,7 +11492,7 @@ impl Parachute {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the parachute has been deployed. </summary> </doc>
-    pub fn get_deployed(&self, ) -> CallHandle<bool> {
+    pub fn get_deployed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parachute_get_Deployed"));
@@ -11200,7 +11508,7 @@ impl Parachute {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this parachute. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parachute_get_Part"));
@@ -11216,7 +11524,7 @@ impl Parachute {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current state of the parachute. </summary> </doc>
-    pub fn get_state(&self, ) -> CallHandle<super::space_center::ParachuteState> {
+    pub fn get_state(&self) -> CallHandle<super::space_center::ParachuteState> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parachute_get_State"));
@@ -11287,13 +11595,18 @@ impl fmt::Debug for Part {
 }
 
 impl RPCEncodable for Part {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Part {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Part { id })
     }
@@ -11302,7 +11615,12 @@ impl RPCExtractable for Part {
 #[allow(dead_code)]
 impl Part {
     /// <doc> <summary> Exert a constant force on the part, acting at the given position. </summary> <returns>An object that can be used to remove or modify the force.</returns> <param name="force">A vector pointing in the direction that the force acts, with its magnitude equal to the strength of the force in Newtons.</param> <param name="position">The position at which the force acts, as a vector.</param> <param name="referenceFrame">The reference frame that the force and position are in.</param> </doc>
-    pub fn add_force(&self, p_force: (f64, f64, f64), p_position: (f64, f64, f64), p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<super::space_center::Force> {
+    pub fn add_force(
+        &self,
+        p_force: (f64, f64, f64),
+        p_position: (f64, f64, f64),
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<super::space_center::Force> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_AddForce"));
@@ -11333,7 +11651,10 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The axis-aligned bounding box of the part in the given reference frame. </summary> <returns>The positions of the minimum and maximum vertices of the box, as position vectors.</returns> <param name="referenceFrame">The reference frame that the returned position vectors are in.</param> <remarks> This is computed from the collision mesh of the part. If the part is not collidable, the box has zero volume and is centered on the <see cref="M:SpaceCenter.Part.Position" /> of the part. </remarks> </doc>
-    pub fn bounding_box(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
+    pub fn bounding_box(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_BoundingBox"));
@@ -11354,7 +11675,10 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The position of the parts center of mass in the given reference frame. If the part is physicsless, this is equivalent to <see cref="M:SpaceCenter.Part.Position" />. </summary> <returns>The position as a vector.</returns> <param name="referenceFrame">The reference frame that the returned position vector is in.</param> </doc>
-    pub fn center_of_mass(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn center_of_mass(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_CenterOfMass"));
@@ -11375,7 +11699,10 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The direction the part points in, in the given reference frame. </summary> <returns>The direction as a unit vector.</returns> <param name="referenceFrame">The reference frame that the returned direction is in.</param> </doc>
-    pub fn direction(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn direction(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_Direction"));
@@ -11396,7 +11723,12 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Exert an instantaneous force on the part, acting at the given position. </summary> <param name="force">A vector pointing in the direction that the force acts, with its magnitude equal to the strength of the force in Newtons.</param> <param name="position">The position at which the force acts, as a vector.</param> <param name="referenceFrame">The reference frame that the force and position are in.</param> <remarks>The force is applied instantaneously in a single physics update.</remarks> </doc>
-    pub fn instantaneous_force(&self, p_force: (f64, f64, f64), p_position: (f64, f64, f64), p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<()> {
+    pub fn instantaneous_force(
+        &self,
+        p_force: (f64, f64, f64),
+        p_position: (f64, f64, f64),
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_InstantaneousForce"));
@@ -11427,7 +11759,10 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The position of the part in the given reference frame. </summary> <returns>The position as a vector.</returns> <param name="referenceFrame">The reference frame that the returned position vector is in.</param> <remarks> This is a fixed position in the part, defined by the parts model. It s not necessarily the same as the parts center of mass. Use <see cref="M:SpaceCenter.Part.CenterOfMass" /> to get the parts center of mass. </remarks> </doc>
-    pub fn position(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn position(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_Position"));
@@ -11448,7 +11783,10 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rotation of the part, in the given reference frame. </summary> <returns>The rotation as a quaternion of the form <math>(x, y, z, w)</math>.</returns> <param name="referenceFrame">The reference frame that the returned rotation is in.</param> </doc>
-    pub fn rotation(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64, f64)> {
+    pub fn rotation(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_Rotation"));
@@ -11469,7 +11807,10 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The linear velocity of the part in the given reference frame. </summary> <returns>The velocity as a vector. The vector points in the direction of travel, and its magnitude is the speed of the body in meters per second.</returns> <param name="referenceFrame">The reference frame that the returned velocity vector is in.</param> </doc>
-    pub fn velocity(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn velocity(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_Velocity"));
@@ -11490,7 +11831,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> An <see cref="T:SpaceCenter.Antenna" /> if the part is an antenna, otherwise <c>null</c>. </summary> <remarks> If RemoteTech is installed, this will always return <c>null</c>. To interact with RemoteTech antennas, use the RemoteTech service APIs. </remarks> </doc>
-    pub fn get_antenna(&self, ) -> CallHandle<super::space_center::Antenna> {
+    pub fn get_antenna(&self) -> CallHandle<super::space_center::Antenna> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Antenna"));
@@ -11506,7 +11847,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Auto-strut mode. </summary> </doc>
-    pub fn get_auto_strut_mode(&self, ) -> CallHandle<super::space_center::AutoStrutMode> {
+    pub fn get_auto_strut_mode(&self) -> CallHandle<super::space_center::AutoStrutMode> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_AutoStrutMode"));
@@ -11522,7 +11863,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> How many open seats the part has. </summary> </doc>
-    pub fn get_available_seats(&self, ) -> CallHandle<u32> {
+    pub fn get_available_seats(&self) -> CallHandle<u32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_AvailableSeats"));
@@ -11538,7 +11879,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the part is axially attached to its parent, i.e. on the top or bottom of its parent. If the part has no parent, returns <c>false</c>. </summary> </doc>
-    pub fn get_axially_attached(&self, ) -> CallHandle<bool> {
+    pub fn get_axially_attached(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_AxiallyAttached"));
@@ -11554,7 +11895,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.CargoBay" /> if the part is a cargo bay, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_cargo_bay(&self, ) -> CallHandle<super::space_center::CargoBay> {
+    pub fn get_cargo_bay(&self) -> CallHandle<super::space_center::CargoBay> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_CargoBay"));
@@ -11570,7 +11911,9 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The reference frame that is fixed relative to this part, and centered on its center of mass. <list type="bullet"><item><description>The origin is at the center of mass of the part, as returned by <see cref="M:SpaceCenter.Part.CenterOfMass" />.</description></item><item><description>The axes rotate with the part.</description></item><item><description>The x, y and z axis directions depend on the design of the part. </description></item></list></summary> <remarks> For docking port parts, this reference frame is not necessarily equivalent to the reference frame for the docking port, returned by <see cref="M:SpaceCenter.DockingPort.ReferenceFrame" />. </remarks> </doc>
-    pub fn get_center_of_mass_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_center_of_mass_reference_frame(
+        &self,
+    ) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_CenterOfMassReferenceFrame"));
@@ -11586,7 +11929,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The parts children. Returns an empty list if the part has no children. This, in combination with <see cref="M:SpaceCenter.Part.Parent" />, can be used to traverse the vessels parts tree. </summary> </doc>
-    pub fn get_children(&self, ) -> CallHandle<Vec<super::space_center::Part>> {
+    pub fn get_children(&self) -> CallHandle<Vec<super::space_center::Part>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Children"));
@@ -11602,7 +11945,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.ControlSurface" /> if the part is an aerodynamic control surface, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_control_surface(&self, ) -> CallHandle<super::space_center::ControlSurface> {
+    pub fn get_control_surface(&self) -> CallHandle<super::space_center::ControlSurface> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_ControlSurface"));
@@ -11618,7 +11961,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The cost of the part, in units of funds. </summary> </doc>
-    pub fn get_cost(&self, ) -> CallHandle<f64> {
+    pub fn get_cost(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Cost"));
@@ -11634,7 +11977,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether this part is crossfeed capable. </summary> </doc>
-    pub fn get_crossfeed(&self, ) -> CallHandle<bool> {
+    pub fn get_crossfeed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Crossfeed"));
@@ -11650,7 +11993,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The stage in which this part will be decoupled. Returns -1 if the part is never decoupled from the vessel. </summary> </doc>
-    pub fn get_decouple_stage(&self, ) -> CallHandle<i32> {
+    pub fn get_decouple_stage(&self) -> CallHandle<i32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_DecoupleStage"));
@@ -11666,7 +12009,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.Decoupler" /> if the part is a decoupler, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_decoupler(&self, ) -> CallHandle<super::space_center::Decoupler> {
+    pub fn get_decoupler(&self) -> CallHandle<super::space_center::Decoupler> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Decoupler"));
@@ -11682,7 +12025,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.DockingPort" /> if the part is a docking port, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_docking_port(&self, ) -> CallHandle<super::space_center::DockingPort> {
+    pub fn get_docking_port(&self) -> CallHandle<super::space_center::DockingPort> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_DockingPort"));
@@ -11698,7 +12041,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The mass of the part, not including any resources it contains, in kilograms. Returns zero if the part is massless. </summary> </doc>
-    pub fn get_dry_mass(&self, ) -> CallHandle<f64> {
+    pub fn get_dry_mass(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_DryMass"));
@@ -11714,7 +12057,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The dynamic pressure acting on the part, in Pascals. </summary> </doc>
-    pub fn get_dynamic_pressure(&self, ) -> CallHandle<f32> {
+    pub fn get_dynamic_pressure(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_DynamicPressure"));
@@ -11730,7 +12073,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> An <see cref="T:SpaceCenter.Engine" /> if the part is an engine, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_engine(&self, ) -> CallHandle<super::space_center::Engine> {
+    pub fn get_engine(&self) -> CallHandle<super::space_center::Engine> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Engine"));
@@ -11746,7 +12089,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> An <see cref="T:SpaceCenter.Experiment" /> if the part contains a single science experiment, otherwise <c>null</c>. </summary> <remarks> Throws an exception if the part contains more than one experiment. In that case, use <see cref="M:SpaceCenter.Part.Experiments" /> to get the list of experiments in the part. </remarks> </doc>
-    pub fn get_experiment(&self, ) -> CallHandle<super::space_center::Experiment> {
+    pub fn get_experiment(&self) -> CallHandle<super::space_center::Experiment> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Experiment"));
@@ -11762,7 +12105,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of <see cref="T:SpaceCenter.Experiment" /> objects that the part contains. </summary> </doc>
-    pub fn get_experiments(&self, ) -> CallHandle<Vec<super::space_center::Experiment>> {
+    pub fn get_experiments(&self) -> CallHandle<Vec<super::space_center::Experiment>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Experiments"));
@@ -11778,7 +12121,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.Fairing" /> if the part is a fairing, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_fairing(&self, ) -> CallHandle<super::space_center::Fairing> {
+    pub fn get_fairing(&self) -> CallHandle<super::space_center::Fairing> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Fairing"));
@@ -11794,7 +12137,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The asset URL for the part's flag. </summary> </doc>
-    pub fn get_flag_url(&self, ) -> CallHandle<String> {
+    pub fn get_flag_url(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_FlagURL"));
@@ -11810,7 +12153,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The parts that are connected to this part via fuel lines, where the direction of the fuel line is into this part. </summary> </doc>
-    pub fn get_fuel_lines_from(&self, ) -> CallHandle<Vec<super::space_center::Part>> {
+    pub fn get_fuel_lines_from(&self) -> CallHandle<Vec<super::space_center::Part>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_FuelLinesFrom"));
@@ -11826,7 +12169,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The parts that are connected to this part via fuel lines, where the direction of the fuel line is out of this part. </summary> </doc>
-    pub fn get_fuel_lines_to(&self, ) -> CallHandle<Vec<super::space_center::Part>> {
+    pub fn get_fuel_lines_to(&self) -> CallHandle<Vec<super::space_center::Part>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_FuelLinesTo"));
@@ -11842,7 +12185,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The color used to highlight the part, as an RGB triple. </summary> </doc>
-    pub fn get_highlight_color(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_highlight_color(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_HighlightColor"));
@@ -11858,7 +12201,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the part is highlighted. </summary> </doc>
-    pub fn get_highlighted(&self, ) -> CallHandle<bool> {
+    pub fn get_highlighted(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Highlighted"));
@@ -11874,7 +12217,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The impact tolerance of the part, in meters per second. </summary> </doc>
-    pub fn get_impact_tolerance(&self, ) -> CallHandle<f64> {
+    pub fn get_impact_tolerance(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_ImpactTolerance"));
@@ -11890,7 +12233,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The inertia tensor of the part in the parts reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />). Returns the 3x3 matrix as a list of elements, in row-major order. </summary> </doc>
-    pub fn get_inertia_tensor(&self, ) -> CallHandle<Vec<f64>> {
+    pub fn get_inertia_tensor(&self) -> CallHandle<Vec<f64>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_InertiaTensor"));
@@ -11906,7 +12249,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> An <see cref="T:SpaceCenter.Intake" /> if the part is an intake, otherwise <c>null</c>. </summary> <remarks> This includes any part that generates thrust. This covers many different types of engine, including liquid fuel rockets, solid rocket boosters and jet engines. For RCS thrusters see <see cref="T:SpaceCenter.RCS" />. </remarks> </doc>
-    pub fn get_intake(&self, ) -> CallHandle<super::space_center::Intake> {
+    pub fn get_intake(&self) -> CallHandle<super::space_center::Intake> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Intake"));
@@ -11922,7 +12265,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether this part is a fuel line. </summary> </doc>
-    pub fn get_is_fuel_line(&self, ) -> CallHandle<bool> {
+    pub fn get_is_fuel_line(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_IsFuelLine"));
@@ -11938,7 +12281,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.LaunchClamp" /> if the part is a launch clamp, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_launch_clamp(&self, ) -> CallHandle<super::space_center::LaunchClamp> {
+    pub fn get_launch_clamp(&self) -> CallHandle<super::space_center::LaunchClamp> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_LaunchClamp"));
@@ -11954,7 +12297,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.Leg" /> if the part is a landing leg, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_leg(&self, ) -> CallHandle<super::space_center::Leg> {
+    pub fn get_leg(&self) -> CallHandle<super::space_center::Leg> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Leg"));
@@ -11970,7 +12313,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.Light" /> if the part is a light, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_light(&self, ) -> CallHandle<super::space_center::Light> {
+    pub fn get_light(&self) -> CallHandle<super::space_center::Light> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Light"));
@@ -11986,7 +12329,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current mass of the part, including resources it contains, in kilograms. Returns zero if the part is massless. </summary> </doc>
-    pub fn get_mass(&self, ) -> CallHandle<f64> {
+    pub fn get_mass(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Mass"));
@@ -12002,7 +12345,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the part is <a href="https://wiki.kerbalspaceprogram.com/wiki/Massless_part">massless</a>. </summary> </doc>
-    pub fn get_massless(&self, ) -> CallHandle<bool> {
+    pub fn get_massless(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Massless"));
@@ -12018,7 +12361,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Maximum temperature that the skin of the part can survive, in Kelvin. </summary> </doc>
-    pub fn get_max_skin_temperature(&self, ) -> CallHandle<f64> {
+    pub fn get_max_skin_temperature(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_MaxSkinTemperature"));
@@ -12034,7 +12377,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Maximum temperature that the part can survive, in Kelvin. </summary> </doc>
-    pub fn get_max_temperature(&self, ) -> CallHandle<f64> {
+    pub fn get_max_temperature(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_MaxTemperature"));
@@ -12050,7 +12393,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The modules for this part. </summary> </doc>
-    pub fn get_modules(&self, ) -> CallHandle<Vec<super::space_center::Module>> {
+    pub fn get_modules(&self) -> CallHandle<Vec<super::space_center::Module>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Modules"));
@@ -12066,7 +12409,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The moment of inertia of the part in <math>kg.m^2</math> around its center of mass in the parts reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />). </summary> </doc>
-    pub fn get_moment_of_inertia(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_moment_of_inertia(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_MomentOfInertia"));
@@ -12082,7 +12425,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Internal name of the part, as used in <a href="https://wiki.kerbalspaceprogram.com/wiki/CFG_File_Documentation">part cfg files</a>. For example "Mark1-2Pod". </summary> </doc>
-    pub fn get_name(&self, ) -> CallHandle<String> {
+    pub fn get_name(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Name"));
@@ -12098,7 +12441,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.Parachute" /> if the part is a parachute, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_parachute(&self, ) -> CallHandle<super::space_center::Parachute> {
+    pub fn get_parachute(&self) -> CallHandle<super::space_center::Parachute> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Parachute"));
@@ -12114,7 +12457,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The parts parent. Returns <c>null</c> if the part does not have a parent. This, in combination with <see cref="M:SpaceCenter.Part.Children" />, can be used to traverse the vessels parts tree. </summary> </doc>
-    pub fn get_parent(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_parent(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Parent"));
@@ -12130,7 +12473,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.RCS" /> if the part is an RCS block/thruster, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_rcs(&self, ) -> CallHandle<super::space_center::RCS> {
+    pub fn get_rcs(&self) -> CallHandle<super::space_center::RCS> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_RCS"));
@@ -12146,7 +12489,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the part is radially attached to its parent, i.e. on the side of its parent. If the part has no parent, returns <c>false</c>. </summary> </doc>
-    pub fn get_radially_attached(&self, ) -> CallHandle<bool> {
+    pub fn get_radially_attached(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_RadiallyAttached"));
@@ -12162,7 +12505,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.Radiator" /> if the part is a radiator, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_radiator(&self, ) -> CallHandle<super::space_center::Radiator> {
+    pub fn get_radiator(&self) -> CallHandle<super::space_center::Radiator> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Radiator"));
@@ -12178,7 +12521,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.ReactionWheel" /> if the part is a reaction wheel, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_reaction_wheel(&self, ) -> CallHandle<super::space_center::ReactionWheel> {
+    pub fn get_reaction_wheel(&self) -> CallHandle<super::space_center::ReactionWheel> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_ReactionWheel"));
@@ -12194,7 +12537,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The reference frame that is fixed relative to this part, and centered on a fixed position within the part, defined by the parts model. <list type="bullet"><item><description>The origin is at the position of the part, as returned by <see cref="M:SpaceCenter.Part.Position" />.</description></item><item><description>The axes rotate with the part.</description></item><item><description>The x, y and z axis directions depend on the design of the part. </description></item></list></summary> <remarks> For docking port parts, this reference frame is not necessarily equivalent to the reference frame for the docking port, returned by <see cref="M:SpaceCenter.DockingPort.ReferenceFrame" />. </remarks> </doc>
-    pub fn get_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_reference_frame(&self) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_ReferenceFrame"));
@@ -12210,7 +12553,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.ResourceConverter" /> if the part is a resource converter, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_resource_converter(&self, ) -> CallHandle<super::space_center::ResourceConverter> {
+    pub fn get_resource_converter(&self) -> CallHandle<super::space_center::ResourceConverter> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_ResourceConverter"));
@@ -12226,7 +12569,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.ResourceDrain" /> if the part is a resource drain, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_resource_drain(&self, ) -> CallHandle<super::space_center::ResourceDrain> {
+    pub fn get_resource_drain(&self) -> CallHandle<super::space_center::ResourceDrain> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_ResourceDrain"));
@@ -12242,7 +12585,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.ResourceHarvester" /> if the part is a resource harvester, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_resource_harvester(&self, ) -> CallHandle<super::space_center::ResourceHarvester> {
+    pub fn get_resource_harvester(&self) -> CallHandle<super::space_center::ResourceHarvester> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_ResourceHarvester"));
@@ -12258,7 +12601,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.Resources" /> object for the part. </summary> </doc>
-    pub fn get_resources(&self, ) -> CallHandle<super::space_center::Resources> {
+    pub fn get_resources(&self) -> CallHandle<super::space_center::Resources> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Resources"));
@@ -12274,7 +12617,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.RoboticController" /> if the part is a robotic controller, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_robotic_controller(&self, ) -> CallHandle<super::space_center::RoboticController> {
+    pub fn get_robotic_controller(&self) -> CallHandle<super::space_center::RoboticController> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_RoboticController"));
@@ -12290,7 +12633,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.RoboticHinge" /> if the part is a robotic hinge, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_robotic_hinge(&self, ) -> CallHandle<super::space_center::RoboticHinge> {
+    pub fn get_robotic_hinge(&self) -> CallHandle<super::space_center::RoboticHinge> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_RoboticHinge"));
@@ -12306,7 +12649,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.RoboticPiston" /> if the part is a robotic piston, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_robotic_piston(&self, ) -> CallHandle<super::space_center::RoboticPiston> {
+    pub fn get_robotic_piston(&self) -> CallHandle<super::space_center::RoboticPiston> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_RoboticPiston"));
@@ -12322,7 +12665,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.RoboticRotation" /> if the part is a robotic rotation servo, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_robotic_rotation(&self, ) -> CallHandle<super::space_center::RoboticRotation> {
+    pub fn get_robotic_rotation(&self) -> CallHandle<super::space_center::RoboticRotation> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_RoboticRotation"));
@@ -12338,7 +12681,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.RoboticRotor" /> if the part is a robotic rotor, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_robotic_rotor(&self, ) -> CallHandle<super::space_center::RoboticRotor> {
+    pub fn get_robotic_rotor(&self) -> CallHandle<super::space_center::RoboticRotor> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_RoboticRotor"));
@@ -12354,7 +12697,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.Sensor" /> if the part is a sensor, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_sensor(&self, ) -> CallHandle<super::space_center::Sensor> {
+    pub fn get_sensor(&self) -> CallHandle<super::space_center::Sensor> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Sensor"));
@@ -12370,7 +12713,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the part is shielded from the exterior of the vessel, for example by a fairing. </summary> </doc>
-    pub fn get_shielded(&self, ) -> CallHandle<bool> {
+    pub fn get_shielded(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Shielded"));
@@ -12386,7 +12729,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Temperature of the skin of the part, in Kelvin. </summary> </doc>
-    pub fn get_skin_temperature(&self, ) -> CallHandle<f64> {
+    pub fn get_skin_temperature(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_SkinTemperature"));
@@ -12402,7 +12745,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.SolarPanel" /> if the part is a solar panel, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_solar_panel(&self, ) -> CallHandle<super::space_center::SolarPanel> {
+    pub fn get_solar_panel(&self) -> CallHandle<super::space_center::SolarPanel> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_SolarPanel"));
@@ -12418,7 +12761,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The stage in which this part will be activated. Returns -1 if the part is not activated by staging. </summary> </doc>
-    pub fn get_stage(&self, ) -> CallHandle<i32> {
+    pub fn get_stage(&self) -> CallHandle<i32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Stage"));
@@ -12434,7 +12777,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The name tag for the part. Can be set to a custom string using the in-game user interface. </summary> <remarks> This string is shared with <a href="https://forum.kerbalspaceprogram.com/index.php?/topic/61827-/">kOS</a> if it is installed. </remarks> </doc>
-    pub fn get_tag(&self, ) -> CallHandle<String> {
+    pub fn get_tag(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Tag"));
@@ -12450,7 +12793,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Temperature of the part, in Kelvin. </summary> </doc>
-    pub fn get_temperature(&self, ) -> CallHandle<f64> {
+    pub fn get_temperature(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Temperature"));
@@ -12466,7 +12809,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rate at which heat energy is conducting into or out of the part via contact with other parts. Measured in energy per unit time, or power, in Watts. A positive value means the part is gaining heat energy, and negative means it is losing heat energy. </summary> </doc>
-    pub fn get_thermal_conduction_flux(&self, ) -> CallHandle<f32> {
+    pub fn get_thermal_conduction_flux(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_ThermalConductionFlux"));
@@ -12482,7 +12825,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rate at which heat energy is convecting into or out of the part from the surrounding atmosphere. Measured in energy per unit time, or power, in Watts. A positive value means the part is gaining heat energy, and negative means it is losing heat energy. </summary> </doc>
-    pub fn get_thermal_convection_flux(&self, ) -> CallHandle<f32> {
+    pub fn get_thermal_convection_flux(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_ThermalConvectionFlux"));
@@ -12498,7 +12841,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rate at which heat energy is begin generated by the part. For example, some engines generate heat by combusting fuel. Measured in energy per unit time, or power, in Watts. A positive value means the part is gaining heat energy, and negative means it is losing heat energy. </summary> </doc>
-    pub fn get_thermal_internal_flux(&self, ) -> CallHandle<f32> {
+    pub fn get_thermal_internal_flux(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_ThermalInternalFlux"));
@@ -12514,7 +12857,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A measure of how much energy it takes to increase the internal temperature of the part, in Joules per Kelvin. </summary> </doc>
-    pub fn get_thermal_mass(&self, ) -> CallHandle<f32> {
+    pub fn get_thermal_mass(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_ThermalMass"));
@@ -12530,7 +12873,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rate at which heat energy is radiating into or out of the part from the surrounding environment. Measured in energy per unit time, or power, in Watts. A positive value means the part is gaining heat energy, and negative means it is losing heat energy. </summary> </doc>
-    pub fn get_thermal_radiation_flux(&self, ) -> CallHandle<f32> {
+    pub fn get_thermal_radiation_flux(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_ThermalRadiationFlux"));
@@ -12546,7 +12889,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A measure of how much energy it takes to increase the temperature of the resources contained in the part, in Joules per Kelvin. </summary> </doc>
-    pub fn get_thermal_resource_mass(&self, ) -> CallHandle<f32> {
+    pub fn get_thermal_resource_mass(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_ThermalResourceMass"));
@@ -12562,7 +12905,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A measure of how much energy it takes to increase the skin temperature of the part, in Joules per Kelvin. </summary> </doc>
-    pub fn get_thermal_skin_mass(&self, ) -> CallHandle<f32> {
+    pub fn get_thermal_skin_mass(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_ThermalSkinMass"));
@@ -12578,7 +12921,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rate at which heat energy is transferring between the part's skin and its internals. Measured in energy per unit time, or power, in Watts. A positive value means the part's internals are gaining heat energy, and negative means its skin is gaining heat energy. </summary> </doc>
-    pub fn get_thermal_skin_to_internal_flux(&self, ) -> CallHandle<f32> {
+    pub fn get_thermal_skin_to_internal_flux(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_ThermalSkinToInternalFlux"));
@@ -12594,7 +12937,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Title of the part, as shown when the part is right clicked in-game. For example "Mk1-2 Command Pod". </summary> </doc>
-    pub fn get_title(&self, ) -> CallHandle<String> {
+    pub fn get_title(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Title"));
@@ -12610,7 +12953,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The vessel that contains this part. </summary> </doc>
-    pub fn get_vessel(&self, ) -> CallHandle<super::space_center::Vessel> {
+    pub fn get_vessel(&self) -> CallHandle<super::space_center::Vessel> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Vessel"));
@@ -12626,7 +12969,7 @@ impl Part {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.Wheel" /> if the part is a wheel, otherwise <c>null</c>. </summary> </doc>
-    pub fn get_wheel(&self, ) -> CallHandle<super::space_center::Wheel> {
+    pub fn get_wheel(&self) -> CallHandle<super::space_center::Wheel> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Part_get_Wheel"));
@@ -12760,13 +13103,18 @@ impl fmt::Debug for Parts {
 }
 
 impl RPCEncodable for Parts {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Parts {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Parts { id })
     }
@@ -12817,7 +13165,10 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of modules (combined across all parts in the vessel) whose <see cref="M:SpaceCenter.Module.Name" /> is <paramref name="moduleName" />. </summary> <param name="moduleName"></param> </doc>
-    pub fn modules_with_name(&self, p_module_name: String) -> CallHandle<Vec<super::space_center::Module>> {
+    pub fn modules_with_name(
+        &self,
+        p_module_name: String,
+    ) -> CallHandle<Vec<super::space_center::Module>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_ModulesWithName"));
@@ -12922,7 +13273,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all of the vessels parts. </summary> </doc>
-    pub fn get_all(&self, ) -> CallHandle<Vec<super::space_center::Part>> {
+    pub fn get_all(&self) -> CallHandle<Vec<super::space_center::Part>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_All"));
@@ -12938,7 +13289,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all antennas in the vessel. </summary> <remarks> If RemoteTech is installed, this will always return an empty list. To interact with RemoteTech antennas, use the RemoteTech service APIs. </remarks> </doc>
-    pub fn get_antennas(&self, ) -> CallHandle<Vec<super::space_center::Antenna>> {
+    pub fn get_antennas(&self) -> CallHandle<Vec<super::space_center::Antenna>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_Antennas"));
@@ -12954,7 +13305,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all cargo bays in the vessel. </summary> </doc>
-    pub fn get_cargo_bays(&self, ) -> CallHandle<Vec<super::space_center::CargoBay>> {
+    pub fn get_cargo_bays(&self) -> CallHandle<Vec<super::space_center::CargoBay>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_CargoBays"));
@@ -12970,7 +13321,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all control surfaces in the vessel. </summary> </doc>
-    pub fn get_control_surfaces(&self, ) -> CallHandle<Vec<super::space_center::ControlSurface>> {
+    pub fn get_control_surfaces(&self) -> CallHandle<Vec<super::space_center::ControlSurface>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_ControlSurfaces"));
@@ -12986,7 +13337,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part from which the vessel is controlled. </summary> </doc>
-    pub fn get_controlling(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_controlling(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_Controlling"));
@@ -13002,7 +13353,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all decouplers in the vessel. </summary> </doc>
-    pub fn get_decouplers(&self, ) -> CallHandle<Vec<super::space_center::Decoupler>> {
+    pub fn get_decouplers(&self) -> CallHandle<Vec<super::space_center::Decoupler>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_Decouplers"));
@@ -13018,7 +13369,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all docking ports in the vessel. </summary> </doc>
-    pub fn get_docking_ports(&self, ) -> CallHandle<Vec<super::space_center::DockingPort>> {
+    pub fn get_docking_ports(&self) -> CallHandle<Vec<super::space_center::DockingPort>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_DockingPorts"));
@@ -13034,7 +13385,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all engines in the vessel. </summary> <remarks> This includes any part that generates thrust. This covers many different types of engine, including liquid fuel rockets, solid rocket boosters, jet engines and RCS thrusters. </remarks> </doc>
-    pub fn get_engines(&self, ) -> CallHandle<Vec<super::space_center::Engine>> {
+    pub fn get_engines(&self) -> CallHandle<Vec<super::space_center::Engine>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_Engines"));
@@ -13050,7 +13401,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all science experiments in the vessel. </summary> </doc>
-    pub fn get_experiments(&self, ) -> CallHandle<Vec<super::space_center::Experiment>> {
+    pub fn get_experiments(&self) -> CallHandle<Vec<super::space_center::Experiment>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_Experiments"));
@@ -13066,7 +13417,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all fairings in the vessel. </summary> </doc>
-    pub fn get_fairings(&self, ) -> CallHandle<Vec<super::space_center::Fairing>> {
+    pub fn get_fairings(&self) -> CallHandle<Vec<super::space_center::Fairing>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_Fairings"));
@@ -13082,7 +13433,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all intakes in the vessel. </summary> </doc>
-    pub fn get_intakes(&self, ) -> CallHandle<Vec<super::space_center::Intake>> {
+    pub fn get_intakes(&self) -> CallHandle<Vec<super::space_center::Intake>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_Intakes"));
@@ -13098,7 +13449,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all launch clamps attached to the vessel. </summary> </doc>
-    pub fn get_launch_clamps(&self, ) -> CallHandle<Vec<super::space_center::LaunchClamp>> {
+    pub fn get_launch_clamps(&self) -> CallHandle<Vec<super::space_center::LaunchClamp>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_LaunchClamps"));
@@ -13114,7 +13465,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all landing legs attached to the vessel. </summary> </doc>
-    pub fn get_legs(&self, ) -> CallHandle<Vec<super::space_center::Leg>> {
+    pub fn get_legs(&self) -> CallHandle<Vec<super::space_center::Leg>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_Legs"));
@@ -13130,7 +13481,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all lights in the vessel. </summary> </doc>
-    pub fn get_lights(&self, ) -> CallHandle<Vec<super::space_center::Light>> {
+    pub fn get_lights(&self) -> CallHandle<Vec<super::space_center::Light>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_Lights"));
@@ -13146,7 +13497,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all parachutes in the vessel. </summary> </doc>
-    pub fn get_parachutes(&self, ) -> CallHandle<Vec<super::space_center::Parachute>> {
+    pub fn get_parachutes(&self) -> CallHandle<Vec<super::space_center::Parachute>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_Parachutes"));
@@ -13162,7 +13513,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all RCS blocks/thrusters in the vessel. </summary> </doc>
-    pub fn get_rcs(&self, ) -> CallHandle<Vec<super::space_center::RCS>> {
+    pub fn get_rcs(&self) -> CallHandle<Vec<super::space_center::RCS>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_RCS"));
@@ -13178,7 +13529,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all radiators in the vessel. </summary> </doc>
-    pub fn get_radiators(&self, ) -> CallHandle<Vec<super::space_center::Radiator>> {
+    pub fn get_radiators(&self) -> CallHandle<Vec<super::space_center::Radiator>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_Radiators"));
@@ -13194,7 +13545,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all reaction wheels in the vessel. </summary> </doc>
-    pub fn get_reaction_wheels(&self, ) -> CallHandle<Vec<super::space_center::ReactionWheel>> {
+    pub fn get_reaction_wheels(&self) -> CallHandle<Vec<super::space_center::ReactionWheel>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_ReactionWheels"));
@@ -13210,7 +13561,9 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all resource converters in the vessel. </summary> </doc>
-    pub fn get_resource_converters(&self, ) -> CallHandle<Vec<super::space_center::ResourceConverter>> {
+    pub fn get_resource_converters(
+        &self,
+    ) -> CallHandle<Vec<super::space_center::ResourceConverter>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_ResourceConverters"));
@@ -13226,7 +13579,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all resource drains in the vessel. </summary> </doc>
-    pub fn get_resource_drains(&self, ) -> CallHandle<Vec<super::space_center::ResourceDrain>> {
+    pub fn get_resource_drains(&self) -> CallHandle<Vec<super::space_center::ResourceDrain>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_ResourceDrains"));
@@ -13242,7 +13595,9 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all resource harvesters in the vessel. </summary> </doc>
-    pub fn get_resource_harvesters(&self, ) -> CallHandle<Vec<super::space_center::ResourceHarvester>> {
+    pub fn get_resource_harvesters(
+        &self,
+    ) -> CallHandle<Vec<super::space_center::ResourceHarvester>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_ResourceHarvesters"));
@@ -13258,7 +13613,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all robotic hinges in the vessel. </summary> </doc>
-    pub fn get_robotic_hinges(&self, ) -> CallHandle<Vec<super::space_center::RoboticHinge>> {
+    pub fn get_robotic_hinges(&self) -> CallHandle<Vec<super::space_center::RoboticHinge>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_RoboticHinges"));
@@ -13274,7 +13629,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all robotic pistons in the vessel. </summary> </doc>
-    pub fn get_robotic_pistons(&self, ) -> CallHandle<Vec<super::space_center::RoboticPiston>> {
+    pub fn get_robotic_pistons(&self) -> CallHandle<Vec<super::space_center::RoboticPiston>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_RoboticPistons"));
@@ -13290,7 +13645,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all robotic rotations in the vessel. </summary> </doc>
-    pub fn get_robotic_rotations(&self, ) -> CallHandle<Vec<super::space_center::RoboticRotation>> {
+    pub fn get_robotic_rotations(&self) -> CallHandle<Vec<super::space_center::RoboticRotation>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_RoboticRotations"));
@@ -13306,7 +13661,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all robotic rotors in the vessel. </summary> </doc>
-    pub fn get_robotic_rotors(&self, ) -> CallHandle<Vec<super::space_center::RoboticRotor>> {
+    pub fn get_robotic_rotors(&self) -> CallHandle<Vec<super::space_center::RoboticRotor>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_RoboticRotors"));
@@ -13322,7 +13677,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The vessels root part. </summary> </doc>
-    pub fn get_root(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_root(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_Root"));
@@ -13338,7 +13693,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all sensors in the vessel. </summary> </doc>
-    pub fn get_sensors(&self, ) -> CallHandle<Vec<super::space_center::Sensor>> {
+    pub fn get_sensors(&self) -> CallHandle<Vec<super::space_center::Sensor>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_Sensors"));
@@ -13354,7 +13709,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all solar panels in the vessel. </summary> </doc>
-    pub fn get_solar_panels(&self, ) -> CallHandle<Vec<super::space_center::SolarPanel>> {
+    pub fn get_solar_panels(&self) -> CallHandle<Vec<super::space_center::SolarPanel>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_SolarPanels"));
@@ -13370,7 +13725,7 @@ impl Parts {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all wheels in the vessel. </summary> </doc>
-    pub fn get_wheels(&self, ) -> CallHandle<Vec<super::space_center::Wheel>> {
+    pub fn get_wheels(&self) -> CallHandle<Vec<super::space_center::Wheel>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Parts_get_Wheels"));
@@ -13420,13 +13775,18 @@ impl fmt::Debug for Propellant {
 }
 
 impl RPCEncodable for Propellant {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Propellant {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Propellant { id })
     }
@@ -13435,7 +13795,7 @@ impl RPCExtractable for Propellant {
 #[allow(dead_code)]
 impl Propellant {
     /// <doc> <summary> The current amount of propellant. </summary> </doc>
-    pub fn get_current_amount(&self, ) -> CallHandle<f64> {
+    pub fn get_current_amount(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Propellant_get_CurrentAmount"));
@@ -13451,7 +13811,7 @@ impl Propellant {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The required amount of propellant. </summary> </doc>
-    pub fn get_current_requirement(&self, ) -> CallHandle<f64> {
+    pub fn get_current_requirement(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Propellant_get_CurrentRequirement"));
@@ -13467,7 +13827,7 @@ impl Propellant {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> If this propellant has a stack gauge or not. </summary> </doc>
-    pub fn get_draw_stack_gauge(&self, ) -> CallHandle<bool> {
+    pub fn get_draw_stack_gauge(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Propellant_get_DrawStackGauge"));
@@ -13483,7 +13843,7 @@ impl Propellant {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> If this propellant should be ignored when calculating required mass flow given specific impulse. </summary> </doc>
-    pub fn get_ignore_for_isp(&self, ) -> CallHandle<bool> {
+    pub fn get_ignore_for_isp(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Propellant_get_IgnoreForIsp"));
@@ -13499,7 +13859,7 @@ impl Propellant {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> If this propellant should be ignored for thrust curve calculations. </summary> </doc>
-    pub fn get_ignore_for_thrust_curve(&self, ) -> CallHandle<bool> {
+    pub fn get_ignore_for_thrust_curve(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Propellant_get_IgnoreForThrustCurve"));
@@ -13515,7 +13875,7 @@ impl Propellant {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> If this propellant is deprived. </summary> </doc>
-    pub fn get_is_deprived(&self, ) -> CallHandle<bool> {
+    pub fn get_is_deprived(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Propellant_get_IsDeprived"));
@@ -13531,7 +13891,7 @@ impl Propellant {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The name of the propellant. </summary> </doc>
-    pub fn get_name(&self, ) -> CallHandle<String> {
+    pub fn get_name(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Propellant_get_Name"));
@@ -13547,7 +13907,7 @@ impl Propellant {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The propellant ratio. </summary> </doc>
-    pub fn get_ratio(&self, ) -> CallHandle<f32> {
+    pub fn get_ratio(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Propellant_get_Ratio"));
@@ -13563,7 +13923,7 @@ impl Propellant {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The total amount of the underlying resource currently reachable given resource flow rules. </summary> </doc>
-    pub fn get_total_resource_available(&self, ) -> CallHandle<f64> {
+    pub fn get_total_resource_available(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Propellant_get_TotalResourceAvailable"));
@@ -13579,7 +13939,7 @@ impl Propellant {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The total vehicle capacity for the underlying propellant resource, restricted by resource flow rules. </summary> </doc>
-    pub fn get_total_resource_capacity(&self, ) -> CallHandle<f64> {
+    pub fn get_total_resource_capacity(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Propellant_get_TotalResourceCapacity"));
@@ -13608,13 +13968,18 @@ impl fmt::Debug for RCS {
 }
 
 impl RPCEncodable for RCS {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for RCS {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(RCS { id })
     }
@@ -13623,7 +13988,7 @@ impl RPCExtractable for RCS {
 #[allow(dead_code)]
 impl RCS {
     /// <doc> <summary> Whether the RCS thrusters are active. An RCS thruster is inactive if the RCS action group is disabled (<see cref="M:SpaceCenter.Control.RCS" />), the RCS thruster itself is not enabled (<see cref="M:SpaceCenter.RCS.Enabled" />) or it is covered by a fairing (<see cref="M:SpaceCenter.Part.Shielded" />). </summary> </doc>
-    pub fn get_active(&self, ) -> CallHandle<bool> {
+    pub fn get_active(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_Active"));
@@ -13639,7 +14004,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The available force, in Newtons, that can be produced by this RCS, in the positive and negative x, y and z axes of the vessel. These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />. Returns zero if RCS is disabled. </summary> </doc>
-    pub fn get_available_force(&self, ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
+    pub fn get_available_force(&self) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_AvailableForce"));
@@ -13655,7 +14020,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The amount of thrust, in Newtons, that would be produced by the thruster when activated. Returns zero if the thruster does not have any fuel. Takes the thrusters current <see cref="M:SpaceCenter.RCS.ThrustLimit" /> and atmospheric conditions into account. </summary> </doc>
-    pub fn get_available_thrust(&self, ) -> CallHandle<f32> {
+    pub fn get_available_thrust(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_AvailableThrust"));
@@ -13671,7 +14036,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The available torque, in Newton meters, that can be produced by this RCS, in the positive and negative pitch, roll and yaw axes of the vessel. These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />. Returns zero if RCS is disable. </summary> </doc>
-    pub fn get_available_torque(&self, ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
+    pub fn get_available_torque(&self) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_AvailableTorque"));
@@ -13687,7 +14052,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the RCS thrusters are enabled. </summary> </doc>
-    pub fn get_enabled(&self, ) -> CallHandle<bool> {
+    pub fn get_enabled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_Enabled"));
@@ -13703,7 +14068,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the RCS thruster will fire when pitch control input is given. </summary> </doc>
-    pub fn get_forward_enabled(&self, ) -> CallHandle<bool> {
+    pub fn get_forward_enabled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_ForwardEnabled"));
@@ -13719,7 +14084,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the RCS has fuel available. </summary> </doc>
-    pub fn get_has_fuel(&self, ) -> CallHandle<bool> {
+    pub fn get_has_fuel(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_HasFuel"));
@@ -13735,7 +14100,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The specific impulse of the RCS at sea level on Kerbin, in seconds. </summary> </doc>
-    pub fn get_kerbin_sea_level_specific_impulse(&self, ) -> CallHandle<f32> {
+    pub fn get_kerbin_sea_level_specific_impulse(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_KerbinSeaLevelSpecificImpulse"));
@@ -13751,7 +14116,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The maximum amount of thrust that can be produced by the RCS thrusters when active, in Newtons. Takes the thrusters current <see cref="M:SpaceCenter.RCS.ThrustLimit" /> and atmospheric conditions into account. </summary> </doc>
-    pub fn get_max_thrust(&self, ) -> CallHandle<f32> {
+    pub fn get_max_thrust(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_MaxThrust"));
@@ -13767,7 +14132,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The maximum amount of thrust that can be produced by the RCS thrusters when active in a vacuum, in Newtons. </summary> </doc>
-    pub fn get_max_vacuum_thrust(&self, ) -> CallHandle<f32> {
+    pub fn get_max_vacuum_thrust(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_MaxVacuumThrust"));
@@ -13783,7 +14148,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this RCS. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_Part"));
@@ -13799,7 +14164,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the RCS thruster will fire when pitch control input is given. </summary> </doc>
-    pub fn get_pitch_enabled(&self, ) -> CallHandle<bool> {
+    pub fn get_pitch_enabled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_PitchEnabled"));
@@ -13815,7 +14180,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The ratios of resources that the RCS consumes. A dictionary mapping resource names to the ratios at which they are consumed by the RCS. </summary> </doc>
-    pub fn get_propellant_ratios(&self, ) -> CallHandle<std::collections::HashMap<String, f32>> {
+    pub fn get_propellant_ratios(&self) -> CallHandle<std::collections::HashMap<String, f32>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_PropellantRatios"));
@@ -13831,7 +14196,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The names of resources that the RCS consumes. </summary> </doc>
-    pub fn get_propellants(&self, ) -> CallHandle<Vec<String>> {
+    pub fn get_propellants(&self) -> CallHandle<Vec<String>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_Propellants"));
@@ -13847,7 +14212,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the RCS thruster will fire when roll control input is given. </summary> </doc>
-    pub fn get_right_enabled(&self, ) -> CallHandle<bool> {
+    pub fn get_right_enabled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_RightEnabled"));
@@ -13863,7 +14228,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the RCS thruster will fire when roll control input is given. </summary> </doc>
-    pub fn get_roll_enabled(&self, ) -> CallHandle<bool> {
+    pub fn get_roll_enabled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_RollEnabled"));
@@ -13879,7 +14244,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current specific impulse of the RCS, in seconds. Returns zero if the RCS is not active. </summary> </doc>
-    pub fn get_specific_impulse(&self, ) -> CallHandle<f32> {
+    pub fn get_specific_impulse(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_SpecificImpulse"));
@@ -13895,7 +14260,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The thrust limiter of the thruster. A value between 0 and 1. </summary> </doc>
-    pub fn get_thrust_limit(&self, ) -> CallHandle<f32> {
+    pub fn get_thrust_limit(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_ThrustLimit"));
@@ -13911,7 +14276,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of thrusters, one of each nozzel in the RCS part. </summary> </doc>
-    pub fn get_thrusters(&self, ) -> CallHandle<Vec<super::space_center::Thruster>> {
+    pub fn get_thrusters(&self) -> CallHandle<Vec<super::space_center::Thruster>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_Thrusters"));
@@ -13927,7 +14292,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the RCS thruster will fire when yaw control input is given. </summary> </doc>
-    pub fn get_up_enabled(&self, ) -> CallHandle<bool> {
+    pub fn get_up_enabled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_UpEnabled"));
@@ -13943,7 +14308,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The vacuum specific impulse of the RCS, in seconds. </summary> </doc>
-    pub fn get_vacuum_specific_impulse(&self, ) -> CallHandle<f32> {
+    pub fn get_vacuum_specific_impulse(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_VacuumSpecificImpulse"));
@@ -13959,7 +14324,7 @@ impl RCS {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the RCS thruster will fire when yaw control input is given. </summary> </doc>
-    pub fn get_yaw_enabled(&self, ) -> CallHandle<bool> {
+    pub fn get_yaw_enabled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RCS_get_YawEnabled"));
@@ -14156,13 +14521,18 @@ impl fmt::Debug for Radiator {
 }
 
 impl RPCEncodable for Radiator {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Radiator {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Radiator { id })
     }
@@ -14171,7 +14541,7 @@ impl RPCExtractable for Radiator {
 #[allow(dead_code)]
 impl Radiator {
     /// <doc> <summary> Whether the radiator is deployable. </summary> </doc>
-    pub fn get_deployable(&self, ) -> CallHandle<bool> {
+    pub fn get_deployable(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Radiator_get_Deployable"));
@@ -14187,7 +14557,7 @@ impl Radiator {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> For a deployable radiator, <c>true</c> if the radiator is extended. If the radiator is not deployable, this is always <c>true</c>. </summary> </doc>
-    pub fn get_deployed(&self, ) -> CallHandle<bool> {
+    pub fn get_deployed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Radiator_get_Deployed"));
@@ -14203,7 +14573,7 @@ impl Radiator {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this radiator. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Radiator_get_Part"));
@@ -14219,7 +14589,7 @@ impl Radiator {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current state of the radiator. </summary> <remarks> A fixed radiator is always <see cref="M:SpaceCenter.RadiatorState.Extended" />. </remarks> </doc>
-    pub fn get_state(&self, ) -> CallHandle<super::space_center::RadiatorState> {
+    pub fn get_state(&self) -> CallHandle<super::space_center::RadiatorState> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Radiator_get_State"));
@@ -14269,13 +14639,18 @@ impl fmt::Debug for ReactionWheel {
 }
 
 impl RPCEncodable for ReactionWheel {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for ReactionWheel {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(ReactionWheel { id })
     }
@@ -14284,7 +14659,7 @@ impl RPCExtractable for ReactionWheel {
 #[allow(dead_code)]
 impl ReactionWheel {
     /// <doc> <summary> Whether the reaction wheel is active. </summary> </doc>
-    pub fn get_active(&self, ) -> CallHandle<bool> {
+    pub fn get_active(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ReactionWheel_get_Active"));
@@ -14300,7 +14675,7 @@ impl ReactionWheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The available torque, in Newton meters, that can be produced by this reaction wheel, in the positive and negative pitch, roll and yaw axes of the vessel. These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />. Returns zero if the reaction wheel is inactive or broken. </summary> </doc>
-    pub fn get_available_torque(&self, ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
+    pub fn get_available_torque(&self) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ReactionWheel_get_AvailableTorque"));
@@ -14316,7 +14691,7 @@ impl ReactionWheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the reaction wheel is broken. </summary> </doc>
-    pub fn get_broken(&self, ) -> CallHandle<bool> {
+    pub fn get_broken(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ReactionWheel_get_Broken"));
@@ -14332,7 +14707,7 @@ impl ReactionWheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The maximum torque, in Newton meters, that can be produced by this reaction wheel, when it is active, in the positive and negative pitch, roll and yaw axes of the vessel. These axes correspond to the coordinate axes of the <see cref="M:SpaceCenter.Vessel.ReferenceFrame" />. </summary> </doc>
-    pub fn get_max_torque(&self, ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
+    pub fn get_max_torque(&self) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ReactionWheel_get_MaxTorque"));
@@ -14348,7 +14723,7 @@ impl ReactionWheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this reaction wheel. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ReactionWheel_get_Part"));
@@ -14398,13 +14773,18 @@ impl fmt::Debug for ReferenceFrame {
 }
 
 impl RPCEncodable for ReferenceFrame {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for ReferenceFrame {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(ReferenceFrame { id })
     }
@@ -14413,7 +14793,12 @@ impl RPCExtractable for ReferenceFrame {
 #[allow(dead_code)]
 impl ReferenceFrame {
     /// <doc> <summary> Create a hybrid reference frame. This is a custom reference frame whose components inherited from other reference frames. </summary> <param name="position">The reference frame providing the position of the origin.</param> <param name="rotation">The reference frame providing the rotation of the frame.</param> <param name="velocity">The reference frame providing the linear velocity of the frame. </param> <param name="angularVelocity">The reference frame providing the angular velocity of the frame.</param> <remarks> The <paramref name="position" /> reference frame is required but all other reference frames are optional. If omitted, they are set to the <paramref name="position" /> reference frame. </remarks> </doc>
-    pub fn create_hybrid(p_position: super::space_center::ReferenceFrame, p_rotation: super::space_center::ReferenceFrame, p_velocity: super::space_center::ReferenceFrame, p_angular_velocity: super::space_center::ReferenceFrame) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn create_hybrid(
+        p_position: super::space_center::ReferenceFrame,
+        p_rotation: super::space_center::ReferenceFrame,
+        p_velocity: super::space_center::ReferenceFrame,
+        p_angular_velocity: super::space_center::ReferenceFrame,
+    ) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ReferenceFrame_static_CreateHybrid"));
@@ -14444,7 +14829,13 @@ impl ReferenceFrame {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Create a relative reference frame. This is a custom reference frame whose components offset the components of a parent reference frame. </summary> <param name="referenceFrame">The parent reference frame on which to base this reference frame.</param> <param name="position">The offset of the position of the origin, as a position vector. Defaults to <math>(0, 0, 0)</math></param> <param name="rotation">The rotation to apply to the parent frames rotation, as a quaternion of the form <math>(x, y, z, w)</math>. Defaults to <math>(0, 0, 0, 1)</math> (i.e. no rotation)</param> <param name="velocity">The linear velocity to offset the parent frame by, as a vector pointing in the direction of travel, whose magnitude is the speed in meters per second. Defaults to <math>(0, 0, 0)</math>.</param> <param name="angularVelocity">The angular velocity to offset the parent frame by, as a vector. This vector points in the direction of the axis of rotation, and its magnitude is the speed of the rotation in radians per second. Defaults to <math>(0, 0, 0)</math>.</param> </doc>
-    pub fn create_relative(p_reference_frame: super::space_center::ReferenceFrame, p_position: (f64, f64, f64), p_rotation: (f64, f64, f64, f64), p_velocity: (f64, f64, f64), p_angular_velocity: (f64, f64, f64)) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn create_relative(
+        p_reference_frame: super::space_center::ReferenceFrame,
+        p_position: (f64, f64, f64),
+        p_rotation: (f64, f64, f64, f64),
+        p_velocity: (f64, f64, f64),
+        p_angular_velocity: (f64, f64, f64),
+    ) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ReferenceFrame_static_CreateRelative"));
@@ -14493,13 +14884,18 @@ impl fmt::Debug for Resource {
 }
 
 impl RPCEncodable for Resource {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Resource {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Resource { id })
     }
@@ -14508,7 +14904,7 @@ impl RPCExtractable for Resource {
 #[allow(dead_code)]
 impl Resource {
     /// <doc> <summary> The amount of the resource that is currently stored in the part. </summary> </doc>
-    pub fn get_amount(&self, ) -> CallHandle<f32> {
+    pub fn get_amount(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Resource_get_Amount"));
@@ -14524,7 +14920,7 @@ impl Resource {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The density of the resource, in <math>kg/l</math>. </summary> </doc>
-    pub fn get_density(&self, ) -> CallHandle<f32> {
+    pub fn get_density(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Resource_get_Density"));
@@ -14540,7 +14936,7 @@ impl Resource {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether use of this resource is enabled. </summary> </doc>
-    pub fn get_enabled(&self, ) -> CallHandle<bool> {
+    pub fn get_enabled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Resource_get_Enabled"));
@@ -14556,7 +14952,7 @@ impl Resource {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The flow mode of the resource. </summary> </doc>
-    pub fn get_flow_mode(&self, ) -> CallHandle<super::space_center::ResourceFlowMode> {
+    pub fn get_flow_mode(&self) -> CallHandle<super::space_center::ResourceFlowMode> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Resource_get_FlowMode"));
@@ -14572,7 +14968,7 @@ impl Resource {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The total amount of the resource that can be stored in the part. </summary> </doc>
-    pub fn get_max(&self, ) -> CallHandle<f32> {
+    pub fn get_max(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Resource_get_Max"));
@@ -14588,7 +14984,7 @@ impl Resource {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The name of the resource. </summary> </doc>
-    pub fn get_name(&self, ) -> CallHandle<String> {
+    pub fn get_name(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Resource_get_Name"));
@@ -14604,7 +15000,7 @@ impl Resource {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part containing the resource. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Resource_get_Part"));
@@ -14654,13 +15050,18 @@ impl fmt::Debug for ResourceConverter {
 }
 
 impl RPCEncodable for ResourceConverter {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for ResourceConverter {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(ResourceConverter { id })
     }
@@ -14837,7 +15238,7 @@ impl ResourceConverter {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The core temperature of the converter, in Kelvin. </summary> </doc>
-    pub fn get_core_temperature(&self, ) -> CallHandle<f32> {
+    pub fn get_core_temperature(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceConverter_get_CoreTemperature"));
@@ -14853,7 +15254,7 @@ impl ResourceConverter {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The number of converters in the part. </summary> </doc>
-    pub fn get_count(&self, ) -> CallHandle<i32> {
+    pub fn get_count(&self) -> CallHandle<i32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceConverter_get_Count"));
@@ -14869,7 +15270,7 @@ impl ResourceConverter {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The core temperature at which the converter will operate with peak efficiency, in Kelvin. </summary> </doc>
-    pub fn get_optimum_core_temperature(&self, ) -> CallHandle<f32> {
+    pub fn get_optimum_core_temperature(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceConverter_get_OptimumCoreTemperature"));
@@ -14885,7 +15286,7 @@ impl ResourceConverter {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this converter. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceConverter_get_Part"));
@@ -14901,7 +15302,7 @@ impl ResourceConverter {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The thermal efficiency of the converter, as a percentage of its maximum. </summary> </doc>
-    pub fn get_thermal_efficiency(&self, ) -> CallHandle<f32> {
+    pub fn get_thermal_efficiency(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceConverter_get_ThermalEfficiency"));
@@ -14930,13 +15331,18 @@ impl fmt::Debug for ResourceDrain {
 }
 
 impl RPCEncodable for ResourceDrain {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for ResourceDrain {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(ResourceDrain { id })
     }
@@ -14966,7 +15372,11 @@ impl ResourceDrain {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the given resource should be drained. </summary> </doc>
-    pub fn set_resource(&self, p_resource: super::space_center::Resource, p_enabled: bool) -> CallHandle<()> {
+    pub fn set_resource(
+        &self,
+        p_resource: super::space_center::Resource,
+        p_enabled: bool,
+    ) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceDrain_SetResource"));
@@ -14992,7 +15402,7 @@ impl ResourceDrain {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Activates resource draining for all enabled parts. </summary> </doc>
-    pub fn start(&self, ) -> CallHandle<()> {
+    pub fn start(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceDrain_Start"));
@@ -15008,7 +15418,7 @@ impl ResourceDrain {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Turns off resource draining. </summary> </doc>
-    pub fn stop(&self, ) -> CallHandle<()> {
+    pub fn stop(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceDrain_Stop"));
@@ -15024,7 +15434,7 @@ impl ResourceDrain {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> List of available resources. </summary> </doc>
-    pub fn get_available_resources(&self, ) -> CallHandle<Vec<super::space_center::Resource>> {
+    pub fn get_available_resources(&self) -> CallHandle<Vec<super::space_center::Resource>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceDrain_get_AvailableResources"));
@@ -15040,7 +15450,7 @@ impl ResourceDrain {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The drain mode. </summary> </doc>
-    pub fn get_drain_mode(&self, ) -> CallHandle<super::space_center::DrainMode> {
+    pub fn get_drain_mode(&self) -> CallHandle<super::space_center::DrainMode> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceDrain_get_DrainMode"));
@@ -15056,7 +15466,7 @@ impl ResourceDrain {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Maximum possible drain rate. </summary> </doc>
-    pub fn get_max_rate(&self, ) -> CallHandle<f32> {
+    pub fn get_max_rate(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceDrain_get_MaxRate"));
@@ -15072,7 +15482,7 @@ impl ResourceDrain {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Minimum possible drain rate </summary> </doc>
-    pub fn get_min_rate(&self, ) -> CallHandle<f32> {
+    pub fn get_min_rate(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceDrain_get_MinRate"));
@@ -15088,7 +15498,7 @@ impl ResourceDrain {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this resource drain. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceDrain_get_Part"));
@@ -15104,7 +15514,7 @@ impl ResourceDrain {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Current drain rate. </summary> </doc>
-    pub fn get_rate(&self, ) -> CallHandle<f32> {
+    pub fn get_rate(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceDrain_get_Rate"));
@@ -15175,13 +15585,18 @@ impl fmt::Debug for ResourceHarvester {
 }
 
 impl RPCEncodable for ResourceHarvester {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for ResourceHarvester {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(ResourceHarvester { id })
     }
@@ -15190,7 +15605,7 @@ impl RPCExtractable for ResourceHarvester {
 #[allow(dead_code)]
 impl ResourceHarvester {
     /// <doc> <summary> Whether the harvester is actively drilling. </summary> </doc>
-    pub fn get_active(&self, ) -> CallHandle<bool> {
+    pub fn get_active(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceHarvester_get_Active"));
@@ -15206,7 +15621,7 @@ impl ResourceHarvester {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The core temperature of the drill, in Kelvin. </summary> </doc>
-    pub fn get_core_temperature(&self, ) -> CallHandle<f32> {
+    pub fn get_core_temperature(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceHarvester_get_CoreTemperature"));
@@ -15222,7 +15637,7 @@ impl ResourceHarvester {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the harvester is deployed. </summary> </doc>
-    pub fn get_deployed(&self, ) -> CallHandle<bool> {
+    pub fn get_deployed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceHarvester_get_Deployed"));
@@ -15238,7 +15653,7 @@ impl ResourceHarvester {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rate at which the drill is extracting ore, in units per second. </summary> </doc>
-    pub fn get_extraction_rate(&self, ) -> CallHandle<f32> {
+    pub fn get_extraction_rate(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceHarvester_get_ExtractionRate"));
@@ -15254,7 +15669,7 @@ impl ResourceHarvester {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The core temperature at which the drill will operate with peak efficiency, in Kelvin. </summary> </doc>
-    pub fn get_optimum_core_temperature(&self, ) -> CallHandle<f32> {
+    pub fn get_optimum_core_temperature(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceHarvester_get_OptimumCoreTemperature"));
@@ -15270,7 +15685,7 @@ impl ResourceHarvester {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this harvester. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceHarvester_get_Part"));
@@ -15286,7 +15701,7 @@ impl ResourceHarvester {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The state of the harvester. </summary> </doc>
-    pub fn get_state(&self, ) -> CallHandle<super::space_center::ResourceHarvesterState> {
+    pub fn get_state(&self) -> CallHandle<super::space_center::ResourceHarvesterState> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceHarvester_get_State"));
@@ -15302,7 +15717,7 @@ impl ResourceHarvester {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The thermal efficiency of the drill, as a percentage of its maximum. </summary> </doc>
-    pub fn get_thermal_efficiency(&self, ) -> CallHandle<f32> {
+    pub fn get_thermal_efficiency(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceHarvester_get_ThermalEfficiency"));
@@ -15373,13 +15788,18 @@ impl fmt::Debug for ResourceTransfer {
 }
 
 impl RPCEncodable for ResourceTransfer {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for ResourceTransfer {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(ResourceTransfer { id })
     }
@@ -15388,7 +15808,12 @@ impl RPCExtractable for ResourceTransfer {
 #[allow(dead_code)]
 impl ResourceTransfer {
     /// <doc> <summary> Start transferring a resource transfer between a pair of parts. The transfer will move at most <paramref name="maxAmount" /> units of the resource, depending on how much of the resource is available in the source part and how much storage is available in the destination part. Use <see cref="M:SpaceCenter.ResourceTransfer.Complete" /> to check if the transfer is complete. Use <see cref="M:SpaceCenter.ResourceTransfer.Amount" /> to see how much of the resource has been transferred. </summary> <param name="fromPart">The part to transfer to.</param> <param name="toPart">The part to transfer from.</param> <param name="resource">The name of the resource to transfer.</param> <param name="maxAmount">The maximum amount of resource to transfer.</param> </doc>
-    pub fn start(p_from_part: super::space_center::Part, p_to_part: super::space_center::Part, p_resource: String, p_max_amount: f32) -> CallHandle<super::space_center::ResourceTransfer> {
+    pub fn start(
+        p_from_part: super::space_center::Part,
+        p_to_part: super::space_center::Part,
+        p_resource: String,
+        p_max_amount: f32,
+    ) -> CallHandle<super::space_center::ResourceTransfer> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceTransfer_static_Start"));
@@ -15419,7 +15844,7 @@ impl ResourceTransfer {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The amount of the resource that has been transferred. </summary> </doc>
-    pub fn get_amount(&self, ) -> CallHandle<f32> {
+    pub fn get_amount(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceTransfer_get_Amount"));
@@ -15435,7 +15860,7 @@ impl ResourceTransfer {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the transfer has completed. </summary> </doc>
-    pub fn get_complete(&self, ) -> CallHandle<bool> {
+    pub fn get_complete(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ResourceTransfer_get_Complete"));
@@ -15464,13 +15889,18 @@ impl fmt::Debug for Resources {
 }
 
 impl RPCEncodable for Resources {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Resources {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Resources { id })
     }
@@ -15595,7 +16025,7 @@ impl Resources {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> All the individual resources that can be stored. </summary> </doc>
-    pub fn get_all(&self, ) -> CallHandle<Vec<super::space_center::Resource>> {
+    pub fn get_all(&self) -> CallHandle<Vec<super::space_center::Resource>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Resources_get_All"));
@@ -15611,7 +16041,7 @@ impl Resources {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether use of all the resources are enabled. </summary> <remarks> This is <c>true</c> if all of the resources are enabled. If any of the resources are not enabled, this is <c>false</c>. </remarks> </doc>
-    pub fn get_enabled(&self, ) -> CallHandle<bool> {
+    pub fn get_enabled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Resources_get_Enabled"));
@@ -15627,7 +16057,7 @@ impl Resources {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of resource names that can be stored. </summary> </doc>
-    pub fn get_names(&self, ) -> CallHandle<Vec<String>> {
+    pub fn get_names(&self) -> CallHandle<Vec<String>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Resources_get_Names"));
@@ -15677,13 +16107,18 @@ impl fmt::Debug for RoboticController {
 }
 
 impl RPCEncodable for RoboticController {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for RoboticController {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(RoboticController { id })
     }
@@ -15692,7 +16127,11 @@ impl RPCExtractable for RoboticController {
 #[allow(dead_code)]
 impl RoboticController {
     /// <doc> <summary> Add an axis to the controller. </summary> <returns>Returns <c>true</c> if the axis is added successfully.</returns> </doc>
-    pub fn add_axis(&self, p_module: super::space_center::Module, p_field_name: String) -> CallHandle<bool> {
+    pub fn add_axis(
+        &self,
+        p_module: super::space_center::Module,
+        p_field_name: String,
+    ) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticController_AddAxis"));
@@ -15718,7 +16157,13 @@ impl RoboticController {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Add key frame value for controller axis. </summary> <returns>Returns <c>true</c> if the key frame is added successfully.</returns> </doc>
-    pub fn add_key_frame(&self, p_module: super::space_center::Module, p_field_name: String, p_time: f32, p_value: f32) -> CallHandle<bool> {
+    pub fn add_key_frame(
+        &self,
+        p_module: super::space_center::Module,
+        p_field_name: String,
+        p_time: f32,
+        p_value: f32,
+    ) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticController_AddKeyFrame"));
@@ -15754,7 +16199,7 @@ impl RoboticController {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The axes for the controller. </summary> </doc>
-    pub fn axes(&self, ) -> CallHandle<Vec<Vec<String>>> {
+    pub fn axes(&self) -> CallHandle<Vec<Vec<String>>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticController_Axes"));
@@ -15770,7 +16215,11 @@ impl RoboticController {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Clear axis. </summary> <returns>Returns <c>true</c> if the axis is cleared successfully.</returns> </doc>
-    pub fn clear_axis(&self, p_module: super::space_center::Module, p_field_name: String) -> CallHandle<bool> {
+    pub fn clear_axis(
+        &self,
+        p_module: super::space_center::Module,
+        p_field_name: String,
+    ) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticController_ClearAxis"));
@@ -15817,7 +16266,7 @@ impl RoboticController {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this controller. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticController_get_Part"));
@@ -15846,13 +16295,18 @@ impl fmt::Debug for RoboticHinge {
 }
 
 impl RPCEncodable for RoboticHinge {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for RoboticHinge {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(RoboticHinge { id })
     }
@@ -15861,7 +16315,7 @@ impl RPCExtractable for RoboticHinge {
 #[allow(dead_code)]
 impl RoboticHinge {
     /// <doc> <summary> Move hinge to it's built position. </summary> </doc>
-    pub fn move_home(&self, ) -> CallHandle<()> {
+    pub fn move_home(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticHinge_MoveHome"));
@@ -15877,7 +16331,7 @@ impl RoboticHinge {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Current angle. </summary> </doc>
-    pub fn get_current_angle(&self, ) -> CallHandle<f32> {
+    pub fn get_current_angle(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticHinge_get_CurrentAngle"));
@@ -15893,7 +16347,7 @@ impl RoboticHinge {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Damping percentage. </summary> </doc>
-    pub fn get_damping(&self, ) -> CallHandle<f32> {
+    pub fn get_damping(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticHinge_get_Damping"));
@@ -15909,7 +16363,7 @@ impl RoboticHinge {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Lock movement. </summary> </doc>
-    pub fn get_locked(&self, ) -> CallHandle<bool> {
+    pub fn get_locked(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticHinge_get_Locked"));
@@ -15925,7 +16379,7 @@ impl RoboticHinge {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the motor is engaged. </summary> </doc>
-    pub fn get_motor_engaged(&self, ) -> CallHandle<bool> {
+    pub fn get_motor_engaged(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticHinge_get_MotorEngaged"));
@@ -15941,7 +16395,7 @@ impl RoboticHinge {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this robotic hinge. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticHinge_get_Part"));
@@ -15957,7 +16411,7 @@ impl RoboticHinge {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Target movement rate in degrees per second. </summary> </doc>
-    pub fn get_rate(&self, ) -> CallHandle<f32> {
+    pub fn get_rate(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticHinge_get_Rate"));
@@ -15973,7 +16427,7 @@ impl RoboticHinge {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Target angle. </summary> </doc>
-    pub fn get_target_angle(&self, ) -> CallHandle<f32> {
+    pub fn get_target_angle(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticHinge_get_TargetAngle"));
@@ -16107,13 +16561,18 @@ impl fmt::Debug for RoboticPiston {
 }
 
 impl RPCEncodable for RoboticPiston {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for RoboticPiston {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(RoboticPiston { id })
     }
@@ -16122,7 +16581,7 @@ impl RPCExtractable for RoboticPiston {
 #[allow(dead_code)]
 impl RoboticPiston {
     /// <doc> <summary> Move piston to it's built position. </summary> </doc>
-    pub fn move_home(&self, ) -> CallHandle<()> {
+    pub fn move_home(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticPiston_MoveHome"));
@@ -16138,7 +16597,7 @@ impl RoboticPiston {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Current extension of the piston. </summary> </doc>
-    pub fn get_current_extension(&self, ) -> CallHandle<f32> {
+    pub fn get_current_extension(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticPiston_get_CurrentExtension"));
@@ -16154,7 +16613,7 @@ impl RoboticPiston {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Damping percentage. </summary> </doc>
-    pub fn get_damping(&self, ) -> CallHandle<f32> {
+    pub fn get_damping(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticPiston_get_Damping"));
@@ -16170,7 +16629,7 @@ impl RoboticPiston {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Lock movement. </summary> </doc>
-    pub fn get_locked(&self, ) -> CallHandle<bool> {
+    pub fn get_locked(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticPiston_get_Locked"));
@@ -16186,7 +16645,7 @@ impl RoboticPiston {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the motor is engaged. </summary> </doc>
-    pub fn get_motor_engaged(&self, ) -> CallHandle<bool> {
+    pub fn get_motor_engaged(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticPiston_get_MotorEngaged"));
@@ -16202,7 +16661,7 @@ impl RoboticPiston {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this robotic piston. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticPiston_get_Part"));
@@ -16218,7 +16677,7 @@ impl RoboticPiston {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Target movement rate in degrees per second. </summary> </doc>
-    pub fn get_rate(&self, ) -> CallHandle<f32> {
+    pub fn get_rate(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticPiston_get_Rate"));
@@ -16234,7 +16693,7 @@ impl RoboticPiston {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Target extension of the piston. </summary> </doc>
-    pub fn get_target_extension(&self, ) -> CallHandle<f32> {
+    pub fn get_target_extension(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticPiston_get_TargetExtension"));
@@ -16368,13 +16827,18 @@ impl fmt::Debug for RoboticRotation {
 }
 
 impl RPCEncodable for RoboticRotation {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for RoboticRotation {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(RoboticRotation { id })
     }
@@ -16383,7 +16847,7 @@ impl RPCExtractable for RoboticRotation {
 #[allow(dead_code)]
 impl RoboticRotation {
     /// <doc> <summary> Move rotation servo to it's built position. </summary> </doc>
-    pub fn move_home(&self, ) -> CallHandle<()> {
+    pub fn move_home(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticRotation_MoveHome"));
@@ -16399,7 +16863,7 @@ impl RoboticRotation {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Current angle. </summary> </doc>
-    pub fn get_current_angle(&self, ) -> CallHandle<f32> {
+    pub fn get_current_angle(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticRotation_get_CurrentAngle"));
@@ -16415,7 +16879,7 @@ impl RoboticRotation {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Damping percentage. </summary> </doc>
-    pub fn get_damping(&self, ) -> CallHandle<f32> {
+    pub fn get_damping(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticRotation_get_Damping"));
@@ -16431,7 +16895,7 @@ impl RoboticRotation {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Lock Movement </summary> </doc>
-    pub fn get_locked(&self, ) -> CallHandle<bool> {
+    pub fn get_locked(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticRotation_get_Locked"));
@@ -16447,7 +16911,7 @@ impl RoboticRotation {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the motor is engaged. </summary> </doc>
-    pub fn get_motor_engaged(&self, ) -> CallHandle<bool> {
+    pub fn get_motor_engaged(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticRotation_get_MotorEngaged"));
@@ -16463,7 +16927,7 @@ impl RoboticRotation {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this robotic rotation servo. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticRotation_get_Part"));
@@ -16479,7 +16943,7 @@ impl RoboticRotation {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Target movement rate in degrees per second. </summary> </doc>
-    pub fn get_rate(&self, ) -> CallHandle<f32> {
+    pub fn get_rate(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticRotation_get_Rate"));
@@ -16495,7 +16959,7 @@ impl RoboticRotation {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Target angle. </summary> </doc>
-    pub fn get_target_angle(&self, ) -> CallHandle<f32> {
+    pub fn get_target_angle(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticRotation_get_TargetAngle"));
@@ -16629,13 +17093,18 @@ impl fmt::Debug for RoboticRotor {
 }
 
 impl RPCEncodable for RoboticRotor {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for RoboticRotor {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(RoboticRotor { id })
     }
@@ -16644,7 +17113,7 @@ impl RPCExtractable for RoboticRotor {
 #[allow(dead_code)]
 impl RoboticRotor {
     /// <doc> <summary> Current RPM. </summary> </doc>
-    pub fn get_current_rpm(&self, ) -> CallHandle<f32> {
+    pub fn get_current_rpm(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticRotor_get_CurrentRPM"));
@@ -16660,7 +17129,7 @@ impl RoboticRotor {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the rotor direction is inverted. </summary> </doc>
-    pub fn get_inverted(&self, ) -> CallHandle<bool> {
+    pub fn get_inverted(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticRotor_get_Inverted"));
@@ -16676,7 +17145,7 @@ impl RoboticRotor {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Lock movement. </summary> </doc>
-    pub fn get_locked(&self, ) -> CallHandle<bool> {
+    pub fn get_locked(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticRotor_get_Locked"));
@@ -16692,7 +17161,7 @@ impl RoboticRotor {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the motor is engaged. </summary> </doc>
-    pub fn get_motor_engaged(&self, ) -> CallHandle<bool> {
+    pub fn get_motor_engaged(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticRotor_get_MotorEngaged"));
@@ -16708,7 +17177,7 @@ impl RoboticRotor {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this robotic rotor. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticRotor_get_Part"));
@@ -16724,7 +17193,7 @@ impl RoboticRotor {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Target RPM. </summary> </doc>
-    pub fn get_target_rpm(&self, ) -> CallHandle<f32> {
+    pub fn get_target_rpm(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticRotor_get_TargetRPM"));
@@ -16740,7 +17209,7 @@ impl RoboticRotor {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Torque limit percentage. </summary> </doc>
-    pub fn get_torque_limit(&self, ) -> CallHandle<f32> {
+    pub fn get_torque_limit(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("RoboticRotor_get_TorqueLimit"));
@@ -16874,13 +17343,18 @@ impl fmt::Debug for ScienceData {
 }
 
 impl RPCEncodable for ScienceData {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for ScienceData {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(ScienceData { id })
     }
@@ -16889,7 +17363,7 @@ impl RPCExtractable for ScienceData {
 #[allow(dead_code)]
 impl ScienceData {
     /// <doc> <summary> Data amount. </summary> </doc>
-    pub fn get_data_amount(&self, ) -> CallHandle<f32> {
+    pub fn get_data_amount(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ScienceData_get_DataAmount"));
@@ -16905,7 +17379,7 @@ impl ScienceData {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Science value. </summary> </doc>
-    pub fn get_science_value(&self, ) -> CallHandle<f32> {
+    pub fn get_science_value(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ScienceData_get_ScienceValue"));
@@ -16921,7 +17395,7 @@ impl ScienceData {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Transmit value. </summary> </doc>
-    pub fn get_transmit_value(&self, ) -> CallHandle<f32> {
+    pub fn get_transmit_value(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ScienceData_get_TransmitValue"));
@@ -16950,13 +17424,18 @@ impl fmt::Debug for ScienceSubject {
 }
 
 impl RPCEncodable for ScienceSubject {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for ScienceSubject {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(ScienceSubject { id })
     }
@@ -16965,7 +17444,7 @@ impl RPCExtractable for ScienceSubject {
 #[allow(dead_code)]
 impl ScienceSubject {
     /// <doc> <summary> Multiply science value by this to determine data amount in mits. </summary> </doc>
-    pub fn get_data_scale(&self, ) -> CallHandle<f32> {
+    pub fn get_data_scale(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ScienceSubject_get_DataScale"));
@@ -16981,7 +17460,7 @@ impl ScienceSubject {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the experiment has been completed. </summary> </doc>
-    pub fn get_is_complete(&self, ) -> CallHandle<bool> {
+    pub fn get_is_complete(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ScienceSubject_get_IsComplete"));
@@ -16997,7 +17476,7 @@ impl ScienceSubject {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Amount of science already earned from this subject, not updated until after transmission/recovery. </summary> </doc>
-    pub fn get_science(&self, ) -> CallHandle<f32> {
+    pub fn get_science(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ScienceSubject_get_Science"));
@@ -17013,7 +17492,7 @@ impl ScienceSubject {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Total science allowable for this subject. </summary> </doc>
-    pub fn get_science_cap(&self, ) -> CallHandle<f32> {
+    pub fn get_science_cap(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ScienceSubject_get_ScienceCap"));
@@ -17029,7 +17508,7 @@ impl ScienceSubject {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Diminishing value multiplier for decreasing the science value returned from repeated experiments. </summary> </doc>
-    pub fn get_scientific_value(&self, ) -> CallHandle<f32> {
+    pub fn get_scientific_value(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ScienceSubject_get_ScientificValue"));
@@ -17045,7 +17524,7 @@ impl ScienceSubject {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Multiplier for specific Celestial Body/Experiment Situation combination. </summary> </doc>
-    pub fn get_subject_value(&self, ) -> CallHandle<f32> {
+    pub fn get_subject_value(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ScienceSubject_get_SubjectValue"));
@@ -17061,7 +17540,7 @@ impl ScienceSubject {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Title of science subject, displayed in science archives </summary> </doc>
-    pub fn get_title(&self, ) -> CallHandle<String> {
+    pub fn get_title(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("ScienceSubject_get_Title"));
@@ -17090,13 +17569,18 @@ impl fmt::Debug for Sensor {
 }
 
 impl RPCEncodable for Sensor {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Sensor {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Sensor { id })
     }
@@ -17105,7 +17589,7 @@ impl RPCExtractable for Sensor {
 #[allow(dead_code)]
 impl Sensor {
     /// <doc> <summary> Whether the sensor is active. </summary> </doc>
-    pub fn get_active(&self, ) -> CallHandle<bool> {
+    pub fn get_active(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Sensor_get_Active"));
@@ -17121,7 +17605,7 @@ impl Sensor {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this sensor. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Sensor_get_Part"));
@@ -17137,7 +17621,7 @@ impl Sensor {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current value of the sensor. </summary> </doc>
-    pub fn get_value(&self, ) -> CallHandle<String> {
+    pub fn get_value(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Sensor_get_Value"));
@@ -17187,13 +17671,18 @@ impl fmt::Debug for SolarPanel {
 }
 
 impl RPCEncodable for SolarPanel {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for SolarPanel {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(SolarPanel { id })
     }
@@ -17202,7 +17691,7 @@ impl RPCExtractable for SolarPanel {
 #[allow(dead_code)]
 impl SolarPanel {
     /// <doc> <summary> Whether the solar panel is deployable. </summary> </doc>
-    pub fn get_deployable(&self, ) -> CallHandle<bool> {
+    pub fn get_deployable(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("SolarPanel_get_Deployable"));
@@ -17218,7 +17707,7 @@ impl SolarPanel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the solar panel is extended. </summary> </doc>
-    pub fn get_deployed(&self, ) -> CallHandle<bool> {
+    pub fn get_deployed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("SolarPanel_get_Deployed"));
@@ -17234,7 +17723,7 @@ impl SolarPanel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current amount of energy being generated by the solar panel, in units of charge per second. </summary> </doc>
-    pub fn get_energy_flow(&self, ) -> CallHandle<f32> {
+    pub fn get_energy_flow(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("SolarPanel_get_EnergyFlow"));
@@ -17250,7 +17739,7 @@ impl SolarPanel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this solar panel. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("SolarPanel_get_Part"));
@@ -17266,7 +17755,7 @@ impl SolarPanel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current state of the solar panel. </summary> </doc>
-    pub fn get_state(&self, ) -> CallHandle<super::space_center::SolarPanelState> {
+    pub fn get_state(&self) -> CallHandle<super::space_center::SolarPanelState> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("SolarPanel_get_State"));
@@ -17282,7 +17771,7 @@ impl SolarPanel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current amount of sunlight that is incident on the solar panel, as a percentage. A value between 0 and 1. </summary> </doc>
-    pub fn get_sun_exposure(&self, ) -> CallHandle<f32> {
+    pub fn get_sun_exposure(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("SolarPanel_get_SunExposure"));
@@ -17332,13 +17821,18 @@ impl fmt::Debug for Thruster {
 }
 
 impl RPCEncodable for Thruster {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Thruster {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Thruster { id })
     }
@@ -17347,7 +17841,10 @@ impl RPCExtractable for Thruster {
 #[allow(dead_code)]
 impl Thruster {
     /// <doc> <summary> Position around which the gimbal pivots. </summary> <returns>The position as a vector.</returns> <param name="referenceFrame">The reference frame that the returned position vector is in.</param> </doc>
-    pub fn gimbal_position(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn gimbal_position(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Thruster_GimbalPosition"));
@@ -17368,7 +17865,10 @@ impl Thruster {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The direction of the force generated by the thruster, when the engine is in its initial position (no gimballing), in the given reference frame. This is opposite to the direction in which the thruster expels propellant. </summary> <returns>The direction as a unit vector.</returns> <param name="referenceFrame">The reference frame that the returned direction is in.</param> </doc>
-    pub fn initial_thrust_direction(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn initial_thrust_direction(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Thruster_InitialThrustDirection"));
@@ -17389,7 +17889,10 @@ impl Thruster {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The position at which the thruster generates thrust, when the engine is in its initial position (no gimballing), in the given reference frame. </summary> <returns>The position as a vector.</returns> <param name="referenceFrame">The reference frame that the returned position vector is in.</param> <remarks> This position can move when the gimbal rotates. This is because the thrust position and gimbal position are not necessarily the same. </remarks> </doc>
-    pub fn initial_thrust_position(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn initial_thrust_position(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Thruster_InitialThrustPosition"));
@@ -17410,7 +17913,10 @@ impl Thruster {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The direction of the force generated by the thruster, in the given reference frame. This is opposite to the direction in which the thruster expels propellant. For gimballed engines, this takes into account the current rotation of the gimbal. </summary> <returns>The direction as a unit vector.</returns> <param name="referenceFrame">The reference frame that the returned direction is in.</param> </doc>
-    pub fn thrust_direction(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn thrust_direction(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Thruster_ThrustDirection"));
@@ -17431,7 +17937,10 @@ impl Thruster {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The position at which the thruster generates thrust, in the given reference frame. For gimballed engines, this takes into account the current rotation of the gimbal. </summary> <returns>The position as a vector.</returns> <param name="referenceFrame">The reference frame that the returned position vector is in.</param> </doc>
-    pub fn thrust_position(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn thrust_position(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Thruster_ThrustPosition"));
@@ -17452,7 +17961,7 @@ impl Thruster {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current gimbal angle in the pitch, roll and yaw axes, in degrees. </summary> </doc>
-    pub fn get_gimbal_angle(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_gimbal_angle(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Thruster_get_GimbalAngle"));
@@ -17468,7 +17977,7 @@ impl Thruster {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the thruster is gimballed. </summary> </doc>
-    pub fn get_gimballed(&self, ) -> CallHandle<bool> {
+    pub fn get_gimballed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Thruster_get_Gimballed"));
@@ -17484,7 +17993,7 @@ impl Thruster {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The <see cref="T:SpaceCenter.Part" /> that contains this thruster. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Thruster_get_Part"));
@@ -17500,7 +18009,7 @@ impl Thruster {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A reference frame that is fixed relative to the thruster and orientated with its thrust direction (<see cref="M:SpaceCenter.Thruster.ThrustDirection" />). For gimballed engines, this takes into account the current rotation of the gimbal. <list type="bullet"><item><description> The origin is at the position of thrust for this thruster (<see cref="M:SpaceCenter.Thruster.ThrustPosition" />).</description></item><item><description> The axes rotate with the thrust direction. This is the direction in which the thruster expels propellant, including any gimballing. </description></item><item><description>The y-axis points along the thrust direction.</description></item><item><description>The x-axis and z-axis are perpendicular to the thrust direction. </description></item></list></summary> </doc>
-    pub fn get_thrust_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_thrust_reference_frame(&self) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Thruster_get_ThrustReferenceFrame"));
@@ -17529,13 +18038,18 @@ impl fmt::Debug for Vessel {
 }
 
 impl RPCEncodable for Vessel {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Vessel {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Vessel { id })
     }
@@ -17544,7 +18058,10 @@ impl RPCExtractable for Vessel {
 #[allow(dead_code)]
 impl Vessel {
     /// <doc> <summary> The angular velocity of the vessel, in the given reference frame. </summary> <returns>The angular velocity as a vector. The magnitude of the vector is the rotational speed of the vessel, in radians per second. The direction of the vector indicates the axis of rotation, using the right-hand rule.</returns> <param name="referenceFrame">The reference frame the returned angular velocity is in.</param> </doc>
-    pub fn angular_velocity(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn angular_velocity(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_AngularVelocity"));
@@ -17586,7 +18103,10 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The axis-aligned bounding box of the vessel in the given reference frame. </summary> <returns>The positions of the minimum and maximum vertices of the box, as position vectors.</returns> <param name="referenceFrame">The reference frame that the returned position vectors are in.</param> </doc>
-    pub fn bounding_box(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
+    pub fn bounding_box(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_BoundingBox"));
@@ -17607,7 +18127,10 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The direction in which the vessel is pointing, in the given reference frame. </summary> <returns>The direction as a unit vector.</returns> <param name="referenceFrame">The reference frame that the returned direction is in.</param> </doc>
-    pub fn direction(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn direction(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_Direction"));
@@ -17628,7 +18151,10 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns a <see cref="T:SpaceCenter.Flight" /> object that can be used to get flight telemetry for the vessel, in the specified reference frame. </summary> <param name="referenceFrame"> Reference frame. Defaults to the vessel's surface reference frame (<see cref="M:SpaceCenter.Vessel.SurfaceReferenceFrame" />). </param> </doc>
-    pub fn flight(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<super::space_center::Flight> {
+    pub fn flight(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<super::space_center::Flight> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_Flight"));
@@ -17670,7 +18196,10 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The position of the center of mass of the vessel, in the given reference frame. </summary> <returns>The position as a vector.</returns> <param name="referenceFrame">The reference frame that the returned position vector is in.</param> </doc>
-    pub fn position(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn position(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_Position"));
@@ -17691,7 +18220,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Recover the vessel. </summary> </doc>
-    pub fn recover(&self, ) -> CallHandle<()> {
+    pub fn recover(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_Recover"));
@@ -17707,7 +18236,11 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns a <see cref="T:SpaceCenter.Resources" /> object, that can used to get information about resources stored in a given <paramref name="stage" />. </summary> <param name="stage">Get resources for parts that are decoupled in this stage.</param> <param name="cumulative">When <c>false</c>, returns the resources for parts decoupled in just the given stage. When <c>true</c> returns the resources decoupled in the given stage and all subsequent stages combined.</param> </doc>
-    pub fn resources_in_decouple_stage(&self, p_stage: i32, p_cumulative: bool) -> CallHandle<super::space_center::Resources> {
+    pub fn resources_in_decouple_stage(
+        &self,
+        p_stage: i32,
+        p_cumulative: bool,
+    ) -> CallHandle<super::space_center::Resources> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_ResourcesInDecoupleStage"));
@@ -17733,7 +18266,10 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The rotation of the vessel, in the given reference frame. </summary> <returns>The rotation as a quaternion of the form <math>(x, y, z, w)</math>.</returns> <param name="referenceFrame">The reference frame that the returned rotation is in.</param> </doc>
-    pub fn rotation(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64, f64)> {
+    pub fn rotation(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_Rotation"));
@@ -17775,7 +18311,10 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The velocity of the center of mass of the vessel, in the given reference frame. </summary> <returns>The velocity as a vector. The vector points in the direction of travel, and its magnitude is the speed of the body in meters per second.</returns> <param name="referenceFrame">The reference frame that the returned velocity vector is in.</param> </doc>
-    pub fn velocity(&self, p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+    pub fn velocity(
+        &self,
+        p_reference_frame: super::space_center::ReferenceFrame,
+    ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_Velocity"));
@@ -17796,7 +18335,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> An <see cref="T:SpaceCenter.AutoPilot" /> object, that can be used to perform simple auto-piloting of the vessel. </summary> </doc>
-    pub fn get_auto_pilot(&self, ) -> CallHandle<super::space_center::AutoPilot> {
+    pub fn get_auto_pilot(&self) -> CallHandle<super::space_center::AutoPilot> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_AutoPilot"));
@@ -17812,7 +18351,9 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The maximum torque that the aerodynamic control surfaces can generate. Returns the torques in <math>N.m</math> around each of the coordinate axes of the vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />). These axes are equivalent to the pitch, roll and yaw axes of the vessel. </summary> </doc>
-    pub fn get_available_control_surface_torque(&self, ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
+    pub fn get_available_control_surface_torque(
+        &self,
+    ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_AvailableControlSurfaceTorque"));
@@ -17828,7 +18369,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The maximum torque that the currently active and gimballed engines can generate. Returns the torques in <math>N.m</math> around each of the coordinate axes of the vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />). These axes are equivalent to the pitch, roll and yaw axes of the vessel. </summary> </doc>
-    pub fn get_available_engine_torque(&self, ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
+    pub fn get_available_engine_torque(&self) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_AvailableEngineTorque"));
@@ -17844,7 +18385,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The maximum torque that parts (excluding reaction wheels, gimballed engines, RCS and control surfaces) can generate. Returns the torques in <math>N.m</math> around each of the coordinate axes of the vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />). These axes are equivalent to the pitch, roll and yaw axes of the vessel. </summary> </doc>
-    pub fn get_available_other_torque(&self, ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
+    pub fn get_available_other_torque(&self) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_AvailableOtherTorque"));
@@ -17860,7 +18401,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The maximum force that the currently active RCS thrusters can generate. Returns the forces in <math>N</math> along each of the coordinate axes of the vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />). These axes are equivalent to the right, forward and bottom directions of the vessel. </summary> </doc>
-    pub fn get_available_rcs_force(&self, ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
+    pub fn get_available_rcs_force(&self) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_AvailableRCSForce"));
@@ -17876,7 +18417,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The maximum torque that the currently active RCS thrusters can generate. Returns the torques in <math>N.m</math> around each of the coordinate axes of the vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />). These axes are equivalent to the pitch, roll and yaw axes of the vessel. </summary> </doc>
-    pub fn get_available_rcs_torque(&self, ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
+    pub fn get_available_rcs_torque(&self) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_AvailableRCSTorque"));
@@ -17892,7 +18433,9 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The maximum torque that the currently active and powered reaction wheels can generate. Returns the torques in <math>N.m</math> around each of the coordinate axes of the vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />). These axes are equivalent to the pitch, roll and yaw axes of the vessel. </summary> </doc>
-    pub fn get_available_reaction_wheel_torque(&self, ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
+    pub fn get_available_reaction_wheel_torque(
+        &self,
+    ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_AvailableReactionWheelTorque"));
@@ -17908,7 +18451,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Gets the total available thrust that can be produced by the vessel's active engines, in Newtons. This is computed by summing <see cref="M:SpaceCenter.Engine.AvailableThrust" /> for every active engine in the vessel. </summary> </doc>
-    pub fn get_available_thrust(&self, ) -> CallHandle<f32> {
+    pub fn get_available_thrust(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_AvailableThrust"));
@@ -17924,7 +18467,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The maximum torque that the vessel generates. Includes contributions from reaction wheels, RCS, gimballed engines and aerodynamic control surfaces. Returns the torques in <math>N.m</math> around each of the coordinate axes of the vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />). These axes are equivalent to the pitch, roll and yaw axes of the vessel. </summary> </doc>
-    pub fn get_available_torque(&self, ) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
+    pub fn get_available_torque(&self) -> CallHandle<((f64, f64, f64), (f64, f64, f64))> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_AvailableTorque"));
@@ -17940,7 +18483,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The name of the biome the vessel is currently in. </summary> </doc>
-    pub fn get_biome(&self, ) -> CallHandle<String> {
+    pub fn get_biome(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_Biome"));
@@ -17956,7 +18499,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns a <see cref="T:SpaceCenter.Comms" /> object that can be used to interact with CommNet for this vessel. </summary> </doc>
-    pub fn get_comms(&self, ) -> CallHandle<super::space_center::Comms> {
+    pub fn get_comms(&self) -> CallHandle<super::space_center::Comms> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_Comms"));
@@ -17972,7 +18515,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns a <see cref="T:SpaceCenter.Control" /> object that can be used to manipulate the vessel's control inputs. For example, its pitch/yaw/roll controls, RCS and thrust. </summary> </doc>
-    pub fn get_control(&self, ) -> CallHandle<super::space_center::Control> {
+    pub fn get_control(&self) -> CallHandle<super::space_center::Control> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_Control"));
@@ -17988,7 +18531,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The crew in the vessel. </summary> </doc>
-    pub fn get_crew(&self, ) -> CallHandle<Vec<super::space_center::CrewMember>> {
+    pub fn get_crew(&self) -> CallHandle<Vec<super::space_center::CrewMember>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_Crew"));
@@ -18004,7 +18547,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The number of crew that can occupy the vessel. </summary> </doc>
-    pub fn get_crew_capacity(&self, ) -> CallHandle<i32> {
+    pub fn get_crew_capacity(&self) -> CallHandle<i32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_CrewCapacity"));
@@ -18020,7 +18563,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The number of crew that are occupying the vessel. </summary> </doc>
-    pub fn get_crew_count(&self, ) -> CallHandle<i32> {
+    pub fn get_crew_count(&self) -> CallHandle<i32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_CrewCount"));
@@ -18036,7 +18579,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The total mass of the vessel, excluding resources, in kg. </summary> </doc>
-    pub fn get_dry_mass(&self, ) -> CallHandle<f32> {
+    pub fn get_dry_mass(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_DryMass"));
@@ -18052,7 +18595,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The inertia tensor of the vessel around its center of mass, in the vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />). Returns the 3x3 matrix as a list of elements, in row-major order. </summary> </doc>
-    pub fn get_inertia_tensor(&self, ) -> CallHandle<Vec<f64>> {
+    pub fn get_inertia_tensor(&self) -> CallHandle<Vec<f64>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_InertiaTensor"));
@@ -18068,7 +18611,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The combined specific impulse of all active engines at sea level on Kerbin, in seconds. This is computed using the formula <a href="https://wiki.kerbalspaceprogram.com/wiki/Specific_impulse#Multiple_engines">described here</a>. </summary> </doc>
-    pub fn get_kerbin_sea_level_specific_impulse(&self, ) -> CallHandle<f32> {
+    pub fn get_kerbin_sea_level_specific_impulse(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_KerbinSeaLevelSpecificImpulse"));
@@ -18084,7 +18627,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The mission elapsed time in seconds. </summary> </doc>
-    pub fn get_met(&self, ) -> CallHandle<f64> {
+    pub fn get_met(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_MET"));
@@ -18100,7 +18643,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The total mass of the vessel, including resources, in kg. </summary> </doc>
-    pub fn get_mass(&self, ) -> CallHandle<f32> {
+    pub fn get_mass(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_Mass"));
@@ -18116,7 +18659,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The total maximum thrust that can be produced by the vessel's active engines, in Newtons. This is computed by summing <see cref="M:SpaceCenter.Engine.MaxThrust" /> for every active engine. </summary> </doc>
-    pub fn get_max_thrust(&self, ) -> CallHandle<f32> {
+    pub fn get_max_thrust(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_MaxThrust"));
@@ -18132,7 +18675,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The total maximum thrust that can be produced by the vessel's active engines when the vessel is in a vacuum, in Newtons. This is computed by summing <see cref="M:SpaceCenter.Engine.MaxVacuumThrust" /> for every active engine. </summary> </doc>
-    pub fn get_max_vacuum_thrust(&self, ) -> CallHandle<f32> {
+    pub fn get_max_vacuum_thrust(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_MaxVacuumThrust"));
@@ -18148,7 +18691,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The moment of inertia of the vessel around its center of mass in <math>kg.m^2</math>. The inertia values in the returned 3-tuple are around the pitch, roll and yaw directions respectively. This corresponds to the vessels reference frame (<see cref="T:SpaceCenter.ReferenceFrame" />). </summary> </doc>
-    pub fn get_moment_of_inertia(&self, ) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_moment_of_inertia(&self) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_MomentOfInertia"));
@@ -18164,7 +18707,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The name of the vessel. </summary> </doc>
-    pub fn get_name(&self, ) -> CallHandle<String> {
+    pub fn get_name(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_Name"));
@@ -18180,7 +18723,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current orbit of the vessel. </summary> </doc>
-    pub fn get_orbit(&self, ) -> CallHandle<super::space_center::Orbit> {
+    pub fn get_orbit(&self) -> CallHandle<super::space_center::Orbit> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_Orbit"));
@@ -18196,7 +18739,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The reference frame that is fixed relative to the vessel, and orientated with the vessels orbital prograde/normal/radial directions. <list type="bullet"><item><description>The origin is at the center of mass of the vessel.</description></item><item><description>The axes rotate with the orbital prograde/normal/radial directions.</description></item><item><description>The x-axis points in the orbital anti-radial direction.</description></item><item><description>The y-axis points in the orbital prograde direction.</description></item><item><description>The z-axis points in the orbital normal direction.</description></item></list></summary> <remarks> Be careful not to confuse this with 'orbit' mode on the navball. </remarks> </doc>
-    pub fn get_orbital_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_orbital_reference_frame(&self) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_OrbitalReferenceFrame"));
@@ -18212,7 +18755,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.Parts" /> object, that can used to interact with the parts that make up this vessel. </summary> </doc>
-    pub fn get_parts(&self, ) -> CallHandle<super::space_center::Parts> {
+    pub fn get_parts(&self) -> CallHandle<super::space_center::Parts> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_Parts"));
@@ -18228,7 +18771,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the vessel is recoverable. </summary> </doc>
-    pub fn get_recoverable(&self, ) -> CallHandle<bool> {
+    pub fn get_recoverable(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_Recoverable"));
@@ -18244,7 +18787,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The reference frame that is fixed relative to the vessel, and orientated with the vessel. <list type="bullet"><item><description>The origin is at the center of mass of the vessel.</description></item><item><description>The axes rotate with the vessel.</description></item><item><description>The x-axis points out to the right of the vessel.</description></item><item><description>The y-axis points in the forward direction of the vessel.</description></item><item><description>The z-axis points out of the bottom off the vessel.</description></item></list></summary> </doc>
-    pub fn get_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_reference_frame(&self) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_ReferenceFrame"));
@@ -18260,7 +18803,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A <see cref="T:SpaceCenter.Resources" /> object, that can used to get information about resources stored in the vessel. </summary> </doc>
-    pub fn get_resources(&self, ) -> CallHandle<super::space_center::Resources> {
+    pub fn get_resources(&self) -> CallHandle<super::space_center::Resources> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_Resources"));
@@ -18276,7 +18819,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The situation the vessel is in. </summary> </doc>
-    pub fn get_situation(&self, ) -> CallHandle<super::space_center::VesselSituation> {
+    pub fn get_situation(&self) -> CallHandle<super::space_center::VesselSituation> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_Situation"));
@@ -18292,7 +18835,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The combined specific impulse of all active engines, in seconds. This is computed using the formula <a href="https://wiki.kerbalspaceprogram.com/wiki/Specific_impulse#Multiple_engines">described here</a>. </summary> </doc>
-    pub fn get_specific_impulse(&self, ) -> CallHandle<f32> {
+    pub fn get_specific_impulse(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_SpecificImpulse"));
@@ -18308,7 +18851,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The reference frame that is fixed relative to the vessel, and orientated with the surface of the body being orbited. <list type="bullet"><item><description>The origin is at the center of mass of the vessel.</description></item><item><description>The axes rotate with the north and up directions on the surface of the body.</description></item><item><description>The x-axis points in the <a href="https://en.wikipedia.org/wiki/Zenith">zenith</a> direction (upwards, normal to the body being orbited, from the center of the body towards the center of mass of the vessel).</description></item><item><description>The y-axis points northwards towards the <a href="https://en.wikipedia.org/wiki/Horizon">astronomical horizon</a> (north, and tangential to the surface of the body -- the direction in which a compass would point when on the surface).</description></item><item><description>The z-axis points eastwards towards the <a href="https://en.wikipedia.org/wiki/Horizon">astronomical horizon</a> (east, and tangential to the surface of the body -- east on a compass when on the surface).</description></item></list></summary> <remarks> Be careful not to confuse this with 'surface' mode on the navball. </remarks> </doc>
-    pub fn get_surface_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_surface_reference_frame(&self) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_SurfaceReferenceFrame"));
@@ -18324,7 +18867,9 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The reference frame that is fixed relative to the vessel, and orientated with the velocity vector of the vessel relative to the surface of the body being orbited. <list type="bullet"><item><description>The origin is at the center of mass of the vessel.</description></item><item><description>The axes rotate with the vessel's velocity vector.</description></item><item><description>The y-axis points in the direction of the vessel's velocity vector, relative to the surface of the body being orbited.</description></item><item><description>The z-axis is in the plane of the <a href="https://en.wikipedia.org/wiki/Horizon">astronomical horizon</a>.</description></item><item><description>The x-axis is orthogonal to the other two axes.</description></item></list></summary> </doc>
-    pub fn get_surface_velocity_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_surface_velocity_reference_frame(
+        &self,
+    ) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_SurfaceVelocityReferenceFrame"));
@@ -18340,7 +18885,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The total thrust currently being produced by the vessel's engines, in Newtons. This is computed by summing <see cref="M:SpaceCenter.Engine.Thrust" /> for every engine in the vessel. </summary> </doc>
-    pub fn get_thrust(&self, ) -> CallHandle<f32> {
+    pub fn get_thrust(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_Thrust"));
@@ -18356,7 +18901,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The type of the vessel. </summary> </doc>
-    pub fn get_type(&self, ) -> CallHandle<super::space_center::VesselType> {
+    pub fn get_type(&self) -> CallHandle<super::space_center::VesselType> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_Type"));
@@ -18372,7 +18917,7 @@ impl Vessel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The combined vacuum specific impulse of all active engines, in seconds. This is computed using the formula <a href="https://wiki.kerbalspaceprogram.com/wiki/Specific_impulse#Multiple_engines">described here</a>. </summary> </doc>
-    pub fn get_vacuum_specific_impulse(&self, ) -> CallHandle<f32> {
+    pub fn get_vacuum_specific_impulse(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Vessel_get_VacuumSpecificImpulse"));
@@ -18443,13 +18988,18 @@ impl fmt::Debug for Waypoint {
 }
 
 impl RPCEncodable for Waypoint {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Waypoint {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Waypoint { id })
     }
@@ -18458,7 +19008,7 @@ impl RPCExtractable for Waypoint {
 #[allow(dead_code)]
 impl Waypoint {
     /// <doc> <summary> Removes the waypoint. </summary> </doc>
-    pub fn remove(&self, ) -> CallHandle<()> {
+    pub fn remove(&self) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Waypoint_Remove"));
@@ -18474,7 +19024,7 @@ impl Waypoint {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The altitude of the waypoint above the surface of the body, in meters. When over water, this is the altitude above the sea floor. </summary> </doc>
-    pub fn get_bedrock_altitude(&self, ) -> CallHandle<f64> {
+    pub fn get_bedrock_altitude(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Waypoint_get_BedrockAltitude"));
@@ -18490,7 +19040,7 @@ impl Waypoint {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The celestial body the waypoint is attached to. </summary> </doc>
-    pub fn get_body(&self, ) -> CallHandle<super::space_center::CelestialBody> {
+    pub fn get_body(&self) -> CallHandle<super::space_center::CelestialBody> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Waypoint_get_Body"));
@@ -18506,7 +19056,7 @@ impl Waypoint {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary><c>true</c> if this waypoint is part of a set of clustered waypoints with greek letter names appended (Alpha, Beta, Gamma, etc). If <c>true</c>, there is a one-to-one correspondence with the greek letter name and the <see cref="M:SpaceCenter.Waypoint.Index" />. </summary> </doc>
-    pub fn get_clustered(&self, ) -> CallHandle<bool> {
+    pub fn get_clustered(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Waypoint_get_Clustered"));
@@ -18522,7 +19072,7 @@ impl Waypoint {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The seed of the icon color. See <see cref="M:SpaceCenter.WaypointManager.Colors" /> for example colors. </summary> </doc>
-    pub fn get_color(&self, ) -> CallHandle<i32> {
+    pub fn get_color(&self) -> CallHandle<i32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Waypoint_get_Color"));
@@ -18538,7 +19088,7 @@ impl Waypoint {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The associated contract. </summary> </doc>
-    pub fn get_contract(&self, ) -> CallHandle<super::space_center::Contract> {
+    pub fn get_contract(&self) -> CallHandle<super::space_center::Contract> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Waypoint_get_Contract"));
@@ -18554,7 +19104,7 @@ impl Waypoint {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary><c>true</c> if the waypoint is attached to the ground. </summary> </doc>
-    pub fn get_grounded(&self, ) -> CallHandle<bool> {
+    pub fn get_grounded(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Waypoint_get_Grounded"));
@@ -18570,7 +19120,7 @@ impl Waypoint {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the waypoint belongs to a contract. </summary> </doc>
-    pub fn get_has_contract(&self, ) -> CallHandle<bool> {
+    pub fn get_has_contract(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Waypoint_get_HasContract"));
@@ -18586,7 +19136,7 @@ impl Waypoint {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The icon of the waypoint. </summary> </doc>
-    pub fn get_icon(&self, ) -> CallHandle<String> {
+    pub fn get_icon(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Waypoint_get_Icon"));
@@ -18602,7 +19152,7 @@ impl Waypoint {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The integer index of this waypoint within its cluster of sibling waypoints. In other words, when you have a cluster of waypoints called "Somewhere Alpha", "Somewhere Beta" and "Somewhere Gamma", the alpha site has index 0, the beta site has index 1 and the gamma site has index 2. When <see cref="M:SpaceCenter.Waypoint.Clustered" /> is <c>false</c>, this is zero. </summary> </doc>
-    pub fn get_index(&self, ) -> CallHandle<i32> {
+    pub fn get_index(&self) -> CallHandle<i32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Waypoint_get_Index"));
@@ -18618,7 +19168,7 @@ impl Waypoint {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The latitude of the waypoint. </summary> </doc>
-    pub fn get_latitude(&self, ) -> CallHandle<f64> {
+    pub fn get_latitude(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Waypoint_get_Latitude"));
@@ -18634,7 +19184,7 @@ impl Waypoint {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The longitude of the waypoint. </summary> </doc>
-    pub fn get_longitude(&self, ) -> CallHandle<f64> {
+    pub fn get_longitude(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Waypoint_get_Longitude"));
@@ -18650,7 +19200,7 @@ impl Waypoint {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The altitude of the waypoint above sea level, in meters. </summary> </doc>
-    pub fn get_mean_altitude(&self, ) -> CallHandle<f64> {
+    pub fn get_mean_altitude(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Waypoint_get_MeanAltitude"));
@@ -18666,7 +19216,7 @@ impl Waypoint {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The name of the waypoint as it appears on the map and the contract. </summary> </doc>
-    pub fn get_name(&self, ) -> CallHandle<String> {
+    pub fn get_name(&self) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Waypoint_get_Name"));
@@ -18682,7 +19232,7 @@ impl Waypoint {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary><c>true</c> if the waypoint is near to the surface of a body. </summary> </doc>
-    pub fn get_near_surface(&self, ) -> CallHandle<bool> {
+    pub fn get_near_surface(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Waypoint_get_NearSurface"));
@@ -18698,7 +19248,7 @@ impl Waypoint {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The altitude of the waypoint above the surface of the body or sea level, whichever is closer, in meters. </summary> </doc>
-    pub fn get_surface_altitude(&self, ) -> CallHandle<f64> {
+    pub fn get_surface_altitude(&self) -> CallHandle<f64> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Waypoint_get_SurfaceAltitude"));
@@ -18916,13 +19466,18 @@ impl fmt::Debug for WaypointManager {
 }
 
 impl RPCEncodable for WaypointManager {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for WaypointManager {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(WaypointManager { id })
     }
@@ -18931,7 +19486,13 @@ impl RPCExtractable for WaypointManager {
 #[allow(dead_code)]
 impl WaypointManager {
     /// <doc> <summary> Creates a waypoint at the given position at ground level, and returns a <see cref="T:SpaceCenter.Waypoint" /> object that can be used to modify it. </summary> <param name="latitude">Latitude of the waypoint.</param> <param name="longitude">Longitude of the waypoint.</param> <param name="body">Celestial body the waypoint is attached to.</param> <param name="name">Name of the waypoint.</param> <returns></returns> </doc>
-    pub fn add_waypoint(&self, p_latitude: f64, p_longitude: f64, p_body: super::space_center::CelestialBody, p_name: String) -> CallHandle<super::space_center::Waypoint> {
+    pub fn add_waypoint(
+        &self,
+        p_latitude: f64,
+        p_longitude: f64,
+        p_body: super::space_center::CelestialBody,
+        p_name: String,
+    ) -> CallHandle<super::space_center::Waypoint> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("WaypointManager_AddWaypoint"));
@@ -18967,7 +19528,14 @@ impl WaypointManager {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Creates a waypoint at the given position and altitude, and returns a <see cref="T:SpaceCenter.Waypoint" /> object that can be used to modify it. </summary> <param name="latitude">Latitude of the waypoint.</param> <param name="longitude">Longitude of the waypoint.</param> <param name="altitude">Altitude (above sea level) of the waypoint.</param> <param name="body">Celestial body the waypoint is attached to.</param> <param name="name">Name of the waypoint.</param> <returns></returns> </doc>
-    pub fn add_waypoint_at_altitude(&self, p_latitude: f64, p_longitude: f64, p_altitude: f64, p_body: super::space_center::CelestialBody, p_name: String) -> CallHandle<super::space_center::Waypoint> {
+    pub fn add_waypoint_at_altitude(
+        &self,
+        p_latitude: f64,
+        p_longitude: f64,
+        p_altitude: f64,
+        p_body: super::space_center::CelestialBody,
+        p_name: String,
+    ) -> CallHandle<super::space_center::Waypoint> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("WaypointManager_AddWaypointAtAltitude"));
@@ -19008,7 +19576,7 @@ impl WaypointManager {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> An example map of known color - seed pairs. Any other integers may be used as seed. </summary> </doc>
-    pub fn get_colors(&self, ) -> CallHandle<std::collections::HashMap<String, i32>> {
+    pub fn get_colors(&self) -> CallHandle<std::collections::HashMap<String, i32>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("WaypointManager_get_Colors"));
@@ -19024,7 +19592,7 @@ impl WaypointManager {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Returns all available icons (from "GameData/Squad/Contracts/Icons/"). </summary> </doc>
-    pub fn get_icons(&self, ) -> CallHandle<Vec<String>> {
+    pub fn get_icons(&self) -> CallHandle<Vec<String>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("WaypointManager_get_Icons"));
@@ -19040,7 +19608,7 @@ impl WaypointManager {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A list of all existing waypoints. </summary> </doc>
-    pub fn get_waypoints(&self, ) -> CallHandle<Vec<super::space_center::Waypoint>> {
+    pub fn get_waypoints(&self) -> CallHandle<Vec<super::space_center::Waypoint>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("WaypointManager_get_Waypoints"));
@@ -19069,13 +19637,18 @@ impl fmt::Debug for Wheel {
 }
 
 impl RPCEncodable for Wheel {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Wheel {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Wheel { id })
     }
@@ -19084,7 +19657,7 @@ impl RPCExtractable for Wheel {
 #[allow(dead_code)]
 impl Wheel {
     /// <doc> <summary> Whether automatic friction control is enabled. </summary> </doc>
-    pub fn get_auto_friction_control(&self, ) -> CallHandle<bool> {
+    pub fn get_auto_friction_control(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_AutoFrictionControl"));
@@ -19100,7 +19673,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The braking force, as a percentage of maximum, when the brakes are applied. </summary> </doc>
-    pub fn get_brakes(&self, ) -> CallHandle<f32> {
+    pub fn get_brakes(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_Brakes"));
@@ -19116,7 +19689,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the wheel is broken. </summary> </doc>
-    pub fn get_broken(&self, ) -> CallHandle<bool> {
+    pub fn get_broken(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_Broken"));
@@ -19132,7 +19705,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Current deflection of the wheel. </summary> </doc>
-    pub fn get_deflection(&self, ) -> CallHandle<f32> {
+    pub fn get_deflection(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_Deflection"));
@@ -19148,7 +19721,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the wheel is deployable. </summary> </doc>
-    pub fn get_deployable(&self, ) -> CallHandle<bool> {
+    pub fn get_deployable(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_Deployable"));
@@ -19164,7 +19737,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the wheel is deployed. </summary> </doc>
-    pub fn get_deployed(&self, ) -> CallHandle<bool> {
+    pub fn get_deployed(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_Deployed"));
@@ -19180,7 +19753,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Manual setting for the motor limiter. Only takes effect if the wheel has automatic traction control disabled. A value between 0 and 100 inclusive. </summary> </doc>
-    pub fn get_drive_limiter(&self, ) -> CallHandle<f32> {
+    pub fn get_drive_limiter(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_DriveLimiter"));
@@ -19196,7 +19769,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the wheel is touching the ground. </summary> </doc>
-    pub fn get_grounded(&self, ) -> CallHandle<bool> {
+    pub fn get_grounded(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_Grounded"));
@@ -19212,7 +19785,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the wheel has brakes. </summary> </doc>
-    pub fn get_has_brakes(&self, ) -> CallHandle<bool> {
+    pub fn get_has_brakes(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_HasBrakes"));
@@ -19228,7 +19801,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the wheel has suspension. </summary> </doc>
-    pub fn get_has_suspension(&self, ) -> CallHandle<bool> {
+    pub fn get_has_suspension(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_HasSuspension"));
@@ -19244,7 +19817,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Manual friction control value. Only has an effect if automatic friction control is disabled. A value between 0 and 5 inclusive. </summary> </doc>
-    pub fn get_manual_friction_control(&self, ) -> CallHandle<f32> {
+    pub fn get_manual_friction_control(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_ManualFrictionControl"));
@@ -19260,7 +19833,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the motor is enabled. </summary> </doc>
-    pub fn get_motor_enabled(&self, ) -> CallHandle<bool> {
+    pub fn get_motor_enabled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_MotorEnabled"));
@@ -19276,7 +19849,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the direction of the motor is inverted. </summary> </doc>
-    pub fn get_motor_inverted(&self, ) -> CallHandle<bool> {
+    pub fn get_motor_inverted(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_MotorInverted"));
@@ -19292,7 +19865,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The output of the motor. This is the torque currently being generated, in Newton meters. </summary> </doc>
-    pub fn get_motor_output(&self, ) -> CallHandle<f32> {
+    pub fn get_motor_output(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_MotorOutput"));
@@ -19308,7 +19881,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the direction of the motor is inverted. </summary> </doc>
-    pub fn get_motor_state(&self, ) -> CallHandle<super::space_center::MotorState> {
+    pub fn get_motor_state(&self) -> CallHandle<super::space_center::MotorState> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_MotorState"));
@@ -19324,7 +19897,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The part object for this wheel. </summary> </doc>
-    pub fn get_part(&self, ) -> CallHandle<super::space_center::Part> {
+    pub fn get_part(&self) -> CallHandle<super::space_center::Part> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_Part"));
@@ -19340,7 +19913,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the wheel is powered by a motor. </summary> </doc>
-    pub fn get_powered(&self, ) -> CallHandle<bool> {
+    pub fn get_powered(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_Powered"));
@@ -19356,7 +19929,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Radius of the wheel, in meters. </summary> </doc>
-    pub fn get_radius(&self, ) -> CallHandle<f32> {
+    pub fn get_radius(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_Radius"));
@@ -19372,7 +19945,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the wheel is repairable. </summary> </doc>
-    pub fn get_repairable(&self, ) -> CallHandle<bool> {
+    pub fn get_repairable(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_Repairable"));
@@ -19388,7 +19961,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Current slip of the wheel. </summary> </doc>
-    pub fn get_slip(&self, ) -> CallHandle<f32> {
+    pub fn get_slip(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_Slip"));
@@ -19404,7 +19977,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The current state of the wheel. </summary> </doc>
-    pub fn get_state(&self, ) -> CallHandle<super::space_center::WheelState> {
+    pub fn get_state(&self) -> CallHandle<super::space_center::WheelState> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_State"));
@@ -19420,7 +19993,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the wheel has steering. </summary> </doc>
-    pub fn get_steerable(&self, ) -> CallHandle<bool> {
+    pub fn get_steerable(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_Steerable"));
@@ -19436,7 +20009,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The steering angle limit. </summary> </doc>
-    pub fn get_steering_angle_limit(&self, ) -> CallHandle<f32> {
+    pub fn get_steering_angle_limit(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_SteeringAngleLimit"));
@@ -19452,7 +20025,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the wheel steering is enabled. </summary> </doc>
-    pub fn get_steering_enabled(&self, ) -> CallHandle<bool> {
+    pub fn get_steering_enabled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_SteeringEnabled"));
@@ -19468,7 +20041,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the wheel steering is inverted. </summary> </doc>
-    pub fn get_steering_inverted(&self, ) -> CallHandle<bool> {
+    pub fn get_steering_inverted(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_SteeringInverted"));
@@ -19484,7 +20057,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Steering response time. </summary> </doc>
-    pub fn get_steering_response_time(&self, ) -> CallHandle<f32> {
+    pub fn get_steering_response_time(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_SteeringResponseTime"));
@@ -19500,7 +20073,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Current stress on the wheel. </summary> </doc>
-    pub fn get_stress(&self, ) -> CallHandle<f32> {
+    pub fn get_stress(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_Stress"));
@@ -19516,7 +20089,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Current stress on the wheel as a percentage of its stress tolerance. </summary> </doc>
-    pub fn get_stress_percentage(&self, ) -> CallHandle<f32> {
+    pub fn get_stress_percentage(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_StressPercentage"));
@@ -19532,7 +20105,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Stress tolerance of the wheel. </summary> </doc>
-    pub fn get_stress_tolerance(&self, ) -> CallHandle<f32> {
+    pub fn get_stress_tolerance(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_StressTolerance"));
@@ -19548,7 +20121,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Suspension damper strength, as set in the editor. </summary> </doc>
-    pub fn get_suspension_damper_strength(&self, ) -> CallHandle<f32> {
+    pub fn get_suspension_damper_strength(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_SuspensionDamperStrength"));
@@ -19564,7 +20137,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Suspension spring strength, as set in the editor. </summary> </doc>
-    pub fn get_suspension_spring_strength(&self, ) -> CallHandle<f32> {
+    pub fn get_suspension_spring_strength(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_SuspensionSpringStrength"));
@@ -19580,7 +20153,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Setting for the traction control. Only takes effect if the wheel has automatic traction control enabled. A value between 0 and 5 inclusive. </summary> </doc>
-    pub fn get_traction_control(&self, ) -> CallHandle<f32> {
+    pub fn get_traction_control(&self) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_TractionControl"));
@@ -19596,7 +20169,7 @@ impl Wheel {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether automatic traction control is enabled. A wheel only has traction control if it is powered. </summary> </doc>
-    pub fn get_traction_control_enabled(&self, ) -> CallHandle<bool> {
+    pub fn get_traction_control_enabled(&self) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("SpaceCenter"));
         proc_call.set_procedure(String::from("Wheel_get_TractionControlEnabled"));
@@ -19886,8 +20459,6 @@ impl Wheel {
     }
 }
 
-
-
 #[derive(Debug, Copy, Clone)]
 pub enum AntennaState {
     Deployed = 0,
@@ -19906,20 +20477,28 @@ impl From<i32> for AntennaState {
             2 => AntennaState::Deploying,
             3 => AntennaState::Retracting,
             4 => AntennaState::Broken,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::AntennaState", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::AntennaState",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for AntennaState {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for AntennaState {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(AntennaState::from(value))
     }
 }
@@ -19946,20 +20525,28 @@ impl From<i32> for AutoStrutMode {
             4 => AutoStrutMode::ForceRoot,
             5 => AutoStrutMode::ForceHeaviest,
             6 => AutoStrutMode::ForceGrandparent,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::AutoStrutMode", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::AutoStrutMode",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for AutoStrutMode {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for AutoStrutMode {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(AutoStrutMode::from(value))
     }
 }
@@ -19986,20 +20573,28 @@ impl From<i32> for CameraMode {
             4 => CameraMode::Orbital,
             5 => CameraMode::IVA,
             6 => CameraMode::Map,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::CameraMode", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::CameraMode",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for CameraMode {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for CameraMode {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(CameraMode::from(value))
     }
 }
@@ -20020,20 +20615,28 @@ impl From<i32> for CargoBayState {
             1 => CargoBayState::Closed,
             2 => CargoBayState::Opening,
             3 => CargoBayState::Closing,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::CargoBayState", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::CargoBayState",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for CargoBayState {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for CargoBayState {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(CargoBayState::from(value))
     }
 }
@@ -20052,20 +20655,28 @@ impl From<i32> for CommLinkType {
             0 => CommLinkType::Home,
             1 => CommLinkType::Control,
             2 => CommLinkType::Relay,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::CommLinkType", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::CommLinkType",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for CommLinkType {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for CommLinkType {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(CommLinkType::from(value))
     }
 }
@@ -20098,20 +20709,28 @@ impl From<i32> for ContractState {
             7 => ContractState::Offered,
             8 => ContractState::OfferExpired,
             9 => ContractState::Withdrawn,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::ContractState", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::ContractState",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for ContractState {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for ContractState {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(ContractState::from(value))
     }
 }
@@ -20128,20 +20747,28 @@ impl From<i32> for ControlInputMode {
         match source {
             0 => ControlInputMode::Additive,
             1 => ControlInputMode::Override,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::ControlInputMode", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::ControlInputMode",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for ControlInputMode {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for ControlInputMode {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(ControlInputMode::from(value))
     }
 }
@@ -20160,20 +20787,28 @@ impl From<i32> for ControlSource {
             0 => ControlSource::Kerbal,
             1 => ControlSource::Probe,
             2 => ControlSource::None,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::ControlSource", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::ControlSource",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for ControlSource {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for ControlSource {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(ControlSource::from(value))
     }
 }
@@ -20192,20 +20827,28 @@ impl From<i32> for ControlState {
             0 => ControlState::Full,
             1 => ControlState::Partial,
             2 => ControlState::None,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::ControlState", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::ControlState",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for ControlState {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for ControlState {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(ControlState::from(value))
     }
 }
@@ -20222,20 +20865,28 @@ impl From<i32> for CrewMemberGender {
         match source {
             0 => CrewMemberGender::Male,
             1 => CrewMemberGender::Female,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::CrewMemberGender", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::CrewMemberGender",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for CrewMemberGender {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for CrewMemberGender {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(CrewMemberGender::from(value))
     }
 }
@@ -20256,20 +20907,28 @@ impl From<i32> for CrewMemberType {
             1 => CrewMemberType::Crew,
             2 => CrewMemberType::Tourist,
             3 => CrewMemberType::Unowned,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::CrewMemberType", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::CrewMemberType",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for CrewMemberType {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for CrewMemberType {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(CrewMemberType::from(value))
     }
 }
@@ -20294,20 +20953,28 @@ impl From<i32> for DockingPortState {
             3 => DockingPortState::Undocking,
             4 => DockingPortState::Shielded,
             5 => DockingPortState::Moving,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::DockingPortState", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::DockingPortState",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for DockingPortState {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for DockingPortState {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(DockingPortState::from(value))
     }
 }
@@ -20330,14 +20997,19 @@ impl From<i32> for DrainMode {
 }
 
 impl RPCEncodable for DrainMode {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for DrainMode {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(DrainMode::from(value))
     }
 }
@@ -20356,20 +21028,28 @@ impl From<i32> for EditorFacility {
             1 => EditorFacility::VAB,
             2 => EditorFacility::SPH,
             0 => EditorFacility::None,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::EditorFacility", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::EditorFacility",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for EditorFacility {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for EditorFacility {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(EditorFacility::from(value))
     }
 }
@@ -20404,14 +21084,19 @@ impl From<i32> for GameMode {
 }
 
 impl RPCEncodable for GameMode {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for GameMode {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(GameMode::from(value))
     }
 }
@@ -20440,14 +21125,19 @@ impl From<i32> for LegState {
 }
 
 impl RPCEncodable for LegState {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for LegState {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(LegState::from(value))
     }
 }
@@ -20494,20 +21184,28 @@ impl From<i32> for MapFilterType {
             4096 => MapFilterType::Relay,
             8192 => MapFilterType::Site,
             16384 => MapFilterType::DeployedScienceController,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::MapFilterType", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::MapFilterType",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for MapFilterType {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for MapFilterType {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(MapFilterType::from(value))
     }
 }
@@ -20530,20 +21228,28 @@ impl From<i32> for MotorState {
             2 => MotorState::Disabled,
             3 => MotorState::Inoperable,
             4 => MotorState::NotEnoughResources,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::MotorState", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::MotorState",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for MotorState {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for MotorState {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(MotorState::from(value))
     }
 }
@@ -20566,20 +21272,28 @@ impl From<i32> for ParachuteState {
             2 => ParachuteState::SemiDeployed,
             3 => ParachuteState::Deployed,
             4 => ParachuteState::Cut,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::ParachuteState", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::ParachuteState",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for ParachuteState {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for ParachuteState {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(ParachuteState::from(value))
     }
 }
@@ -20602,20 +21316,28 @@ impl From<i32> for RadiatorState {
             2 => RadiatorState::Extending,
             3 => RadiatorState::Retracting,
             4 => RadiatorState::Broken,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::RadiatorState", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::RadiatorState",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for RadiatorState {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for RadiatorState {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(RadiatorState::from(value))
     }
 }
@@ -20640,20 +21362,28 @@ impl From<i32> for ResourceConverterState {
             3 => ResourceConverterState::StorageFull,
             4 => ResourceConverterState::Capacity,
             5 => ResourceConverterState::Unknown,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::ResourceConverterState", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::ResourceConverterState",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for ResourceConverterState {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for ResourceConverterState {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(ResourceConverterState::from(value))
     }
 }
@@ -20674,20 +21404,28 @@ impl From<i32> for ResourceFlowMode {
             1 => ResourceFlowMode::Stage,
             2 => ResourceFlowMode::Adjacent,
             3 => ResourceFlowMode::None,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::ResourceFlowMode", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::ResourceFlowMode",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for ResourceFlowMode {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for ResourceFlowMode {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(ResourceFlowMode::from(value))
     }
 }
@@ -20710,20 +21448,28 @@ impl From<i32> for ResourceHarvesterState {
             2 => ResourceHarvesterState::Retracting,
             3 => ResourceHarvesterState::Retracted,
             4 => ResourceHarvesterState::Active,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::ResourceHarvesterState", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::ResourceHarvesterState",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for ResourceHarvesterState {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for ResourceHarvesterState {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(ResourceHarvesterState::from(value))
     }
 }
@@ -20744,20 +21490,28 @@ impl From<i32> for RosterStatus {
             1 => RosterStatus::Assigned,
             2 => RosterStatus::Dead,
             3 => RosterStatus::Missing,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::RosterStatus", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::RosterStatus",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for RosterStatus {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for RosterStatus {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(RosterStatus::from(value))
     }
 }
@@ -20796,14 +21550,19 @@ impl From<i32> for SASMode {
 }
 
 impl RPCEncodable for SASMode {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for SASMode {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(SASMode::from(value))
     }
 }
@@ -20826,20 +21585,28 @@ impl From<i32> for SolarPanelState {
             2 => SolarPanelState::Extending,
             3 => SolarPanelState::Retracting,
             4 => SolarPanelState::Broken,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::SolarPanelState", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::SolarPanelState",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for SolarPanelState {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for SolarPanelState {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(SolarPanelState::from(value))
     }
 }
@@ -20864,14 +21631,19 @@ impl From<i32> for SpeedMode {
 }
 
 impl RPCEncodable for SpeedMode {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for SpeedMode {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(SpeedMode::from(value))
     }
 }
@@ -20898,14 +21670,19 @@ impl From<i32> for SuitType {
 }
 
 impl RPCEncodable for SuitType {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for SuitType {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(SuitType::from(value))
     }
 }
@@ -20934,20 +21711,28 @@ impl From<i32> for VesselSituation {
             5 => VesselSituation::Landed,
             6 => VesselSituation::Splashed,
             7 => VesselSituation::Docked,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::VesselSituation", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::VesselSituation",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for VesselSituation {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for VesselSituation {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(VesselSituation::from(value))
     }
 }
@@ -20994,20 +21779,28 @@ impl From<i32> for VesselType {
             14 => VesselType::DeployedSciencePart,
             15 => VesselType::DroppedPart,
             16 => VesselType::DeployedGroundPart,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::VesselType", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::VesselType",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for VesselType {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for VesselType {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(VesselType::from(value))
     }
 }
@@ -21032,14 +21825,19 @@ impl From<i32> for WarpMode {
 }
 
 impl RPCEncodable for WarpMode {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for WarpMode {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(WarpMode::from(value))
     }
 }
@@ -21062,25 +21860,31 @@ impl From<i32> for WheelState {
             2 => WheelState::Deploying,
             3 => WheelState::Retracting,
             4 => WheelState::Broken,
-            _ => panic!("Could not convert '{}' to a SpaceCenter::WheelState", source),
+            _ => panic!(
+                "Could not convert '{}' to a SpaceCenter::WheelState",
+                source
+            ),
         }
     }
 }
 
 impl RPCEncodable for WheelState {
-    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
+    fn encode(
+        &self,
+        output: &mut protobuf::CodedOutputStream,
+    ) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for WheelState {
-    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
-        let value : i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(
+        input: &mut protobuf::CodedInputStream,
+    ) -> Result<Self, protobuf::ProtobufError> {
+        let value: i32 = RPCExtractable::extract_value(input)?;
         Ok(WheelState::from(value))
     }
 }
-
-
 
 #[allow(dead_code)]
 /// <doc> <summary> Returns <c>true</c> if regular "on-rails" time warp can be used, at the specified warp <paramref name="factor" />. The maximum time warp rate is limited by various things, including how close the active vessel is to a planet. See <a href="https://wiki.kerbalspaceprogram.com/wiki/Time_warp">the KSP wiki</a> for details. </summary> <param name="factor">The warp factor to check.</param> </doc>
@@ -21168,7 +21972,14 @@ pub fn get_kerbal(p_name: String) -> CallHandle<super::space_center::CrewMember>
 
 #[allow(dead_code)]
 /// <doc> <summary> Launch a vessel. </summary> <param name="craftDirectory">Name of the directory in the current saves "Ships" directory, that contains the craft file. For example <c>"VAB"</c> or <c>"SPH"</c>.</param> <param name="name">Name of the vessel to launch. This is the name of the ".craft" file in the save directory, without the ".craft" file extension.</param> <param name="launchSite">Name of the launch site. For example <c>"LaunchPad"</c> or <c>"Runway"</c>.</param> <param name="recover">If true and there is a vessel on the launch site, recover it before launching.</param> <param name="crew">If not <c>null</c>, a list of names of Kerbals to place in the craft. Otherwise the crew will use default assignments.</param> <param name="flagUrl">If not <c>null</c>, the asset URL of the mission flag to use for the launch.</param> <remarks> Throws an exception if any of the games pre-flight checks fail. </remarks> </doc>
-pub fn launch_vessel(p_craft_directory: String, p_name: String, p_launch_site: String, p_recover: bool, p_crew: Vec<String>, p_flag_url: String) -> CallHandle<()> {
+pub fn launch_vessel(
+    p_craft_directory: String,
+    p_name: String,
+    p_launch_site: String,
+    p_recover: bool,
+    p_crew: Vec<String>,
+    p_flag_url: String,
+) -> CallHandle<()> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("SpaceCenter"));
     proc_call.set_procedure(String::from("LaunchVessel"));
@@ -21323,7 +22134,11 @@ pub fn quicksave() -> CallHandle<()> {
 
 #[allow(dead_code)]
 /// <doc> <summary> Cast a ray from a given position in a given direction, and return the distance to the hit point. If no hit occurs, returns infinity. </summary> <param name="position">Position, as a vector, of the origin of the ray.</param> <param name="direction">Direction of the ray, as a unit vector.</param> <param name="referenceFrame">The reference frame that the position and direction are in.</param> <returns>The distance to the hit, in meters, or infinity if there was no hit.</returns> </doc>
-pub fn raycast_distance(p_position: (f64, f64, f64), p_direction: (f64, f64, f64), p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<f64> {
+pub fn raycast_distance(
+    p_position: (f64, f64, f64),
+    p_direction: (f64, f64, f64),
+    p_reference_frame: super::space_center::ReferenceFrame,
+) -> CallHandle<f64> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("SpaceCenter"));
     proc_call.set_procedure(String::from("RaycastDistance"));
@@ -21351,7 +22166,11 @@ pub fn raycast_distance(p_position: (f64, f64, f64), p_direction: (f64, f64, f64
 
 #[allow(dead_code)]
 /// <doc> <summary> Cast a ray from a given position in a given direction, and return the part that it hits. If no hit occurs, returns <c>null</c>. </summary> <param name="position">Position, as a vector, of the origin of the ray.</param> <param name="direction">Direction of the ray, as a unit vector.</param> <param name="referenceFrame">The reference frame that the position and direction are in.</param> <returns>The part that was hit or <c>null</c> if there was no hit.</returns> </doc>
-pub fn raycast_part(p_position: (f64, f64, f64), p_direction: (f64, f64, f64), p_reference_frame: super::space_center::ReferenceFrame) -> CallHandle<super::space_center::Part> {
+pub fn raycast_part(
+    p_position: (f64, f64, f64),
+    p_direction: (f64, f64, f64),
+    p_reference_frame: super::space_center::ReferenceFrame,
+) -> CallHandle<super::space_center::Part> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("SpaceCenter"));
     proc_call.set_procedure(String::from("RaycastPart"));
@@ -21430,7 +22249,10 @@ pub fn screenshot(p_file_path: String, p_scale: i32) -> CallHandle<()> {
 
 #[allow(dead_code)]
 /// <doc> <summary> Transfers a crew member to a different part. </summary> <param name="crewMember">The crew member to transfer.</param> <param name="targetPart">The part to move them to.</param> </doc>
-pub fn transfer_crew(p_crew_member: super::space_center::CrewMember, p_target_part: super::space_center::Part) -> CallHandle<()> {
+pub fn transfer_crew(
+    p_crew_member: super::space_center::CrewMember,
+    p_target_part: super::space_center::Part,
+) -> CallHandle<()> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("SpaceCenter"));
     proc_call.set_procedure(String::from("TransferCrew"));
@@ -21453,7 +22275,11 @@ pub fn transfer_crew(p_crew_member: super::space_center::CrewMember, p_target_pa
 
 #[allow(dead_code)]
 /// <doc> <summary> Converts a direction from one reference frame to another. </summary> <param name="direction">Direction, as a vector, in reference frame <paramref name="from" />. </param> <param name="from">The reference frame that the direction is in.</param> <param name="to">The reference frame to covert the direction to.</param> <returns>The corresponding direction, as a vector, in reference frame <paramref name="to" />.</returns> </doc>
-pub fn transform_direction(p_direction: (f64, f64, f64), p_from: super::space_center::ReferenceFrame, p_to: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+pub fn transform_direction(
+    p_direction: (f64, f64, f64),
+    p_from: super::space_center::ReferenceFrame,
+    p_to: super::space_center::ReferenceFrame,
+) -> CallHandle<(f64, f64, f64)> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("SpaceCenter"));
     proc_call.set_procedure(String::from("TransformDirection"));
@@ -21481,7 +22307,11 @@ pub fn transform_direction(p_direction: (f64, f64, f64), p_from: super::space_ce
 
 #[allow(dead_code)]
 /// <doc> <summary> Converts a position from one reference frame to another. </summary> <param name="position">Position, as a vector, in reference frame <paramref name="from" />.</param> <param name="from">The reference frame that the position is in.</param> <param name="to">The reference frame to covert the position to.</param> <returns>The corresponding position, as a vector, in reference frame <paramref name="to" />.</returns> </doc>
-pub fn transform_position(p_position: (f64, f64, f64), p_from: super::space_center::ReferenceFrame, p_to: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+pub fn transform_position(
+    p_position: (f64, f64, f64),
+    p_from: super::space_center::ReferenceFrame,
+    p_to: super::space_center::ReferenceFrame,
+) -> CallHandle<(f64, f64, f64)> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("SpaceCenter"));
     proc_call.set_procedure(String::from("TransformPosition"));
@@ -21509,7 +22339,11 @@ pub fn transform_position(p_position: (f64, f64, f64), p_from: super::space_cent
 
 #[allow(dead_code)]
 /// <doc> <summary> Converts a rotation from one reference frame to another. </summary> <param name="rotation">Rotation, as a quaternion of the form <math>(x, y, z, w)</math>, in reference frame <paramref name="from" />.</param> <param name="from">The reference frame that the rotation is in.</param> <param name="to">The reference frame to covert the rotation to.</param> <returns>The corresponding rotation, as a quaternion of the form <math>(x, y, z, w)</math>, in reference frame <paramref name="to" />.</returns> </doc>
-pub fn transform_rotation(p_rotation: (f64, f64, f64, f64), p_from: super::space_center::ReferenceFrame, p_to: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64, f64)> {
+pub fn transform_rotation(
+    p_rotation: (f64, f64, f64, f64),
+    p_from: super::space_center::ReferenceFrame,
+    p_to: super::space_center::ReferenceFrame,
+) -> CallHandle<(f64, f64, f64, f64)> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("SpaceCenter"));
     proc_call.set_procedure(String::from("TransformRotation"));
@@ -21537,7 +22371,12 @@ pub fn transform_rotation(p_rotation: (f64, f64, f64, f64), p_from: super::space
 
 #[allow(dead_code)]
 /// <doc> <summary> Converts a velocity (acting at the specified position) from one reference frame to another. The position is required to take the relative angular velocity of the reference frames into account. </summary> <param name="position">Position, as a vector, in reference frame <paramref name="from" />.</param> <param name="velocity">Velocity, as a vector that points in the direction of travel and whose magnitude is the speed in meters per second, in reference frame <paramref name="from" />.</param> <param name="from">The reference frame that the position and velocity are in.</param> <param name="to">The reference frame to covert the velocity to.</param> <returns>The corresponding velocity, as a vector, in reference frame <paramref name="to" />.</returns> </doc>
-pub fn transform_velocity(p_position: (f64, f64, f64), p_velocity: (f64, f64, f64), p_from: super::space_center::ReferenceFrame, p_to: super::space_center::ReferenceFrame) -> CallHandle<(f64, f64, f64)> {
+pub fn transform_velocity(
+    p_position: (f64, f64, f64),
+    p_velocity: (f64, f64, f64),
+    p_from: super::space_center::ReferenceFrame,
+    p_to: super::space_center::ReferenceFrame,
+) -> CallHandle<(f64, f64, f64)> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("SpaceCenter"));
     proc_call.set_procedure(String::from("TransformVelocity"));
@@ -21618,7 +22457,8 @@ pub fn get_alarm_manager() -> CallHandle<super::space_center::AlarmManager> {
 
 #[allow(dead_code)]
 /// <doc> <summary> A dictionary of all celestial bodies (planets, moons, etc.) in the game, keyed by the name of the body. </summary> </doc>
-pub fn get_bodies() -> CallHandle<std::collections::HashMap<String, super::space_center::CelestialBody>> {
+pub fn get_bodies(
+) -> CallHandle<std::collections::HashMap<String, super::space_center::CelestialBody>> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("SpaceCenter"));
     proc_call.set_procedure(String::from("get_Bodies"));
@@ -22027,4 +22867,3 @@ pub fn set_ui_visible(p_value: bool) -> CallHandle<()> {
 
     CallHandle::new(proc_call)
 }
-
