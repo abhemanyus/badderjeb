@@ -1,10 +1,11 @@
+use krpc_mars::krpc as krpc;
+use krpc_mars::protobuf as protobuf;
 use krpc_mars::client::CallHandle;
 use krpc_mars::codec::RPCEncodable;
 use krpc_mars::codec::RPCExtractable;
-use krpc_mars::krpc;
-use krpc_mars::protobuf;
 
 use std::fmt;
+
 
 #[derive(Copy, Clone)]
 pub struct Line {
@@ -18,18 +19,13 @@ impl fmt::Debug for Line {
 }
 
 impl RPCEncodable for Line {
-    fn encode(
-        &self,
-        output: &mut protobuf::CodedOutputStream,
-    ) -> Result<(), protobuf::ProtobufError> {
+    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Line {
-    fn extract_value(
-        input: &mut protobuf::CodedInputStream,
-    ) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Line { id })
     }
@@ -38,7 +34,7 @@ impl RPCExtractable for Line {
 #[allow(dead_code)]
 impl Line {
     /// <doc> <summary> Remove the object. </summary> </doc>
-    pub fn remove(&self) -> CallHandle<()> {
+    pub fn remove(&self, ) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Line_Remove"));
@@ -54,7 +50,7 @@ impl Line {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Set the color </summary> </doc>
-    pub fn get_color(&self) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_color(&self, ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Line_get_Color"));
@@ -70,7 +66,7 @@ impl Line {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> End position of the line. </summary> </doc>
-    pub fn get_end(&self) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_end(&self, ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Line_get_End"));
@@ -86,7 +82,7 @@ impl Line {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Material used to render the object. Creates the material from a shader with the given name. </summary> </doc>
-    pub fn get_material(&self) -> CallHandle<String> {
+    pub fn get_material(&self, ) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Line_get_Material"));
@@ -102,7 +98,7 @@ impl Line {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Reference frame for the positions of the object. </summary> </doc>
-    pub fn get_reference_frame(&self) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Line_get_ReferenceFrame"));
@@ -118,7 +114,7 @@ impl Line {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Start position of the line. </summary> </doc>
-    pub fn get_start(&self) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_start(&self, ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Line_get_Start"));
@@ -134,7 +130,7 @@ impl Line {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Set the thickness </summary> </doc>
-    pub fn get_thickness(&self) -> CallHandle<f32> {
+    pub fn get_thickness(&self, ) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Line_get_Thickness"));
@@ -150,7 +146,7 @@ impl Line {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the object is visible. </summary> </doc>
-    pub fn get_visible(&self) -> CallHandle<bool> {
+    pub fn get_visible(&self, ) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Line_get_Visible"));
@@ -229,10 +225,7 @@ impl Line {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Reference frame for the positions of the object. </summary> </doc>
-    pub fn set_reference_frame(
-        &self,
-        p_value: super::space_center::ReferenceFrame,
-    ) -> CallHandle<()> {
+    pub fn set_reference_frame(&self, p_value: super::space_center::ReferenceFrame) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Line_set_ReferenceFrame"));
@@ -329,18 +322,13 @@ impl fmt::Debug for Polygon {
 }
 
 impl RPCEncodable for Polygon {
-    fn encode(
-        &self,
-        output: &mut protobuf::CodedOutputStream,
-    ) -> Result<(), protobuf::ProtobufError> {
+    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Polygon {
-    fn extract_value(
-        input: &mut protobuf::CodedInputStream,
-    ) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Polygon { id })
     }
@@ -349,7 +337,7 @@ impl RPCExtractable for Polygon {
 #[allow(dead_code)]
 impl Polygon {
     /// <doc> <summary> Remove the object. </summary> </doc>
-    pub fn remove(&self) -> CallHandle<()> {
+    pub fn remove(&self, ) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Polygon_Remove"));
@@ -365,7 +353,7 @@ impl Polygon {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Set the color </summary> </doc>
-    pub fn get_color(&self) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_color(&self, ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Polygon_get_Color"));
@@ -381,7 +369,7 @@ impl Polygon {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Material used to render the object. Creates the material from a shader with the given name. </summary> </doc>
-    pub fn get_material(&self) -> CallHandle<String> {
+    pub fn get_material(&self, ) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Polygon_get_Material"));
@@ -397,7 +385,7 @@ impl Polygon {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Reference frame for the positions of the object. </summary> </doc>
-    pub fn get_reference_frame(&self) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Polygon_get_ReferenceFrame"));
@@ -413,7 +401,7 @@ impl Polygon {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Set the thickness </summary> </doc>
-    pub fn get_thickness(&self) -> CallHandle<f32> {
+    pub fn get_thickness(&self, ) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Polygon_get_Thickness"));
@@ -429,7 +417,7 @@ impl Polygon {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Vertices for the polygon. </summary> </doc>
-    pub fn get_vertices(&self) -> CallHandle<Vec<(f64, f64, f64)>> {
+    pub fn get_vertices(&self, ) -> CallHandle<Vec<(f64, f64, f64)>> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Polygon_get_Vertices"));
@@ -445,7 +433,7 @@ impl Polygon {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the object is visible. </summary> </doc>
-    pub fn get_visible(&self) -> CallHandle<bool> {
+    pub fn get_visible(&self, ) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Polygon_get_Visible"));
@@ -503,10 +491,7 @@ impl Polygon {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Reference frame for the positions of the object. </summary> </doc>
-    pub fn set_reference_frame(
-        &self,
-        p_value: super::space_center::ReferenceFrame,
-    ) -> CallHandle<()> {
+    pub fn set_reference_frame(&self, p_value: super::space_center::ReferenceFrame) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Polygon_set_ReferenceFrame"));
@@ -603,18 +588,13 @@ impl fmt::Debug for Text {
 }
 
 impl RPCEncodable for Text {
-    fn encode(
-        &self,
-        output: &mut protobuf::CodedOutputStream,
-    ) -> Result<(), protobuf::ProtobufError> {
+    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Text {
-    fn extract_value(
-        input: &mut protobuf::CodedInputStream,
-    ) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Text { id })
     }
@@ -631,7 +611,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Remove the object. </summary> </doc>
-    pub fn remove(&self) -> CallHandle<()> {
+    pub fn remove(&self, ) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Text_Remove"));
@@ -647,7 +627,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Alignment. </summary> </doc>
-    pub fn get_alignment(&self) -> CallHandle<super::ui::TextAlignment> {
+    pub fn get_alignment(&self, ) -> CallHandle<super::ui::TextAlignment> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Text_get_Alignment"));
@@ -663,7 +643,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Anchor. </summary> </doc>
-    pub fn get_anchor(&self) -> CallHandle<super::ui::TextAnchor> {
+    pub fn get_anchor(&self, ) -> CallHandle<super::ui::TextAnchor> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Text_get_Anchor"));
@@ -679,7 +659,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Character size. </summary> </doc>
-    pub fn get_character_size(&self) -> CallHandle<f32> {
+    pub fn get_character_size(&self, ) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Text_get_CharacterSize"));
@@ -695,7 +675,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Set the color </summary> </doc>
-    pub fn get_color(&self) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_color(&self, ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Text_get_Color"));
@@ -711,7 +691,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> The text string </summary> </doc>
-    pub fn get_content(&self) -> CallHandle<String> {
+    pub fn get_content(&self, ) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Text_get_Content"));
@@ -727,7 +707,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Name of the font </summary> </doc>
-    pub fn get_font(&self) -> CallHandle<String> {
+    pub fn get_font(&self, ) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Text_get_Font"));
@@ -743,7 +723,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Line spacing. </summary> </doc>
-    pub fn get_line_spacing(&self) -> CallHandle<f32> {
+    pub fn get_line_spacing(&self, ) -> CallHandle<f32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Text_get_LineSpacing"));
@@ -759,7 +739,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Material used to render the object. Creates the material from a shader with the given name. </summary> </doc>
-    pub fn get_material(&self) -> CallHandle<String> {
+    pub fn get_material(&self, ) -> CallHandle<String> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Text_get_Material"));
@@ -775,7 +755,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Position of the text. </summary> </doc>
-    pub fn get_position(&self) -> CallHandle<(f64, f64, f64)> {
+    pub fn get_position(&self, ) -> CallHandle<(f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Text_get_Position"));
@@ -791,7 +771,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Reference frame for the positions of the object. </summary> </doc>
-    pub fn get_reference_frame(&self) -> CallHandle<super::space_center::ReferenceFrame> {
+    pub fn get_reference_frame(&self, ) -> CallHandle<super::space_center::ReferenceFrame> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Text_get_ReferenceFrame"));
@@ -807,7 +787,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Rotation of the text as a quaternion. </summary> </doc>
-    pub fn get_rotation(&self) -> CallHandle<(f64, f64, f64, f64)> {
+    pub fn get_rotation(&self, ) -> CallHandle<(f64, f64, f64, f64)> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Text_get_Rotation"));
@@ -823,7 +803,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Font size. </summary> </doc>
-    pub fn get_size(&self) -> CallHandle<i32> {
+    pub fn get_size(&self, ) -> CallHandle<i32> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Text_get_Size"));
@@ -839,7 +819,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Font style. </summary> </doc>
-    pub fn get_style(&self) -> CallHandle<super::ui::FontStyle> {
+    pub fn get_style(&self, ) -> CallHandle<super::ui::FontStyle> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Text_get_Style"));
@@ -855,7 +835,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Whether the object is visible. </summary> </doc>
-    pub fn get_visible(&self) -> CallHandle<bool> {
+    pub fn get_visible(&self, ) -> CallHandle<bool> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Text_get_Visible"));
@@ -1060,10 +1040,7 @@ impl Text {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Reference frame for the positions of the object. </summary> </doc>
-    pub fn set_reference_frame(
-        &self,
-        p_value: super::space_center::ReferenceFrame,
-    ) -> CallHandle<()> {
+    pub fn set_reference_frame(&self, p_value: super::space_center::ReferenceFrame) -> CallHandle<()> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("Drawing"));
         proc_call.set_procedure(String::from("Text_set_ReferenceFrame"));
@@ -1169,14 +1146,13 @@ impl Text {
     }
 }
 
+
+
+
+
 #[allow(dead_code)]
 /// <doc> <summary> Draw a direction vector in the scene, starting from the origin of the given reference frame. </summary> <param name="direction">Direction to draw the line in.</param> <param name="referenceFrame">Reference frame that the direction is in and defines the start position.</param> <param name="length">The length of the line.</param> <param name="visible">Whether the line is visible.</param> </doc>
-pub fn add_direction(
-    p_direction: (f64, f64, f64),
-    p_reference_frame: super::space_center::ReferenceFrame,
-    p_length: f32,
-    p_visible: bool,
-) -> CallHandle<super::drawing::Line> {
+pub fn add_direction(p_direction: (f64, f64, f64), p_reference_frame: super::space_center::ReferenceFrame, p_length: f32, p_visible: bool) -> CallHandle<super::drawing::Line> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("Drawing"));
     proc_call.set_procedure(String::from("AddDirection"));
@@ -1209,12 +1185,7 @@ pub fn add_direction(
 
 #[allow(dead_code)]
 /// <doc> <summary> Draw a direction vector in the scene, from the center of mass of the active vessel. </summary> <param name="direction">Direction to draw the line in.</param> <param name="referenceFrame">Reference frame that the direction is in.</param> <param name="length">The length of the line.</param> <param name="visible">Whether the line is visible.</param> </doc>
-pub fn add_direction_from_com(
-    p_direction: (f64, f64, f64),
-    p_reference_frame: super::space_center::ReferenceFrame,
-    p_length: f32,
-    p_visible: bool,
-) -> CallHandle<super::drawing::Line> {
+pub fn add_direction_from_com(p_direction: (f64, f64, f64), p_reference_frame: super::space_center::ReferenceFrame, p_length: f32, p_visible: bool) -> CallHandle<super::drawing::Line> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("Drawing"));
     proc_call.set_procedure(String::from("AddDirectionFromCom"));
@@ -1247,12 +1218,7 @@ pub fn add_direction_from_com(
 
 #[allow(dead_code)]
 /// <doc> <summary> Draw a line in the scene. </summary> <param name="start">Position of the start of the line.</param> <param name="end">Position of the end of the line.</param> <param name="referenceFrame">Reference frame that the positions are in.</param> <param name="visible">Whether the line is visible.</param> </doc>
-pub fn add_line(
-    p_start: (f64, f64, f64),
-    p_end: (f64, f64, f64),
-    p_reference_frame: super::space_center::ReferenceFrame,
-    p_visible: bool,
-) -> CallHandle<super::drawing::Line> {
+pub fn add_line(p_start: (f64, f64, f64), p_end: (f64, f64, f64), p_reference_frame: super::space_center::ReferenceFrame, p_visible: bool) -> CallHandle<super::drawing::Line> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("Drawing"));
     proc_call.set_procedure(String::from("AddLine"));
@@ -1285,11 +1251,7 @@ pub fn add_line(
 
 #[allow(dead_code)]
 /// <doc> <summary> Draw a polygon in the scene, defined by a list of vertices. </summary> <param name="vertices">Vertices of the polygon.</param> <param name="referenceFrame">Reference frame that the vertices are in.</param> <param name="visible">Whether the polygon is visible.</param> </doc>
-pub fn add_polygon(
-    p_vertices: Vec<(f64, f64, f64)>,
-    p_reference_frame: super::space_center::ReferenceFrame,
-    p_visible: bool,
-) -> CallHandle<super::drawing::Polygon> {
+pub fn add_polygon(p_vertices: Vec<(f64, f64, f64)>, p_reference_frame: super::space_center::ReferenceFrame, p_visible: bool) -> CallHandle<super::drawing::Polygon> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("Drawing"));
     proc_call.set_procedure(String::from("AddPolygon"));
@@ -1317,13 +1279,7 @@ pub fn add_polygon(
 
 #[allow(dead_code)]
 /// <doc> <summary> Draw text in the scene. </summary> <param name="text">The string to draw.</param> <param name="referenceFrame">Reference frame that the text position is in.</param> <param name="position">Position of the text.</param> <param name="rotation">Rotation of the text, as a quaternion.</param> <param name="visible">Whether the text is visible.</param> </doc>
-pub fn add_text(
-    p_text: String,
-    p_reference_frame: super::space_center::ReferenceFrame,
-    p_position: (f64, f64, f64),
-    p_rotation: (f64, f64, f64, f64),
-    p_visible: bool,
-) -> CallHandle<super::drawing::Text> {
+pub fn add_text(p_text: String, p_reference_frame: super::space_center::ReferenceFrame, p_position: (f64, f64, f64), p_rotation: (f64, f64, f64, f64), p_visible: bool) -> CallHandle<super::drawing::Text> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("Drawing"));
     proc_call.set_procedure(String::from("AddText"));
@@ -1376,3 +1332,4 @@ pub fn clear(p_client_only: bool) -> CallHandle<()> {
 
     CallHandle::new(proc_call)
 }
+

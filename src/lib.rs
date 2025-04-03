@@ -27,7 +27,8 @@ macro_rules! key_to_call {
 }
 #[macro_export]
 macro_rules! streamer {
-    ($struct: ident {$($key: ident $val: ty),*}) => {
+    ($client: expr, $vessel: expr, {$($key: ident $val: ty),*}) => {
+        {
         use krpc_mars::{batch_call_unwrap, stream::StreamHandle, RPCClient, StreamClient};
         use crate::services::space_center::Vessel;
         use std::error::Error;
@@ -57,13 +58,13 @@ macro_rules! streamer {
                 })
             }
         }
-        pub struct $struct {
+        pub struct Attitude {
             _streamer: Streamer,
             $(
-                $key: $val,
+                pub $key: $val,
             )*
         }
-        impl $struct {
+        impl Attitude {
             pub fn init(client: &mut RPCClient, vessel: &Vessel) -> Result<Self, Box<dyn Error>> {
                 Ok(Self {
                     _streamer: Streamer::init(client, vessel)?,
@@ -82,9 +83,23 @@ macro_rules! streamer {
                 Ok(())
             }
         }
+        Attitude::init($client, $vessel)
+    }
     };
 }
 
-pub mod Ship {
-    streamer!(Attitude {alt f64});
+#[cfg(test)]
+mod test {
+    use krpc_mars::RPCClient;
+
+    use crate::services::space_center;
+
+    #[test]
+    fn test_streamer() {
+        let mut client = RPCClient::connect("Test", "127.0.0.1:5000").unwrap();
+        let vessel = space_center::get_active_vessel()
+            .mk_call(&mut client)
+            .unwrap();
+        let attitude = streamer!(&mut client, &vessel, {alt f64, pitch f32});
+    }
 }

@@ -3,6 +3,7 @@ use std::error::Error;
 use betterjeb::{
     interpolate::Interpolate,
     services::space_center::{self, Vessel},
+    streamer,
 };
 use krpc_mars::{batch_call_unwrap, stream::StreamHandle, RPCClient, StreamClient};
 

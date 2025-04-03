@@ -1,10 +1,11 @@
+use krpc_mars::krpc as krpc;
+use krpc_mars::protobuf as protobuf;
 use krpc_mars::client::CallHandle;
 use krpc_mars::codec::RPCEncodable;
 use krpc_mars::codec::RPCExtractable;
-use krpc_mars::krpc;
-use krpc_mars::protobuf;
 
 use std::fmt;
+
 
 #[derive(Copy, Clone)]
 pub struct Expression {
@@ -18,18 +19,13 @@ impl fmt::Debug for Expression {
 }
 
 impl RPCEncodable for Expression {
-    fn encode(
-        &self,
-        output: &mut protobuf::CodedOutputStream,
-    ) -> Result<(), protobuf::ProtobufError> {
+    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Expression {
-    fn extract_value(
-        input: &mut protobuf::CodedInputStream,
-    ) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Expression { id })
     }
@@ -38,10 +34,7 @@ impl RPCExtractable for Expression {
 #[allow(dead_code)]
 impl Expression {
     /// <doc> <summary> Numerical addition. </summary> <param name="arg0"></param> <param name="arg1"></param> </doc>
-    pub fn add(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn add(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Add"));
@@ -62,10 +55,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Applies an accumulator function over a sequence. </summary> <returns>The accumulated value.</returns> <param name="arg">The collection.</param> <param name="func">The accumulator function.</param> </doc>
-    pub fn aggregate(
-        p_arg: super::krpc::Expression,
-        p_func: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn aggregate(p_arg: super::krpc::Expression, p_func: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Aggregate"));
@@ -86,11 +76,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Applies an accumulator function over a sequence, with a given seed. </summary> <returns>The accumulated value.</returns> <param name="arg">The collection.</param> <param name="seed">The seed value.</param> <param name="func">The accumulator function.</param> </doc>
-    pub fn aggregate_with_seed(
-        p_arg: super::krpc::Expression,
-        p_seed: super::krpc::Expression,
-        p_func: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn aggregate_with_seed(p_arg: super::krpc::Expression, p_seed: super::krpc::Expression, p_func: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_AggregateWithSeed"));
@@ -116,10 +102,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Determine whether all items in a collection satisfy a boolean predicate. </summary> <returns>Whether all items satisfy the predicate.</returns> <param name="arg">The collection.</param> <param name="predicate">The predicate function.</param> </doc>
-    pub fn all(
-        p_arg: super::krpc::Expression,
-        p_predicate: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn all(p_arg: super::krpc::Expression, p_predicate: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_All"));
@@ -140,10 +123,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Boolean and operator. </summary> <param name="arg0"></param> <param name="arg1"></param> </doc>
-    pub fn and(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn and(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_And"));
@@ -164,10 +144,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Determine whether any item in a collection satisfies a boolean predicate. </summary> <returns>Whether any item satisfies the predicate.</returns> <param name="arg">The collection.</param> <param name="predicate">The predicate function.</param> </doc>
-    pub fn any(
-        p_arg: super::krpc::Expression,
-        p_predicate: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn any(p_arg: super::krpc::Expression, p_predicate: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Any"));
@@ -220,10 +197,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Perform a cast to the given type. </summary> <param name="arg"></param> <param name="type">Type to cast the argument to.</param> </doc>
-    pub fn cast(
-        p_arg: super::krpc::Expression,
-        p_type: super::krpc::Type,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn cast(p_arg: super::krpc::Expression, p_type: super::krpc::Type) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Cast"));
@@ -244,10 +218,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Concatenate two sequences. </summary> <returns>The first sequence followed by the second sequence.</returns> <param name="arg1">The first sequence.</param> <param name="arg2">The second sequence.</param> </doc>
-    pub fn concat(
-        p_arg1: super::krpc::Expression,
-        p_arg2: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn concat(p_arg1: super::krpc::Expression, p_arg2: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Concat"));
@@ -348,10 +319,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Determine if a collection contains a value. </summary> <returns>Whether the collection contains a value.</returns> <param name="arg">The collection.</param> <param name="value">The value to look for.</param> </doc>
-    pub fn contains(
-        p_arg: super::krpc::Expression,
-        p_value: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn contains(p_arg: super::krpc::Expression, p_value: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Contains"));
@@ -388,10 +356,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Construct a dictionary, from a list of corresponding keys and values. </summary> <returns>The dictionary.</returns> <param name="keys">The keys. Should all be of the same type.</param> <param name="values">The values. Should all be of the same type.</param> </doc>
-    pub fn create_dictionary(
-        p_keys: Vec<super::krpc::Expression>,
-        p_values: Vec<super::krpc::Expression>,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn create_dictionary(p_keys: Vec<super::krpc::Expression>, p_values: Vec<super::krpc::Expression>) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_CreateDictionary"));
@@ -412,9 +377,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Construct a list. </summary> <returns>The list.</returns> <param name="values">The value. Should all be of the same type.</param> </doc>
-    pub fn create_list(
-        p_values: Vec<super::krpc::Expression>,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn create_list(p_values: Vec<super::krpc::Expression>) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_CreateList"));
@@ -430,9 +393,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Construct a set. </summary> <returns>The set.</returns> <param name="values">The values. Should all be of the same type.</param> </doc>
-    pub fn create_set(
-        p_values: std::collections::HashSet<super::krpc::Expression>,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn create_set(p_values: std::collections::HashSet<super::krpc::Expression>) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_CreateSet"));
@@ -448,9 +409,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Construct a tuple. </summary> <returns>The tuple.</returns> <param name="elements">The elements.</param> </doc>
-    pub fn create_tuple(
-        p_elements: Vec<super::krpc::Expression>,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn create_tuple(p_elements: Vec<super::krpc::Expression>) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_CreateTuple"));
@@ -466,10 +425,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Numerical division. </summary> <param name="arg0"></param> <param name="arg1"></param> </doc>
-    pub fn divide(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn divide(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Divide"));
@@ -490,10 +446,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Equality comparison. </summary> <param name="arg0"></param> <param name="arg1"></param> </doc>
-    pub fn equal(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn equal(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Equal"));
@@ -514,10 +467,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Boolean exclusive-or operator. </summary> <param name="arg0"></param> <param name="arg1"></param> </doc>
-    pub fn exclusive_or(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn exclusive_or(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_ExclusiveOr"));
@@ -538,10 +488,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A function. </summary> <returns>A function.</returns> <param name="parameters">The parameters of the function.</param> <param name="body">The body of the function.</param> </doc>
-    pub fn function(
-        p_parameters: Vec<super::krpc::Expression>,
-        p_body: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn function(p_parameters: Vec<super::krpc::Expression>, p_body: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Function"));
@@ -562,10 +509,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Access an element in a tuple, list or dictionary. </summary> <returns>The element.</returns> <param name="arg">The tuple, list or dictionary.</param> <param name="index">The index of the element to access. A zero indexed integer for a tuple or list, or a key for a dictionary.</param> </doc>
-    pub fn get(
-        p_arg: super::krpc::Expression,
-        p_index: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn get(p_arg: super::krpc::Expression, p_index: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Get"));
@@ -586,10 +530,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Greater than numerical comparison. </summary> <param name="arg0"></param> <param name="arg1"></param> </doc>
-    pub fn greater_than(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn greater_than(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_GreaterThan"));
@@ -610,10 +551,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Greater than or equal numerical comparison. </summary> <param name="arg0"></param> <param name="arg1"></param> </doc>
-    pub fn greater_than_or_equal(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn greater_than_or_equal(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_GreaterThanOrEqual"));
@@ -634,10 +572,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A function call. </summary> <returns>A function call.</returns> <param name="function">The function to call.</param> <param name="args">The arguments to call the function with.</param> </doc>
-    pub fn invoke(
-        p_function: super::krpc::Expression,
-        p_args: std::collections::HashMap<String, super::krpc::Expression>,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn invoke(p_function: super::krpc::Expression, p_args: std::collections::HashMap<String, super::krpc::Expression>) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Invoke"));
@@ -658,10 +593,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Bitwise left shift. </summary> <param name="arg0"></param> <param name="arg1"></param> </doc>
-    pub fn left_shift(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn left_shift(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_LeftShift"));
@@ -682,10 +614,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Less than numerical comparison. </summary> <param name="arg0"></param> <param name="arg1"></param> </doc>
-    pub fn less_than(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn less_than(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_LessThan"));
@@ -706,10 +635,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Less than or equal numerical comparison. </summary> <param name="arg0"></param> <param name="arg1"></param> </doc>
-    pub fn less_than_or_equal(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn less_than_or_equal(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_LessThanOrEqual"));
@@ -762,10 +688,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Numerical modulo operator. </summary> <param name="arg0"></param> <param name="arg1"></param> <returns>The remainder of arg0 divided by arg1</returns> </doc>
-    pub fn modulo(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn modulo(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Modulo"));
@@ -786,10 +709,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Numerical multiplication. </summary> <param name="arg0"></param> <param name="arg1"></param> </doc>
-    pub fn multiply(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn multiply(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Multiply"));
@@ -826,10 +746,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Inequality comparison. </summary> <param name="arg0"></param> <param name="arg1"></param> </doc>
-    pub fn not_equal(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn not_equal(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_NotEqual"));
@@ -850,10 +767,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Boolean or operator. </summary> <param name="arg0"></param> <param name="arg1"></param> </doc>
-    pub fn or(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn or(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Or"));
@@ -874,10 +788,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Order a collection using a key function. </summary> <returns>The ordered collection.</returns> <param name="arg">The collection to order.</param> <param name="key">A function that takes a value from the collection and generates a key to sort on.</param> </doc>
-    pub fn order_by(
-        p_arg: super::krpc::Expression,
-        p_key: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn order_by(p_arg: super::krpc::Expression, p_key: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_OrderBy"));
@@ -898,10 +809,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> A named parameter of type double. </summary> <returns>A named parameter.</returns> <param name="name">The name of the parameter.</param> <param name="type">The type of the parameter.</param> </doc>
-    pub fn parameter(
-        p_name: String,
-        p_type: super::krpc::Type,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn parameter(p_name: String, p_type: super::krpc::Type) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Parameter"));
@@ -922,10 +830,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Numerical power operator. </summary> <param name="arg0"></param> <param name="arg1"></param> <returns>arg0 raised to the power of arg1, with type of arg0</returns> </doc>
-    pub fn power(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn power(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Power"));
@@ -946,10 +851,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Bitwise right shift. </summary> <param name="arg0"></param> <param name="arg1"></param> </doc>
-    pub fn right_shift(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn right_shift(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_RightShift"));
@@ -970,10 +872,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Run a function on every element in the collection. </summary> <returns>The modified collection.</returns> <param name="arg">The list or set.</param> <param name="func">The function.</param> </doc>
-    pub fn select(
-        p_arg: super::krpc::Expression,
-        p_func: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn select(p_arg: super::krpc::Expression, p_func: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Select"));
@@ -994,10 +893,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Numerical subtraction. </summary> <param name="arg0"></param> <param name="arg1"></param> </doc>
-    pub fn subtract(
-        p_arg0: super::krpc::Expression,
-        p_arg1: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn subtract(p_arg0: super::krpc::Expression, p_arg1: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Subtract"));
@@ -1066,10 +962,7 @@ impl Expression {
         CallHandle::new(proc_call)
     }
     /// <doc> <summary> Run a function on every element in the collection. </summary> <returns>The modified collection.</returns> <param name="arg">The list or set.</param> <param name="func">The function.</param> </doc>
-    pub fn r#where(
-        p_arg: super::krpc::Expression,
-        p_func: super::krpc::Expression,
-    ) -> CallHandle<super::krpc::Expression> {
+    pub fn r#where(p_arg: super::krpc::Expression, p_func: super::krpc::Expression) -> CallHandle<super::krpc::Expression> {
         let mut proc_call = krpc::ProcedureCall::new();
         proc_call.set_service(String::from("KRPC"));
         proc_call.set_procedure(String::from("Expression_static_Where"));
@@ -1103,18 +996,13 @@ impl fmt::Debug for Type {
 }
 
 impl RPCEncodable for Type {
-    fn encode(
-        &self,
-        output: &mut protobuf::CodedOutputStream,
-    ) -> Result<(), protobuf::ProtobufError> {
+    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
         self.id.encode(output)
     }
 }
 
 impl RPCExtractable for Type {
-    fn extract_value(
-        input: &mut protobuf::CodedInputStream,
-    ) -> Result<Self, protobuf::ProtobufError> {
+    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
         let id = RPCExtractable::extract_value(input)?;
         Ok(Type { id })
     }
@@ -1164,6 +1052,8 @@ impl Type {
     }
 }
 
+
+
 #[derive(Debug, Copy, Clone)]
 pub enum GameScene {
     SpaceCenter = 0,
@@ -1188,22 +1078,19 @@ impl From<i32> for GameScene {
 }
 
 impl RPCEncodable for GameScene {
-    fn encode(
-        &self,
-        output: &mut protobuf::CodedOutputStream,
-    ) -> Result<(), protobuf::ProtobufError> {
+    fn encode(&self, output: &mut protobuf::CodedOutputStream) -> Result<(), protobuf::ProtobufError> {
         (*self as i32).encode(output)
     }
 }
 
 impl RPCExtractable for GameScene {
-    fn extract_value(
-        input: &mut protobuf::CodedInputStream,
-    ) -> Result<Self, protobuf::ProtobufError> {
-        let value: i32 = RPCExtractable::extract_value(input)?;
+    fn extract_value(input: &mut protobuf::CodedInputStream) -> Result<Self, protobuf::ProtobufError> {
+        let value : i32 = RPCExtractable::extract_value(input)?;
         Ok(GameScene::from(value))
     }
 }
+
+
 
 #[allow(dead_code)]
 /// <doc> <summary> Create an event from a server side expression. </summary> </doc>
@@ -1225,10 +1112,7 @@ pub fn add_event(p_expression: super::krpc::Expression) -> CallHandle<::krpc_mar
 
 #[allow(dead_code)]
 /// <doc> <summary> Add a streaming request and return its identifier. </summary> </doc>
-pub fn add_stream(
-    p_call: ::krpc_mars::krpc::ProcedureCall,
-    p_start: bool,
-) -> CallHandle<::krpc_mars::krpc::Services> {
+pub fn add_stream(p_call: ::krpc_mars::krpc::ProcedureCall, p_start: bool) -> CallHandle<::krpc_mars::krpc::Services> {
     let mut proc_call = krpc::ProcedureCall::new();
     proc_call.set_service(String::from("KRPC"));
     proc_call.set_procedure(String::from("AddStream"));
@@ -1395,3 +1279,4 @@ pub fn set_paused(p_value: bool) -> CallHandle<()> {
 
     CallHandle::new(proc_call)
 }
+
