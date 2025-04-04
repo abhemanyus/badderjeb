@@ -21,16 +21,16 @@ pub fn maneuver(
         .into_iter()
         .next()
         .ok_or("No node found!")?;
+    let rf = node.get_orbital_reference_frame().mk_call(client)?;
+    auto_pilot.set_reference_frame(rf.clone()).mk_call(client)?;
     let ut_node = node.get_ut().mk_call(client)?;
     let deltav = node.get_delta_v().mk_call(client)?;
     let burn_time = burn_time(client, ship, deltav)?;
+    println!("Burn Time: {burn_time}");
     let burn_start_time = ut_node - burn_time / 2.0;
     space_center::warp_to(burn_start_time - 60.0, 100000.0, 2.0).mk_call(client)?;
     auto_pilot
-        .set_target_direction(
-            node.burn_vector(auto_pilot.get_reference_frame().mk_call(client)?)
-                .mk_call(client)?,
-        )
+        .set_target_direction(node.burn_vector(rf).mk_call(client)?)
         .mk_call(client)?;
     auto_pilot.engage().mk_call(client)?;
     auto_pilot.wait().mk_call(client)?;
@@ -44,15 +44,13 @@ pub fn maneuver(
         }
     }
     control.set_throttle(1.0).mk_call(client)?;
-    let remaining_dv = node.get_remaining_delta_v().to_stream().mk_call(client)?;
-    let mut prev_dv = f64::MAX;
+    let burn_stop_time = burn_start_time + burn_time;
     loop {
         let update = stream_client.recv_update()?;
-        if let Some(val) = update.get_result(&remaining_dv)? {
-            if val > prev_dv {
+        if let Some(val) = update.get_result(&ut_time)? {
+            if val >= burn_stop_time {
                 break;
             }
-            prev_dv = val;
         }
     }
     control.set_throttle(0.0).mk_call(client)?;

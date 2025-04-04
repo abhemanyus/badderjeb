@@ -11,6 +11,10 @@ path = "src/bin/launch.rs"
 name = "maneuver"
 path = "src/bin/maneuver.rs"
 
+[[bin]]
+name = "circ"
+path = "src/bin/circ.rs"
+
 [lib]
 path = "src/lib.rs"
 

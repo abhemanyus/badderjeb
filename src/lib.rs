@@ -1,3 +1,4 @@
+pub mod circ;
 pub mod interpolate;
 pub mod launch;
 pub mod maneuver;
