@@ -3,12 +3,22 @@ name = "betterjeb"
 version = "0.1.0"
 edition = "2021"
 
+[[bin]]
+name = "launch"
+path = "src/bin/launch.rs"
+
+[[bin]]
+name = "maneuver"
+path = "src/bin/maneuver.rs"
+
 [lib]
 path = "src/lib.rs"
 
 [dependencies]
-krpc-mars = { git = "https://github.com/abhemanyus/krpc-mars", rev = "2623344f795a8cf913666fcc146a7275ecfdb851" }
+# krpc-mars = { git = "https://github.com/abhemanyus/krpc-mars", rev = "2623344f795a8cf913666fcc146a7275ecfdb851" }
+krpc-mars = { path = "../krpc-mars" }
 
 [build-dependencies]
 glob = "0.3"
-krpc-mars-terraformer = { git = "https://github.com/abhemanyus/krpc-mars-terraformer", rev = "d3075e9d4280ec14b0d444a52618a9f634fd616f" }
+# krpc-mars-terraformer = { git = "https://github.com/abhemanyus/krpc-mars-terraformer", rev = "d3075e9d4280ec14b0d444a52618a9f634fd616f" }
+krpc-mars-terraformer = { path = "../krpc-mars-terraformer" }

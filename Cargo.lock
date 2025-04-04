@@ -37,7 +37,7 @@ name = "betterjeb"
 version = "0.1.0"
 dependencies = [
  "glob",
- "krpc-mars 0.8.0 (git+https://github.com/abhemanyus/krpc-mars?rev=2623344f795a8cf913666fcc146a7275ecfdb851)",
+ "krpc-mars 0.8.0",
  "krpc-mars-terraformer",
 ]
 
@@ -355,7 +355,6 @@ dependencies = [
 [[package]]
 name = "krpc-mars"
 version = "0.8.0"
-source = "git+https://github.com/abhemanyus/krpc-mars?rev=2623344f795a8cf913666fcc146a7275ecfdb851#2623344f795a8cf913666fcc146a7275ecfdb851"
 dependencies = [
  "protobuf",
  "protoc-rust",
@@ -375,7 +374,6 @@ dependencies = [
 [[package]]
 name = "krpc-mars-terraformer"
 version = "0.8.0"
-source = "git+https://github.com/abhemanyus/krpc-mars-terraformer?rev=d3075e9d4280ec14b0d444a52618a9f634fd616f#d3075e9d4280ec14b0d444a52618a9f634fd616f"
 dependencies = [
  "heck",
  "krpc-mars 0.8.0 (git+https://github.com/Cahu/krpc-mars)",

@@ -1,7 +1,4 @@
-use betterjeb::{
-    maneuver::maneuver,
-    services::space_center::{self},
-};
+use betterjeb::{maneuver::maneuver, services::space_center};
 use krpc_mars::{RPCClient, StreamClient};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
