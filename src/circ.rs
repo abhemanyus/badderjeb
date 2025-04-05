@@ -1,17 +1,10 @@
 use std::error::Error;
 
-use krpc_mars::{batch_call_unwrap, RPCClient, StreamClient};
+use krpc_mars::{batch_call_unwrap, RPCClient};
 
-use crate::{
-    maneuver::maneuver,
-    services::space_center::{self, Vessel},
-};
+use crate::services::space_center::{self, Vessel};
 
-pub fn circ(
-    client: &mut RPCClient,
-    stream_client: &mut StreamClient,
-    ship: &Vessel,
-) -> Result<(), Box<dyn Error>> {
+pub fn circ(client: &mut RPCClient, ship: &Vessel) -> Result<(), Box<dyn Error>> {
     let orbit = ship.get_orbit().mk_call(client)?;
     let apop = orbit.get_apoapsis().mk_call(client)?;
     let peri = orbit.get_periapsis().mk_call(client)?;
@@ -36,7 +29,6 @@ pub fn circ(
     control
         .add_node(node_time, delta_v as f32, 0.0, 0.0)
         .mk_call(client)?;
-    maneuver(client, stream_client, ship)?;
     Ok(())
 }
 

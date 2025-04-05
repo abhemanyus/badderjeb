@@ -55,6 +55,7 @@ pub fn maneuver(
     }
     control.set_throttle(0.0).mk_call(client)?;
     auto_pilot.disengage().mk_call(client)?;
+    ut_time.remove().mk_call(client)?;
     Ok(())
 }
 

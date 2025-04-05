@@ -1,4 +1,4 @@
-use betterjeb::{circ::circ, services::space_center};
+use betterjeb::{circ::circ, maneuver::maneuver, services::space_center};
 use krpc_mars::{RPCClient, StreamClient};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -7,6 +7,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let ship = space_center::get_active_vessel().mk_call(&mut client)?;
 
-    circ(&mut client, &mut stream_client, &ship)?;
+    circ(&mut client, &ship)?;
+    maneuver(&mut client, &mut stream_client, &ship)?;
     Ok(())
 }

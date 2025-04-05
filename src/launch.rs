@@ -59,7 +59,7 @@ pub fn launch(
                 };
                 auto_pilot.set_target_pitch(pitch).mk_call(client)?;
 
-                if attitude.apop > 80000.0 {
+                if attitude.apop > 100000.0 {
                     State::Coast
                 } else {
                     State::Turn
@@ -68,28 +68,15 @@ pub fn launch(
             State::Coast => {
                 control.set_throttle(0.0).mk_call(client)?;
                 if attitude.alt > 70000.0 {
-                    State::Circ
+                    State::End
                 } else {
                     State::Coast
                 }
             }
-            State::Circ => {
-                if attitude.pitch.abs() > 0.1 {
-                    auto_pilot.set_target_pitch(0.0).mk_call(client)?;
-                }
-                if attitude.perip > 80000.0 {
-                    State::Orbit
-                } else if attitude.eta_apop < 10.0 {
-                    control.set_throttle(1.0).mk_call(client)?;
-                    State::Circ
-                } else {
-                    control.set_throttle(0.0).mk_call(client)?;
-                    State::Circ
-                }
-            }
-            State::Orbit => {
+            State::End => {
                 control.set_throttle(0.0).mk_call(client)?;
                 auto_pilot.disengage().mk_call(client)?;
+                streamer.stop(client)?;
                 return Ok(());
             }
         }
@@ -102,8 +89,7 @@ pub enum State {
     Ascent,
     Turn,
     Coast,
-    Circ,
-    Orbit,
+    End,
 }
 
 #[derive(Default)]
@@ -176,6 +162,21 @@ impl Streamer {
         if let Some(val) = update.get_result(&self.pitch)? {
             attitude.pitch = val;
         }
+        Ok(())
+    }
+
+    pub fn stop(&self, client: &mut RPCClient) -> Result<(), Box<dyn Error>> {
+        batch_call_unwrap!(
+            client,
+            (
+                &self.alt.remove(),
+                &self.aoa.remove(),
+                &self.pitch.remove(),
+                &self.apop.remove(),
+                &self.perip.remove(),
+                &self.eta_apop.remove(),
+            )
+        )?;
         Ok(())
     }
 }
