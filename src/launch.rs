@@ -28,11 +28,21 @@ pub fn launch(
 
     let mut prev_state = state;
 
+    let mut prev_thrust = -1.0;
+    let mut prev_stage = -1;
+
     loop {
         streamer.update(stream_client, &mut attitude)?;
         if state != prev_state {
             println!("{prev_state:?}->{state:?}");
             prev_state = state;
+        }
+        if attitude.thrust < prev_thrust && prev_stage != attitude.stage {
+            control.activate_next_stage().mk_call(client)?;
+            prev_stage = attitude.stage;
+            prev_thrust = -1.0;
+        } else if attitude.thrust > prev_thrust {
+            prev_thrust = attitude.thrust;
         }
         state = match state {
             State::Launch => {
@@ -100,6 +110,8 @@ pub struct Attitude {
     apop: f64,
     perip: f64,
     eta_apop: f64,
+    thrust: f32,
+    stage: i32,
 }
 
 pub struct Streamer {
@@ -109,6 +121,8 @@ pub struct Streamer {
     apop: StreamHandle<f64>,
     perip: StreamHandle<f64>,
     eta_apop: StreamHandle<f64>,
+    thrust: StreamHandle<f32>,
+    stage: StreamHandle<i32>,
 }
 
 impl Streamer {
@@ -117,6 +131,7 @@ impl Streamer {
             .flight(vessel.get_reference_frame().mk_call(client)?)
             .mk_call(client)?;
         let orbit = vessel.get_orbit().mk_call(client)?;
+        let control = vessel.get_control().mk_call(client)?;
         let calls = batch_call_unwrap!(
             client,
             (
@@ -126,6 +141,8 @@ impl Streamer {
                 &orbit.get_apoapsis_altitude().to_stream(),
                 &orbit.get_periapsis_altitude().to_stream(),
                 &orbit.get_time_to_apoapsis().to_stream(),
+                &vessel.get_available_thrust().to_stream(),
+                &control.get_current_stage().to_stream(),
             )
         )?;
         Ok(Self {
@@ -135,6 +152,8 @@ impl Streamer {
             apop: calls.3,
             perip: calls.4,
             eta_apop: calls.5,
+            thrust: calls.6,
+            stage: calls.7,
         })
     }
 
@@ -162,6 +181,12 @@ impl Streamer {
         if let Some(val) = update.get_result(&self.pitch)? {
             attitude.pitch = val;
         }
+        if let Some(val) = update.get_result(&self.thrust)? {
+            attitude.thrust = val;
+        }
+        if let Some(val) = update.get_result(&self.stage)? {
+            attitude.stage = val;
+        }
         Ok(())
     }
 
@@ -175,6 +200,8 @@ impl Streamer {
                 &self.apop.remove(),
                 &self.perip.remove(),
                 &self.eta_apop.remove(),
+                &self.thrust.remove(),
+                &self.stage.remove(),
             )
         )?;
         Ok(())
