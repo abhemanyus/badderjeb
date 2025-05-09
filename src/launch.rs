@@ -11,6 +11,7 @@ pub fn launch(
     client: &mut RPCClient,
     stream_client: &mut StreamClient,
     ship: &Vessel,
+    inclination: f32,
 ) -> Result<(), Box<dyn Error>> {
     let control = ship.get_control().mk_call(client)?;
     control.set_sas(false).mk_call(client)?;
@@ -47,7 +48,7 @@ pub fn launch(
         state = match state {
             State::Launch => {
                 auto_pilot
-                    .target_pitch_and_heading(90.0, 90.0)
+                    .target_pitch_and_heading(90.0, 90.0 - inclination)
                     .mk_call(client)?;
                 auto_pilot.engage().mk_call(client)?;
                 control.activate_next_stage().mk_call(client)?;
@@ -132,28 +133,15 @@ impl Streamer {
             .mk_call(client)?;
         let orbit = vessel.get_orbit().mk_call(client)?;
         let control = vessel.get_control().mk_call(client)?;
-        let calls = batch_call_unwrap!(
-            client,
-            (
-                &flight.get_surface_altitude().to_stream(),
-                &flight.get_angle_of_attack().to_stream(),
-                &flight.get_pitch().to_stream(),
-                &orbit.get_apoapsis_altitude().to_stream(),
-                &orbit.get_periapsis_altitude().to_stream(),
-                &orbit.get_time_to_apoapsis().to_stream(),
-                &vessel.get_available_thrust().to_stream(),
-                &control.get_current_stage().to_stream(),
-            )
-        )?;
         Ok(Self {
-            alt: calls.0,
-            aoa: calls.1,
-            pitch: calls.2,
-            apop: calls.3,
-            perip: calls.4,
-            eta_apop: calls.5,
-            thrust: calls.6,
-            stage: calls.7,
+            alt: flight.get_surface_altitude().to_stream().mk_call(client)?,
+            aoa: flight.get_angle_of_attack().to_stream().mk_call(client)?,
+            pitch: flight.get_pitch().to_stream().mk_call(client)?,
+            apop: orbit.get_apoapsis_altitude().to_stream().mk_call(client)?,
+            perip: orbit.get_periapsis_altitude().to_stream().mk_call(client)?,
+            eta_apop: orbit.get_time_to_apoapsis().to_stream().mk_call(client)?,
+            thrust: vessel.get_available_thrust().to_stream().mk_call(client)?,
+            stage: control.get_current_stage().to_stream().mk_call(client)?,
         })
     }
 
