@@ -9,7 +9,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let ship = space_center::get_active_vessel().mk_call(&mut client)?;
 
-    let mut inclination = 30.0;
+    let mut inclination = 0.0;
 
     let target_orbit = space_center::get_target_vessel()
         .mk_call(&mut client)?

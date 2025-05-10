@@ -1,4 +1,5 @@
 pub mod circ;
+pub mod intercept;
 pub mod interpolate;
 pub mod intersect;
 pub mod launch;
