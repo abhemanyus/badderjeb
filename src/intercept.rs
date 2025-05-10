@@ -41,16 +41,15 @@ pub fn intercept(
     let semi = (apsis + peri) / 2.0;
     let t = PI * (semi.powi(3) / mu).sqrt();
 
-    let mut eta = -1.0;
-    let c = PI - t * aa2;
-    let mut orbit = 0;
+    let mut delta_a = a1 - a2;
 
-    while eta < 0.0 {
-        let extra = p1 * (orbit as f64);
-        let a2 = a2 + aa2 * p1;
-        eta = extra + (c + a1 - a2) / (aa2 - aa1);
-        orbit += 1;
+    if delta_a < 0.0 {
+        delta_a += TAU;
     }
+
+    let c = PI - t * aa2;
+    println!("Transfer angle: {}", c.to_degrees());
+    let eta = (c + delta_a) / (aa2 - aa1);
 
     let timestamp = space_center::get_ut().mk_call(client)? + eta;
     node(client, vessel, apsis, peri, timestamp)?;
@@ -64,7 +63,6 @@ fn node(
     peri: f64,
     node_ut: f64,
 ) -> Result<(), Box<dyn Error>> {
-    let vessel_orbit = ship.get_orbit().mk_call(client)?;
     let delta_v = burn(client, ship, apsis, peri)?;
     let control = ship.get_control().mk_call(client)?;
     control

@@ -19,6 +19,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let target = space_center::get_target_body().mk_call(&mut client)?;
         intercept(&mut client, &ship, &target)?;
     }
-    maneuver(&mut client, &mut stream_client, &ship)?;
+    // maneuver(&mut client, &mut stream_client, &ship)?;
     Ok(())
 }
